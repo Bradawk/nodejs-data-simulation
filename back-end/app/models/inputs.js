@@ -7,5 +7,4 @@ var inputSchema = new Schema({
 });
 
 var Input = mongoose.model('Input', inputSchema);
-
 module.exports = Input;

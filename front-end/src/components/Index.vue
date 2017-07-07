@@ -1,14 +1,36 @@
 <template>
-  <div class="hello">
-    <h1> DAAB Simulation</h1>
-    <ul id="example-1">
-    <li v-for="input in inputs">
-      {{ input._id }}
-    </li>
-  </ul>
-  <form v-on:submit="addInput">     
-    <input type="submit"/>
-  </form>
+  <div>
+    <div class="jumbo">
+      <h2> DAAB Project </h2>
+      <small> Unleash the data .. </small>
+
+      
+    </div>
+    <div class="row">
+      <div class="col s12 jumbo">
+        <div class="col s12">
+          <table class="highlight">
+            <thead>
+              <tr>
+                <th> ID </th>
+                <th></th>
+                <th>
+                    <form v-on:submit="addInput">     
+                      <input class="btn" type="submit" value="ADD"/>
+                    </form>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="input in inputs">
+                <td> {{input._id}} </td>
+                <td><a class="btn"><i class="material-icons left">remove_red_eye</i>See</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -17,7 +39,6 @@ export default {
   name: 'index',
   data () {
     return {
-      msg: 'hello',
       inputs: [],
       errors: [],
     }
@@ -48,17 +69,4 @@ h1, h2 {
   font-weight: normal;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
 </style>
