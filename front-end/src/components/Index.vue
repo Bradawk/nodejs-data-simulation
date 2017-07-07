@@ -22,15 +22,16 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="i in inputs">
-                <td> {{i._id}} </td>
-                <td><a class="btn" v-bind:href="i._id"><i class="material-icons left">remove_red_eye</i>See</a></td>
-                <td>
-                  <form v-on:submit="deleteInput(i._id)">
-                    <input class="btn" type="submit" value="X" />
-                  </form>
-                </td>
-              </tr>
+                <transition-group name="slide-fade" tag="p">
+                <tr v-for="i in inputs" v-bind:key="i" class="list-item">
+                  <td><router-link :to="{ name: 'Input', params: { id: i._id }}">{{i._id}}</router-link></td>
+                  <td>
+                    <form v-on:submit="deleteInput(i._id)">
+                      <input class="btn" type="submit" value="X" />
+                    </form>
+                  </td>
+                </tr>
+                </transition-group>
             </tbody>
           </table>
         </div>
@@ -80,5 +81,17 @@ export default {
 h1, h2 {
   font-weight: normal;
 }
-
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for <2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
 </style>

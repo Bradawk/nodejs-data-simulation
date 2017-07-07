@@ -10,6 +10,7 @@ var express     = require('express'),
 // ROUTE REGISTERING
 var index = require('./routes/index');
 var input = require('./routes/input');
+var curve = require('./routes/curve');
 
 // APP INIT
 var app = express();
@@ -32,6 +33,7 @@ app.use(cookieParser());
 // ROUTES USED
 app.use('/', index);
 app.use('/input', input);
+app.use('/curve', curve);
 
 
 // CATCH ERROR 

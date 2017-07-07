@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var curveSchema = new Schema({
-    expression: String,
+    curve_type: String,
     label: String,
     delta: Number,
     data_objects: Array,
