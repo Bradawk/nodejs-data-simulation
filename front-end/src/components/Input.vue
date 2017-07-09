@@ -44,7 +44,7 @@ export default {
     }
   },
   mounted() {
-        this.$http.get(process.env.API_URL+"input/curves/"+this.$route.params.id)
+        this.$http.get('http://localhost:3000/input/curves/'+this.$route.params.id)
         .then(response => {
             this.curves = response.data;
         })

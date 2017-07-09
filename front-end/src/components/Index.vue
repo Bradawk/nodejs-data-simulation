@@ -1,42 +1,58 @@
 <template>
   <div>
-    <div class="jumbo">
-      <h2> DAAB Project </h2>
-      <small> Unleash the data .. </small>
+        <div class="row header-resume">
+          <div class="col s2">
+            <small> Total of inputs </small><br>
+            <span> {{count}} </span><br>
+            <small> Last added : yesterday </small>
+          </div>
+          <div class="col s2">
+            <small> Total of curves </small><br>
+            <span> </span><br>
+            <small> Last added : yesterday </small>
+          </div>
+          <div class="col s2">
+            <small> Total of curves </small><br>
+            <span> </span><br>
+            <small> Last added : yesterday </small>
+          </div>
+          <div class="col s2">
+            <small> Total of curves </small><br>
+            <span> </span><br>
+            <small> Last added : yesterday </small>
+          </div>
+          <div class="col s2">
+            <small> Total of curves </small><br>
+            <span> </span><br>
+            <small> Last added : yesterday </small>
+          </div>
+          <div class="col s2">
+            <small> Total of curves </small><br>
+            <span> </span><br>
+            <small> Last added : yesterday </small>
+          </div>
 
-      
-    </div>
-    <div class="row">
-      <div class="col s12 jumbo">
-        <div class="col s12">
-          <table class="highlight">
-            <thead>
-              <tr>
-                <th> ID </th>
-                <th></th>
-                <th>
-                    <form v-on:submit="addInput">     
-                      <input class="btn" type="submit" value="ADD"/>
-                    </form>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-                <transition-group name="slide-fade" tag="p">
-                <tr v-for="i in inputs" v-bind:key="i" class="list-item">
-                  <td><router-link :to="{ name: 'Input', params: { id: i._id }}">{{i._id}}</router-link></td>
-                  <td>
-                    <form v-on:submit="deleteInput(i._id)">
-                      <input class="btn" type="submit" value="X" />
-                    </form>
-                  </td>
-                </tr>
-                </transition-group>
-            </tbody>
-          </table>
         </div>
-      </div>
-    </div>
+        <div class="row main-content">
+              <div class="col s12">
+                    <form v-on:submit="addInput">     
+                      <input class="btn" type="submit" value="ADD INPUT"/>
+                    </form>
+                    <div>
+                    <transition-group name="slide-fade" tag="p">
+                      <div v-for="i in inputs" v-bind:key="i" class="list-item input-div jumbo col s3">
+                          <div class="jumbo-head"> </div>
+                          <router-link :to="{ name: 'Input', params: { id: i._id }}">Input</router-link>
+                          <span>
+                            <form v-on:submit="deleteInput(i._id)">
+                              <input class="btn" type="submit" value="X" />
+                            </form>
+                          </span>
+                      </div>
+                    </transition-group>
+                    </div>
+              </div>
+        </div>
   </div>
 </template>
 <script>
@@ -46,13 +62,15 @@ export default {
   data () {
     return {
       inputs: [],
-      errors: []
+      errors: [],
+      count: ''
     }
   },
   mounted() {
       this.$http.get(process.env.API_URL)
       .then(response => {
         this.inputs = response.data;
+        this.count = this.inputs.length;
       })
       .catch(function (error) {
         console.log(error);
@@ -60,16 +78,18 @@ export default {
     },
   methods: {
       addInput(){
-          this.$http.post(process.env.API_URL)
+          this.$http.post('http://localhost:3000')
           .then(response => {
             this.inputs.push(response.data);
+            this.count = this.inputs.length;
           })
       },
       deleteInput(id){
-        this.$http.delete(process.env.API_URL+'input/delete/'+id)
+        this.$http.delete('http://localhost:3000/input/delete/'+id)
           .then(response => {
             var index = this.inputs.findIndex(input => input._id === id);
             this.inputs.splice(index, 1);
+            this.count = this.inputs.length;
           })
       }
     }
@@ -78,9 +98,6 @@ export default {
 </script>
 
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
 /* Enter and leave animations can use different */
 /* durations and timing functions.              */
 .slide-fade-enter-active {

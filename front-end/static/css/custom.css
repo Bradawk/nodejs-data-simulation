@@ -1,12 +1,11 @@
 body{
-	background: rgb(249, 249, 249) none repeat scroll 0% 0%;
+	background: #f7f7f7;
 	padding-bottom: 5%;
 }
 
 /* CUSTOM */
 
 h2{
-	text-align: center;
 	font-size: 2em;
 	margin-top: 0;
 }
@@ -31,7 +30,7 @@ h2{
 /* MENU */ 
 
 #menu #slide-out{
-	background:  #242529;
+	background:  #2A3F54;
 }
 
 #menu #slide-out i{
@@ -39,7 +38,7 @@ h2{
 }
 
 #menu #slide-out .collapsible-body{
-	background: #2B2C30;
+	background: #172B46;
 }
 
 #menu #slide-out a{
@@ -63,6 +62,12 @@ h2{
 	font-size: 1.5em;
 }
 
+.side-container img{
+	border-radius: 100%;
+	width: 30%;
+	margin-bottom: 10px;
+}
+
 /* CONTENT */
 
 #content .burger{
@@ -79,12 +84,56 @@ h2{
 }
 
 .jumbo {
-	background : #EDEDED;
-	text-align: center;
-	padding: 5%;
+	background: white;
+	padding: 2%;
 	margin-bottom : 3%;
 	padding-bottom: 5% !important;
+	border-radius: 5px;
+	border-bottom: 1px solid #EFEFEF;
 }
+
+.jumbo h2{
+	text-align: left;
+	color: #687D94;
+	font-weight: bold;
+}
+
+.main-content{
+	padding-right: 2%;
+	padding-left: 2%;
+}
+
+.main-content:first-child{
+	width: 100%;
+	margin: 0 auto;
+}
+
+.input-div{
+	margin: 0% 2% 2% 2%;
+}
+
+/* HEADER RESUME */ 
+
+.header-resume{
+		padding-top: 1%;
+		padding-bottom: 1%; 
+		margin-bottom: 5%;
+		background: #f1f1f1;
+		border-bottom: 1px solid #EDEDED;
+}
+
+.header-resume div span{
+	color: #687D94;
+	font-size: 2em;
+	font-weight: bold;
+}
+
+.header-resume div{
+		border-right: 1px solid #687D94;
+		padding-left: 2% !important;
+		text-align: left;
+}
+
 
 /* FORM */
 #coef{
