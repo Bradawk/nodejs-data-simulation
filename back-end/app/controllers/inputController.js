@@ -25,7 +25,6 @@ exports.create = (req, res) => {
     });
 };
 
-
 exports.delete = (req, res) => {
     Curve.remove({'input_id': req.params.id}, function(err, curve){
         if(err) throw err;

@@ -36,18 +36,25 @@
         <div class="row main-content">
               <div class="col s12">
                     <form v-on:submit="addInput">     
-                      <input class="btn" type="submit" value="ADD INPUT"/>
+                      <input class="btn left" type="submit" value="ADD INPUT"/>
+                      <div class="Nfloat"></div>
                     </form>
                     <div>
                     <transition-group name="slide-fade" tag="p">
                       <div v-for="i in inputs" v-bind:key="i" class="list-item input-div jumbo col s3">
-                          <div class="jumbo-head"> </div>
-                          <router-link :to="{ name: 'Input', params: { id: i._id }}">Input</router-link>
-                          <span>
-                            <form v-on:submit="deleteInput(i._id)">
-                              <input class="btn" type="submit" value="X" />
-                            </form>
-                          </span>
+                          <div class="jumbo-head">
+                            <span class="right">
+                              <form v-on:submit="deleteInput(i._id)"> 
+                                <input type="submit" value="X" />
+                              </form>
+                            </span>
+                            <div class="Nfloat"></div>
+                          </div>
+                          <router-link :to="{ name: 'Input', params: { id: i._id }}">Input</router-link><br>
+                          <div class="input-details">
+                            <span><i class="material-icons">show_chart</i> Number of curves : </span><br>
+                            <span><i class="material-icons">multiline_chart</i> Curve type : </span>
+                          </div>
                       </div>
                     </transition-group>
                     </div>
@@ -56,14 +63,15 @@
   </div>
 </template>
 <script>
-
+import InputBlock from '@/components/InputBlock'
 export default {
   name: 'index',
   data () {
     return {
       inputs: [],
       errors: [],
-      count: ''
+      count: '',
+      curveCount: '',
     }
   },
   mounted() {
@@ -78,14 +86,14 @@ export default {
     },
   methods: {
       addInput(){
-          this.$http.post('http://localhost:3000')
+          this.$http.post(process.env.API_URL)
           .then(response => {
             this.inputs.push(response.data);
             this.count = this.inputs.length;
           })
       },
       deleteInput(id){
-        this.$http.delete('http://localhost:3000/input/delete/'+id)
+        this.$http.delete(process.env.API_URL+'/input/delete/'+id)
           .then(response => {
             var index = this.inputs.findIndex(input => input._id === id);
             this.inputs.splice(index, 1);

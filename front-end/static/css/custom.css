@@ -27,6 +27,10 @@ h2{
 	margin-right: 10px;
 }
 
+.Nfloat{
+	clear: both;
+}
+
 /* MENU */ 
 
 #menu #slide-out{
@@ -92,6 +96,19 @@ h2{
 	border-bottom: 1px solid #EFEFEF;
 }
 
+.jumbo-head{
+	padding-top: 2%;
+	margin-bottom: 2%;
+	padding-bottom: 2%;
+	border-bottom: 2px solid #EFEFEF;
+}
+
+.jumbo-head input[type="submit"]{
+	background: none;
+	border: none;
+	color: #687D94;
+}
+
 .jumbo h2{
 	text-align: left;
 	color: #687D94;
@@ -100,7 +117,7 @@ h2{
 
 .main-content{
 	padding-right: 2%;
-	padding-left: 2%;
+	padding-left: 15%;
 }
 
 .main-content:first-child{
@@ -112,6 +129,20 @@ h2{
 	margin: 0% 2% 2% 2%;
 }
 
+.input-details{
+	text-align: left;
+	padding-left: 2%;
+}
+
+.input-details span{
+	color: #687D94;
+	font-weight: bold;
+}
+
+.input-details i{
+	font-size: 1.5em;
+}
+
 /* HEADER RESUME */ 
 
 .header-resume{
@@ -119,7 +150,7 @@ h2{
 		padding-bottom: 1%; 
 		margin-bottom: 5%;
 		background: #f1f1f1;
-		border-bottom: 1px solid #EDEDED;
+		border-bottom: 3px solid #EDEDED;
 }
 
 .header-resume div span{
