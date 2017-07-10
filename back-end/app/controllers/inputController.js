@@ -39,8 +39,6 @@ exports.getCurves = (req, res) => {
     Curve.find({'input_id': req.params.id}, function(err, curves){
         if(err){
             throw err;
-        }else if(isEmptyObject(curves)){
-            res.json({'message':'No curves for that input id.'});
         }else{
             res.json(curves);
         }

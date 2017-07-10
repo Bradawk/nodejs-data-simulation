@@ -42,19 +42,16 @@
                     <div>
                     <transition-group name="slide-fade" tag="p">
                       <div v-for="i in inputs" v-bind:key="i" class="list-item input-div jumbo col s3">
-                          <div class="jumbo-head">
-                            <span class="right">
+                       <div class="jumbo-head">
+                          <span class="right">
                               <form v-on:submit="deleteInput(i._id)"> 
-                                <input type="submit" value="X" />
+                                  <input type="submit" value="X" />
                               </form>
-                            </span>
-                            <div class="Nfloat"></div>
-                          </div>
-                          <router-link :to="{ name: 'Input', params: { id: i._id }}">Input</router-link><br>
-                          <div class="input-details">
-                            <span><i class="material-icons">show_chart</i> Number of curves : </span><br>
-                            <span><i class="material-icons">multiline_chart</i> Curve type : </span>
-                          </div>
+                          </span>
+                          <div class="Nfloat"></div>
+                      </div>
+                      <router-link :to="{ name: 'Input', params: { id: i._id }}">Input</router-link><br>   
+                      <inputblock :id="i._id"></inputblock>
                       </div>
                     </transition-group>
                     </div>
@@ -63,15 +60,18 @@
   </div>
 </template>
 <script>
-import InputBlock from '@/components/InputBlock'
+import InputBlock from './InputBlock'
+
 export default {
   name: 'index',
+  components:{
+    'inputblock': InputBlock
+  },
   data () {
     return {
       inputs: [],
       errors: [],
       count: '',
-      curveCount: '',
     }
   },
   mounted() {
