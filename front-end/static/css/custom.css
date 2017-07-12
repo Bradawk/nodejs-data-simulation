@@ -31,6 +31,10 @@ h2{
 	clear: both;
 }
 
+select{
+	display: block !important;
+}
+
 /* MENU */ 
 
 #menu #slide-out{
@@ -98,7 +102,7 @@ h2{
 
 .jumbo-head{
 	padding-top: 2%;
-	margin-bottom: 2%;
+	margin-bottom: 5%;
 	padding-bottom: 2%;
 	border-bottom: 2px solid #EFEFEF;
 }
@@ -130,13 +134,23 @@ h2{
 	text-align: left;
 }
 
+.input-link{
+	padding-left: 3%;
+	margin-bottom: 5%;
+}
+
+.input-link a{
+	color: #687D94;
+	font-weight: bold;
+}
+
 .input-details{
 	text-align: left;
 	padding-left: 2%;
 }
 
 .input-details span{
-	color: #687D94;
+	color: #9ea7b0;
 	font-weight: bold;
 }
 

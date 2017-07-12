@@ -14,7 +14,7 @@ export default {
   props:['id'],
   data () {
     return {
-      curve: []
+      curve: [],
     }
   },
   mounted(){
@@ -25,7 +25,6 @@ export default {
         this.$http.get(process.env.API_URL+'/input/curves/'+id)
         .then(response => {
             this.curve = response.data;
-            console.log(response.data);
         })
         .catch(function (error) {
             console.log(error);

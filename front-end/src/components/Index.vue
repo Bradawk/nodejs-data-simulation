@@ -4,32 +4,10 @@
           <div class="col s2">
             <small> Total of inputs </small><br>
             <span> {{count}} </span><br>
-            <small> Last added : yesterday </small>
           </div>
           <div class="col s2">
             <small> Total of curves </small><br>
-            <span> </span><br>
-            <small> Last added : yesterday </small>
-          </div>
-          <div class="col s2">
-            <small> Total of curves </small><br>
-            <span> </span><br>
-            <small> Last added : yesterday </small>
-          </div>
-          <div class="col s2">
-            <small> Total of curves </small><br>
-            <span> </span><br>
-            <small> Last added : yesterday </small>
-          </div>
-          <div class="col s2">
-            <small> Total of curves </small><br>
-            <span> </span><br>
-            <small> Last added : yesterday </small>
-          </div>
-          <div class="col s2">
-            <small> Total of curves </small><br>
-            <span> </span><br>
-            <small> Last added : yesterday </small>
+            <span> {{curvesCount}} </span><br>
           </div>
 
         </div>
@@ -50,7 +28,9 @@
                           </span>
                           <div class="Nfloat"></div>
                       </div>
-                      <router-link :to="{ name: 'Input', params: { id: i._id }}">Input</router-link><br>   
+                      <div class="input-link">
+                        <router-link :to="{ name: 'Input', params: { id: i._id }}">Open Input<i class="material-icons left">remove_red_eye</i></router-link><br>   
+                      </div>
                       <inputblock :id="i._id"></inputblock>
                       </div>
                     </transition-group>
@@ -72,6 +52,7 @@ export default {
       inputs: [],
       errors: [],
       count: '',
+      curvesCount: ''
     }
   },
   mounted() {
@@ -83,6 +64,13 @@ export default {
       .catch(function (error) {
         console.log(error);
       });
+      this.$http.get(process.env.API_URL+"/curve")
+        .then(response => {
+            this.curvesCount = response.data.length;
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
     },
   methods: {
       addInput(){
@@ -119,4 +107,5 @@ export default {
   transform: translateX(10px);
   opacity: 0;
 }
+
 </style>
