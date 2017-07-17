@@ -11,19 +11,18 @@
             <div class="row">
                 <h2> Curves </h2>
                 <div v-if="curves.length == 0">
-                    <p> Let's add some curves, shall we? </p>
-                    <div class="col s6">
+                    <div style="width: 40% !important; margin-top: 5%;" class="container">
                         <label> Base Function Type</label>
                         <form id="add_curve_form" @submit="addCurve">
                             <div class="select-wrapper" v-for="c in curve" v-bind:key="c">
-                                <select v-model="c.value" style="margin-top: 2%;">
+                                <select v-model="c.value" style="margin-top: 2%;" required>
                                     <option value="gaussian"> Gaussian </option>
                                     <option value="sigmoid"> Sigmoid </option>
                                     <option value="polynomial"> Polynomial </option>
                                     <option value="logarithmic"> Logarithmic </option>
                                 </select>
                             </div>
-                            <input type="text" name="delta" v-model="delta" />
+                            <input placeholder="Delta" type="text" name="delta" v-model="delta" required />
                             <input style="margin-top: 2%;" class="btn" type="submit" />
                         </form>
                         <button class="btn-floating waves-effect waves-light" v-on:click="addType">
@@ -31,18 +30,52 @@
                         </button><br>
                     </div>
                 </div>
-                <div v-else v-for="c in curves">
-                    {{c}}
+                <div v-else>
+                    <div class="col s6" v-for="c in curves">
+                        <span> ID : {{c._id}} </span><br>
+                        <span v-if="c.delta"> Delta : {{c.delta}} </span><br>
+                        <div class="scroll curve_table_container">
+                            <table class="data_table bordered striped">
+                                <thead>
+                                    <tr>
+                                        <th>X</th>
+                                        <th> Y </th>
+                                    </tr>
+                                </thead>
+                                    <tbody>
+                                    <tr v-for="i in 2880">
+                                        <td > {{i}} </td>
+                                        <td>{{c.data_objects[i]}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
+                <div class="Chart__list">
+                    <div class="Chart">
+                        <line-example></line-example>
+                    </div>
+                </div>
+                <button id="export" data-export="export" class="btn"> Export Datasets </button>
             </div>
         </div>
     </div>
 </div>
 </div>
 </template>
+
+
+
+
 <script>
+import LineExample from './Chart.js'
+
 export default {
   name: 'input',
+  components: {
+    LineExample
+  },
   data () {
     return {
         curves: [],
@@ -73,9 +106,8 @@ export default {
             .catch(function (error) {
                 console.log(error);
             });
-        }
+        },
     }
-        
 }
 </script>
 
@@ -87,6 +119,11 @@ export default {
 
     .col h2{
         text-align: center;
+    }
+
+    .Chart__list{
+        margin-top: 5%;
+        margin-bottom: 5%;
     }
 
 </style>

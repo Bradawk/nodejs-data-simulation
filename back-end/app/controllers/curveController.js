@@ -1,6 +1,6 @@
 var Curve = require('../models/curves.js')
 var isEmptyObject = require('../lib/empty');
-var math = require('math.js');
+var math = require('mathjs');
 
 // ### FIND
 exports.find = function(req, res){
@@ -23,8 +23,9 @@ exports.create = function(req, res){
     var submittedCurve = req.body.curve;
     var types = [];
     var expressions = [];
-    var data_objects = [];
-    var delta = "3";
+    var f_data_objects = [];
+    var s_data_objects = [];
+    var delta = req.body.delta;
     
     submittedCurve.forEach(function(e){
         types.push(e.value);
@@ -48,6 +49,8 @@ exports.create = function(req, res){
             
         }
     });
+    
+    
 
     var expression = expressions.join();
     var rep = expression.replace(/,/g,'+').toString();
@@ -57,18 +60,25 @@ exports.create = function(req, res){
         rep_delta = rep.replace(/x(?!p)/g, "x+("+delta+")");
     }
 
-    console.log(rep_delta);
+    for(var x = 0; x <= 2880; x ++){
+        var scope = {x};
+        f_data_objects.push(math.eval(rep,scope));
+        s_data_objects.push(math.eval(rep_delta,scope));
+    }
 
     Curve.create({
         'expression': rep,
         'input_id': req.body.input_id,
-        'types': types
+        'types': types,
+        'data_objects': f_data_objects
     }, function(err, curve){
         if(err) res.json(err);
         Curve.create({
             'expression': rep_delta,
             'input_id': req.body.input_id,
-            'types': types
+            'types': types,
+            'delta': delta,
+            'data_objects': s_data_objects
         }, function(err, d){
             if(err) console.log(err);
             res.json(d);
