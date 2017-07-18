@@ -22,6 +22,24 @@
                                     <option value="logarithmic"> Logarithmic </option>
                                 </select>
                             </div>
+                            <div class="options" v-for="(c, index) in curve">
+                                <div class="col s12" v-if="c.value == 'gaussian'">
+                                    <div class="col s6">
+                                        <label> Mean {{index}} </label>
+                                        <input type="text" placeholder="Mean" />
+                                    </div>
+                                    <div class="col s6">
+                                        <label> Variance {{index}} </label>
+                                        <input type="text" placeholder="Variance" />
+                                    </div>
+                                </div>
+                                <div class="col s12" v-if="c.value == 'sigmoid'">
+                                    <div class="col s6">
+                                        <label> Param delta {{index}} </label>
+                                        <input type="text" placeholder="Param delta" />
+                                    </div>
+                                </div>
+                            </div>
                             <input placeholder="Delta" type="text" name="delta" v-model="delta" required />
                             <input style="margin-top: 2%;" class="btn" type="submit" />
                         </form>
@@ -29,14 +47,15 @@
                                 <i class="material-icons">add</i>
                         </button><br>
                     </div>
-                    <div class="col s5">
-                        {{curve}}
+                    <div class="col s5" v-for="(i, index) in curve">
+                        {{"Curve "+index+": "+i.value}}
                     </div>
                 </div>
                 <div v-else>
                     <div class="col s6" v-for="c in curves">
                         <span> ID : {{c._id}} </span><br>
                         <span v-if="c.delta"> Delta : {{c.delta}} </span><br>
+                        <span> Types : {{c.value}} </span><br>
                         <div class="scroll curve_table_container">
                             <table class="data_table bordered striped">
                                 <thead>
@@ -127,6 +146,11 @@ export default {
     .Chart__list{
         margin-top: 5%;
         margin-bottom: 5%;
+    }
+
+    .options{
+        margin-top: 10%;
+        text-align: left;
     }
 
 </style>
