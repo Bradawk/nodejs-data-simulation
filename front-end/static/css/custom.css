@@ -54,6 +54,11 @@ select{
   background: #26a69a; 
 }
 
+.function-plot{
+	width: 100%;
+}
+
+
 /* MENU */ 
 
 #menu #slide-out{

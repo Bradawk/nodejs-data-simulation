@@ -11,7 +11,7 @@
             <div class="row">
                 <h2> Curves </h2>
                 <div v-if="curves.length == 0">
-                    <div style="width: 40% !important; margin-top: 5%;" class="container">
+                    <div class="col s5">
                         <label> Base Function Type</label>
                         <form id="add_curve_form" @submit="addCurve">
                             <div class="select-wrapper" v-for="c in curve" v-bind:key="c">
@@ -29,6 +29,9 @@
                                 <i class="material-icons">add</i>
                         </button><br>
                     </div>
+                    <div class="col s5">
+                        {{curve}}
+                    </div>
                 </div>
                 <div v-else>
                     <div class="col s6" v-for="c in curves">
@@ -43,7 +46,7 @@
                                     </tr>
                                 </thead>
                                     <tbody>
-                                    <tr v-for="i in 2880">
+                                    <tr v-for="i in 5">
                                         <td > {{i}} </td>
                                         <td>{{c.data_objects[i]}}</td>
                                     </tr>
@@ -52,12 +55,13 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="Chart__list">
                     <div class="Chart">
                         <line-example></line-example>
                     </div>
                 </div>
-                <button id="export" data-export="export" class="btn"> Export Datasets </button>
+            
             </div>
         </div>
     </div>
@@ -69,7 +73,7 @@
 
 
 <script>
-import LineExample from './Chart.js'
+import LineExample from './Chart'
 
 export default {
   name: 'input',
@@ -87,7 +91,6 @@ export default {
         this.$http.get(process.env.API_URL+'/input/curves/'+this.$route.params.id)
         .then(response => {
             this.curves = response.data;
-            console.log(this.curves);
         })
         .catch(function (error) {
             console.log(error);
