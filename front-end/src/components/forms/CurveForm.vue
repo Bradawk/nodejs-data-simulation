@@ -2,7 +2,7 @@
     <div>
         <div class="col s6">
             <h2> Curve Maker </h2>
-            <label> Base Function Type</label>
+            <label> Basic Function Type</label>
             <form id="add_curve_form" @submit="addCurve">
                 <div class="select-wrapper" v-for="c in curve" v-bind:key="c">
                     <select v-model="c.value" style="margin-top: 2%;" required>
@@ -31,9 +31,9 @@
                     </div>
                 </div>
                 <input placeholder="Delta" type="number" name="delta" v-model="delta" required />
-                <input style="margin-top: 2%;" class="btn" type="submit" />
+                <input style="margin-top: 2%;" class="btn deep-orange lighten-3 waves-effect" type="submit" value="SAVE CURVE" />
             </form>
-            <button class="btn-floating waves-effect waves-light" v-on:click="addType">
+            <button class="btn-floating waves-effect waves-light deep-orange lighten-3" v-on:click="addType">
                     <i class="material-icons">add</i>
             </button><br>
         </div>
@@ -68,7 +68,7 @@ export default {
     }
   },
   mounted(){
-
+    
   },
   methods: {
     addType(){
@@ -112,6 +112,14 @@ export default {
     .curve-details i{
         font-size: 3em;
         font-weight: bold;
+        padding:5%;
+        border-radius: 100%;
+        color: white;
+        background: #F6AF95;
+    }
+
+    .select-wrapper select{
+        width: 80%;
     }
 
 </style>
