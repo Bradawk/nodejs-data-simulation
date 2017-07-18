@@ -4,33 +4,33 @@
             <h2> Curve Maker </h2>
             <label> Basic Function Type</label>
             <form id="add_curve_form" @submit="addCurve">
-                <div class="select-wrapper" v-for="c in curve" v-bind:key="c">
-                    <select v-model="c.value" style="margin-top: 2%;" required>
-                        <option value="gaussian"> Gaussian </option>
-                        <option value="sigmoid"> Sigmoid </option>
-                        <option value="polynomial"> Polynomial </option>
-                        <option value="logarithmic"> Logarithmic </option>
-                    </select>
-                </div>
-                <div class="options" v-for="(c, index) in curve">
-                    <div class="col s12" v-if="c.value == 'gaussian'">
-                        <div class="col s6">
-                            <label> Mean {{index}} </label>
-                            <input v-model="c.params.mu" type="number" placeholder="Mean" required />
+                    <div class="select-wrapper" v-for="c in curve" v-bind:key="c">
+                        <select v-model="c.value" style="margin-top: 2%;" required>
+                            <option value="gaussian"> Gaussian </option>
+                            <option value="sigmoid"> Sigmoid </option>
+                            <option value="polynomial"> Polynomial </option>
+                            <option value="logarithmic"> Logarithmic </option>
+                        </select>
+                    </div>
+                    <div class="options" v-for="(c, index) in curve">
+                        <div class="col s12" v-if="c.value == 'gaussian'">
+                            <div class="col s6">
+                                <label> Mean {{index}} </label>
+                                <input v-model="c.params.mu" type="number" placeholder="Mean" step="0.01" required />
+                            </div>
+                            <div class="col s6">
+                                <label> Variance {{index}} </label>
+                                <input v-model="c.params.sigma" type="number" placeholder="Variance" step="0.01" required />
+                            </div>
                         </div>
-                        <div class="col s6">
-                            <label> Variance {{index}} </label>
-                            <input v-model="c.params.sigma" type="number" placeholder="Variance" required />
+                        <div class="col s12" v-if="c.value == 'sigmoid'">
+                            <div class="col s6">
+                                <label> Param delta {{index}} </label>
+                                <input v-model="c.params.delta" type="number" placeholder="Param delta" step="0.01" required />
+                            </div>
                         </div>
                     </div>
-                    <div class="col s12" v-if="c.value == 'sigmoid'">
-                        <div class="col s6">
-                            <label> Param delta {{index}} </label>
-                            <input v-model="c.params.delta" type="number" placeholder="Param delta" required />
-                        </div>
-                    </div>
-                </div>
-                <input placeholder="Delta" type="number" name="delta" v-model="delta" required />
+                <input placeholder="Delta" type="number" name="delta" v-model="delta" step="0.01" required />
                 <input style="margin-top: 2%;" class="btn deep-orange lighten-3 waves-effect" type="submit" value="SAVE CURVE" />
             </form>
             <button class="btn-floating waves-effect waves-light deep-orange lighten-3" v-on:click="addType">
@@ -40,17 +40,19 @@
 
         <div class="col s6 curve-container" >
             <h2> What's in the box </h2>
-            <div class="curve-details" v-for="(i, index) in curve">
-                <i class="material-icons">show_chart</i>
-                <h5> {{"Curve "+index}} </h5>
-                <small> {{"Type : "+i.value}} </small>
-                <div v-if="i.value == 'gaussian'">
-                    <p> {{"Variance : "+i.params.sigma}} | {{" Mean : "+i.params.mu}} </p>
+            <transition-group name="slide-fade" tag="p">
+                <div class="curve-details" v-for="(i, index) in curve" v-bind:key="i">
+                    <i class="material-icons">show_chart</i>
+                    <h5> {{"Curve "+index}} </h5>
+                    <small> {{"Type : "+i.value}} </small>
+                    <div v-if="i.value == 'gaussian'">
+                        <p> {{"Variance : "+i.params.sigma}} | {{" Mean : "+i.params.mu}} </p>
+                    </div>
+                    <div v-if="i.value == 'sigmoid'">
+                        <p> {{"Delta : "+i.params.delta}} </p>
+                    </div>
                 </div>
-                <div v-if="i.value == 'sigmoid'">
-                    <p> {{"Delta : "+i.params.delta}} </p>
-                </div>
-            </div>
+            </transition-group>
             <span> {{"Delta : "+delta}} </span>
         </div>
     </div>
@@ -89,6 +91,17 @@ export default {
 </script>
 
 <style scoped>
+    .slide-fade-enter-active {
+    transition: all .3s ease;
+    }
+    .slide-fade-leave-active {
+    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    }
+    .slide-fade-enter, .slide-fade-leave-to
+    /* .slide-fade-leave-active for <2.1.8 */ {
+    transform: translateX(10px);
+    opacity: 0;
+    }
     .options{
         margin-top: 10%;
         text-align: left;
@@ -99,9 +112,15 @@ export default {
         margin-bottom: 10%;
     }
 
+    h5{
+        font-weight: bold;
+        color: #687D94;
+    }
+
     .curve-container span{
         font-size: 2em;
         font-weight: bold;
+        color: #687D94;
     }
 
     .curve-details{

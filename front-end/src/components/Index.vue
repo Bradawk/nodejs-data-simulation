@@ -94,8 +94,7 @@ export default {
 </script>
 
 <style scoped>
-/* Enter and leave animations can use different */
-/* durations and timing functions.              */
+
 .slide-fade-enter-active {
   transition: all .3s ease;
 }
