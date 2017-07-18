@@ -8,7 +8,7 @@
 import {Line} from 'vue-chartjs'
 
 export default Line.extend({
-
+name: 'function-plot',
 data () {
     return {
       curves: [],

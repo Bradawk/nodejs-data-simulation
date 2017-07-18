@@ -187,7 +187,7 @@ select{
 .header-resume{
 		padding-top: 1%;
 		padding-bottom: 1%; 
-		margin-bottom: 5%;
+		margin-bottom: 2%;
 		background: #f1f1f1;
 		border-bottom: 3px solid #EDEDED;
 }
@@ -268,4 +268,12 @@ select{
 	height: 300px;
 	overflow: auto;
 	margin-bottom: 5%;
+}
+
+table.striped>tbody>tr:nth-child(odd){
+	background: #fbfbfb !important;
+}
+
+table.striped>tbody>tr{
+	border: none;
 }

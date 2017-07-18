@@ -14,7 +14,7 @@
         <div class="row main-content">
               <div class="col s12">
                     <form v-on:submit="addInput">     
-                      <input class="btn left" type="submit" value="ADD INPUT"/>
+                      <button class="btn left"><i class="material-icons">add</i></button>
                       <div class="Nfloat"></div>
                     </form>
                     <div>

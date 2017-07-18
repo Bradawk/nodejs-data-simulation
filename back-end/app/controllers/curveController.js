@@ -21,15 +21,36 @@ exports.findAll = function(req, res){
 exports.create = function(req, res){
 
     var submittedCurve = req.body.curve;
-    var types = [];
     var expressions = [];
     var f_data_objects = [];
     var s_data_objects = [];
     var delta = req.body.delta;
+    var types = []
     
+
     submittedCurve.forEach(function(e){
         types.push(e.value);
+        
+        if(e.value == "gaussian"){
+            expressions.push('((1/('+e.params.sigma+'*sqrt(2*pi)))*exp(-((x-'+e.params.mu+')^2/2*'+e.params.sigma+'^2)))');
+        }else if(e.value == "sigmoid"){
+            expressions.push('(1/(1+exp(-'+e.params.delta+'*x)))');
+
+        }else if(type == "logarithmic"){
+            expressions.push('log(x)');
+
+        }else{
+            expressions.push('');
+            
+        }
     });
+
+    /*
+    submittedCurve.forEach(function(e){
+        
+        params.push(e.params);
+    });
+
     
     types.forEach(function(type){
         if(type == "gaussian"){
@@ -50,7 +71,7 @@ exports.create = function(req, res){
         }
     });
     
-    
+    */
 
     var expression = expressions.join();
     var rep = expression.replace(/,/g,'+').toString();
@@ -65,7 +86,7 @@ exports.create = function(req, res){
         f_data_objects.push(math.eval(rep,scope));
         s_data_objects.push(math.eval(rep_delta,scope));
     }
-
+    
     Curve.create({
         'expression': rep,
         'input_id': req.body.input_id,

@@ -1,20 +1,31 @@
 <!-- ## INPUT BLOCK VUE ## -->
 <template>
-<div class="col s6" v-for="curve in curves">
-    <span> ID : {{curve._id}} </span><br>
-    <span v-if="curve.delta"> Delta : {{curve.delta}} </span><br>
-    <div class="scroll curve_table_container">
-        <table class="data_table bordered striped">
-            <thead>
-                <tr>
-                    <th>X</th>
-                    <th> Y </th>
-                </tr>
-            </thead>
-                <tbody>
-
-            </tbody>
-        </table>
+<div>
+    <div class="col s6" v-for="c in curves">
+        <span> ID : {{c._id}} </span><br>
+        <span v-if="c.delta"> Delta : {{c.delta}} </span><br>
+        <span> Types : {{c.types}} </span><br>
+        <div class="scroll curve_table_container">
+            <table class="data_table bordered striped">
+                <thead>
+                    <tr>
+                        <th>X</th>
+                        <th> Y </th>
+                    </tr>
+                </thead>
+                    <tbody>
+                    <tr v-for="i in 5">
+                        <td > {{i}} </td>
+                        <td>{{c.data_objects[i]}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="chart">
+        <div>
+            <function-plot></function-plot>
+        </div>
     </div>
 </div>
 </template>
@@ -22,11 +33,16 @@
 <!-- ## INPUT BLOCK VUE ## -->
 
 <script>
+import Chart from './Chart'
 export default {
+    
   name: 'curve',
-  props: ['curves'],
+  components:{
+      'function-plot': Chart,
+  },
   data () {
     return {
+        curves: []
     }
   },
   mounted(){
@@ -38,8 +54,5 @@ export default {
             console.log(error);
         });
   },
-  methods: {
-
-  }
 }
 </script>
