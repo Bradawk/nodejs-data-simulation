@@ -32,7 +32,7 @@
                     </div>
                     <div class="col s12">
                         <div class="col s6">
-                            <input placeholder="Factor | Example : -2.2" type="number" name="factor" v-model="factor" step="0.01" required />
+                            <input placeholder="Coefficient | Example : -2.2" type="number" name="coefficient" v-model="coefficient" step="0.01" required />
                         </div>
                         <div class="col s6">
                             <input placeholder="Delta" type="number" name="delta" v-model="delta" step="0.01" required />                        
@@ -60,7 +60,8 @@
                     </div>
                 </div>
             </transition-group>
-            <span> {{"Delta : "+delta}} </span>
+            <span> {{"Delta : "+delta}} </span><br>
+            <span> {{"Coefficient : "+coefficient}} </span>
         </div>
     </div>
 </template>
@@ -74,7 +75,7 @@ export default {
         curve: [],
         curves: [],
         delta: '',
-        factor: '',
+        coefficient: '',
     }
   },
   mounted(){
@@ -85,7 +86,7 @@ export default {
             this.curve.push({value:'gaussian', params:{"sigma":'',"mu":"","lambda":''}});
         },
     addCurve(){
-    this.$http.post(process.env.API_URL+'/curve',{'curve':this.curve,'input_id':this.$route.params.id,'delta': this.delta, 'factor': this.factor})
+    this.$http.post(process.env.API_URL+'/curve',{'curve':this.curve,'input_id':this.$route.params.id,'delta': this.delta, 'coefficient': this.coefficient})
         .then(response => {
             this.curves.push(response.data);
             console.log(response.data);

@@ -25,7 +25,7 @@ exports.create = function(req, res){
     var f_data_objects = [];
     var s_data_objects = [];
     var delta = req.body.delta;
-    var factor = req.body.factor;
+    var coefficient = req.body.coefficient;
     var types = []
     
 
@@ -52,10 +52,10 @@ exports.create = function(req, res){
     var expression = expressions.join();
     var rep = expression.replace(/,/g,'+').toString();
     var rep_delta = '';
-    
-    if(delta && factor){
+
+    if(delta && coefficient){
         rep_delta = rep.replace(/x(?!p)/g, "x+("+delta+")");
-        rep_delta = rep_delta+'*'+factor
+        rep_delta = rep_delta+'*'+coefficient
     }else{
         rep_delta = rep;
     }
