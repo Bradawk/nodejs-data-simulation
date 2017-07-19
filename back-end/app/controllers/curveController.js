@@ -25,6 +25,7 @@ exports.create = function(req, res){
     var f_data_objects = [];
     var s_data_objects = [];
     var delta = req.body.delta;
+    var factor = req.body.factor;
     var types = []
     
 
@@ -34,7 +35,7 @@ exports.create = function(req, res){
         if(e.value == "gaussian"){
             expressions.push('((1/('+e.params.sigma+'*sqrt(2*pi)))*exp(-((x-'+e.params.mu+')^2/2*'+e.params.sigma+'^2)))');
         }else if(e.value == "sigmoid"){
-            expressions.push('(1/(1+exp(-'+e.params.delta+'*x)))');
+            expressions.push('(1/(1+exp(-'+e.params.lambda+'*x)))');
 
         }else if(e.value == "logarithmic"){
             expressions.push('log(x)');
@@ -51,9 +52,12 @@ exports.create = function(req, res){
     var expression = expressions.join();
     var rep = expression.replace(/,/g,'+').toString();
     var rep_delta = '';
-
-    if(delta){
+    
+    if(delta && factor){
         rep_delta = rep.replace(/x(?!p)/g, "x+("+delta+")");
+        rep_delta = rep_delta+'*'+factor
+    }else{
+        rep_delta = rep;
     }
 
     for(var x = 0; x <= 2880; x ++){

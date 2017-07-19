@@ -30,7 +30,14 @@
                             </div>
                         </div>
                     </div>
-                <input placeholder="Delta" type="number" name="delta" v-model="delta" step="0.01" required />
+                    <div class="col s12">
+                        <div class="col s6">
+                            <input placeholder="Factor | Example : -2.2" type="number" name="factor" v-model="factor" step="0.01" required />
+                        </div>
+                        <div class="col s6">
+                            <input placeholder="Delta" type="number" name="delta" v-model="delta" step="0.01" required />                        
+                        </div>
+                    </div>
                 <input style="margin-top: 2%;" class="btn waves-effect" type="submit" value="SAVE CURVE" />
             </form>
             <button class="btn-floating waves-effect waves-light" v-on:click="addType">
@@ -49,7 +56,7 @@
                         <p> {{"Variance : "+i.params.sigma}} | {{" Mean : "+i.params.mu}} </p>
                     </div>
                     <div v-if="i.value == 'sigmoid'">
-                        <p> {{"Delta : "+i.params.delta}} </p>
+                        <p> {{"Lambda : "+i.params.lambda}} </p>
                     </div>
                 </div>
             </transition-group>
@@ -67,6 +74,7 @@ export default {
         curve: [],
         curves: [],
         delta: '',
+        factor: '',
     }
   },
   mounted(){
@@ -74,10 +82,10 @@ export default {
   },
   methods: {
     addType(){
-            this.curve.push({value:'gaussian', params:{"sigma":'',"mu":"","delta":''}});
+            this.curve.push({value:'gaussian', params:{"sigma":'',"mu":"","lambda":''}});
         },
     addCurve(){
-    this.$http.post(process.env.API_URL+'/curve',{'curve':this.curve,'input_id':this.$route.params.id,'delta': this.delta})
+    this.$http.post(process.env.API_URL+'/curve',{'curve':this.curve,'input_id':this.$route.params.id,'delta': this.delta, 'factor': this.factor})
         .then(response => {
             this.curves.push(response.data);
             console.log(response.data);
