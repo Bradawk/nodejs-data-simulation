@@ -11,6 +11,7 @@ var express     = require('express'),
 var index = require('./routes/index');
 var input = require('./routes/input');
 var curve = require('./routes/curve');
+var output = require('./routes/output');
 
 // APP INIT
 var app = express();
@@ -35,7 +36,7 @@ app.use(cookieParser());
 app.use('/', index);
 app.use('/input', input);
 app.use('/curve', curve);
-
+app.use('/output', output);
 
 // CATCH ERROR 
 app.use(function(req, res, next) {

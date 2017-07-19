@@ -3,14 +3,14 @@ var isEmptyObject = require('../lib/empty');
 var math = require('mathjs');
 
 // ### FIND
-exports.find = function(req, res){
+exports.find = (req, res) => {
     Curve.findOne({'_id': req.params.id}, function(err, curve){
         if(err) res.json(err);
         res.json(curve);
     });
 };
 
-exports.findAll = function(req, res){
+exports.findAll = (req, res) => {
     Curve.find({}, function(err, curves){
         if(err) res.json(err);
         res.json(curves);
@@ -18,7 +18,7 @@ exports.findAll = function(req, res){
 };
 
 // ### CREATE
-exports.create = function(req, res){
+exports.create = (req, res) => {
 
     var submittedCurve = req.body.curve;
     var expressions = [];
@@ -71,7 +71,7 @@ exports.create = function(req, res){
         'input_id': req.body.input_id,
         'types': types,
         'data_objects': f_data_objects,
-    }, function(err, curve){
+    }, (err, curve) => {
         if(err) res.json(err);
         Curve.create({
             'expression': rep_delta,
@@ -79,7 +79,7 @@ exports.create = function(req, res){
             'types': types,
             'delta': delta,
             'data_objects': s_data_objects
-        }, function(err, d){
+        },(err, d) => {
             if(err) console.log(err);
             res.json(d);
         })

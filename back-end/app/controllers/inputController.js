@@ -3,7 +3,7 @@ var Curve = require('../models/curves.js');
 var isEmptyObject = require('../lib/empty');
 
 exports.index = (req, res) => {
-    Input.find({}, function(err, inputs){
+    Input.find({},(err, inputs)=> {
         if(err){
             throw err;
         }else if(isEmptyObject(inputs)){
