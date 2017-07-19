@@ -31,9 +31,9 @@
                         </div>
                     </div>
                 <input placeholder="Delta" type="number" name="delta" v-model="delta" step="0.01" required />
-                <input style="margin-top: 2%;" class="btn deep-orange lighten-3 waves-effect" type="submit" value="SAVE CURVE" />
+                <input style="margin-top: 2%;" class="btn waves-effect" type="submit" value="SAVE CURVE" />
             </form>
-            <button class="btn-floating waves-effect waves-light deep-orange lighten-3" v-on:click="addType">
+            <button class="btn-floating waves-effect waves-light" v-on:click="addType">
                     <i class="material-icons">add</i>
             </button><br>
         </div>
@@ -134,7 +134,7 @@ export default {
         padding:5%;
         border-radius: 100%;
         color: white;
-        background: #F6AF95;
+        background: #43ccc0;
     }
 
     .select-wrapper select{

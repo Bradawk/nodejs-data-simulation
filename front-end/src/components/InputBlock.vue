@@ -1,8 +1,7 @@
 <!-- ## INPUT BLOCK VUE ## -->
 <template>
 <div class="input-details">
-    <span><i class="material-icons">show_chart</i> Number of curves : {{curve.length}}</span><br>
-    <span><i class="material-icons">functions</i> Function type : </span>
+    <span> Number of curves : {{curve.length}}</span><br>
 </div>
 </template>
 
@@ -33,3 +32,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .input-details{
+    display: inline-block;
+  }
+
+</style>

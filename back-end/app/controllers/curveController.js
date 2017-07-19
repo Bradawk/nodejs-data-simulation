@@ -36,42 +36,17 @@ exports.create = function(req, res){
         }else if(e.value == "sigmoid"){
             expressions.push('(1/(1+exp(-'+e.params.delta+'*x)))');
 
-        }else if(type == "logarithmic"){
+        }else if(e.value == "logarithmic"){
             expressions.push('log(x)');
+
+        }else if(e.value == "polynomial"){
+            expressions.push('x^4+x^3+x^2+x');
 
         }else{
             expressions.push('');
             
         }
     });
-
-    /*
-    submittedCurve.forEach(function(e){
-        
-        params.push(e.params);
-    });
-
-    
-    types.forEach(function(type){
-        if(type == "gaussian"){
-            var sigma = Math.random() * (5.0 - 1.0) + 1.0;
-            var mu = Math.random() * (3.0 - 0) + 0;
-            expressions.push('((1/('+sigma+'*sqrt(2*pi)))*exp(-((x-'+mu+')^2/2*'+sigma+'^2)))');
-
-        }else if(type == "sigmoid"){
-            var d = Math.random() * (1.0 - 0) + 0;
-            expressions.push('(1/(1+exp(-'+d+'*x)))');
-
-        }else if(type == "logarithmic"){
-            expressions.push('log(x)');
-
-        }else{
-            expressions.push('');
-            
-        }
-    });
-    
-    */
 
     var expression = expressions.join();
     var rep = expression.replace(/,/g,'+').toString();
@@ -91,7 +66,7 @@ exports.create = function(req, res){
         'expression': rep,
         'input_id': req.body.input_id,
         'types': types,
-        'data_objects': f_data_objects
+        'data_objects': f_data_objects,
     }, function(err, curve){
         if(err) res.json(err);
         Curve.create({

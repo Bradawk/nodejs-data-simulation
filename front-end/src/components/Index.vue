@@ -14,7 +14,7 @@
         <div class="row main-content">
               <div class="col s12">
                     <form v-on:submit="addInput">     
-                      <button class="btn left waves-effect deep-orange lighten-3"><i class="material-icons">add</i></button>
+                      <button class="btn left waves-effect"><i class="material-icons">add</i></button>
                       <div class="Nfloat"></div>
                     </form>
                     <div>
