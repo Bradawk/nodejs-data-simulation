@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/components/Index'
 import Input from '@/components/Input'
+import AddInput from '@/components/AddInput'
 
 Vue.use(Router)
 
@@ -16,6 +17,11 @@ export default new Router({
       path: '/input/:id',
       name: 'Input',
       component: Input
+    },
+    {
+      path: '/input/create/:id',
+      name: 'AddInput',
+      component: AddInput
     }
   ]
 })

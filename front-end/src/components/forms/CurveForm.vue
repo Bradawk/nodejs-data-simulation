@@ -85,11 +85,12 @@ export default {
     addType(){
             this.curve.push({value:'gaussian', params:{"sigma":'',"mu":"","lambda":''}});
         },
-    addCurve(){
+    addCurve: function(e){
+    e.preventDefault();
     this.$http.post(process.env.API_URL+'/curve',{'curve':this.curve,'input_id':this.$route.params.id,'delta': this.delta, 'coefficient': this.coefficient})
         .then(response => {
             this.curves.push(response.data);
-            console.log(response.data);
+            this.$router.push('/');
         })
         .catch(function (error) {
             console.log(error);

@@ -1,30 +1,36 @@
 <!-- ## INPUT BLOCK VUE ## -->
 <template>
 <div>
-    <div class="col s6" v-for="c in curves">
-        <span> ID : {{c._id}} </span><br>
-        <span v-if="c.delta"> Delta : {{c.delta}} </span><br>
-        <span> Types : {{c.types}} </span><br>
-        <div class="scroll curve_table_container">
-            <table class="data_table bordered striped">
-                <thead>
-                    <tr>
-                        <th>X</th>
-                        <th> Y </th>
-                    </tr>
-                </thead>
-                    <tbody>
-                    <tr v-for="i in 5">
-                        <td > {{i}} </td>
-                        <td>{{c.data_objects[i]}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="chart">
-        <div>
-            <function-plot></function-plot>
+    <div class="col s12 jumbo">
+        <div class="row">
+            <div>
+                <div class="col s6" v-for="c in curves">
+                    <span> ID : {{c._id}} </span><br>
+                    <span v-if="c.delta"> Delta : {{c.delta}} </span><br>
+                    <span> Types : {{c.types}} </span><br>
+                    <div class="scroll curve_table_container">
+                        <table class="data_table bordered striped">
+                            <thead>
+                                <tr>
+                                    <th>X</th>
+                                    <th> Y </th>
+                                </tr>
+                            </thead>
+                                <tbody>
+                                <tr v-for="i in 5">
+                                    <td > {{i}} </td>
+                                    <td>{{c.data_objects[i]}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="chart">
+                    <div>
+                        <function-plot></function-plot>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

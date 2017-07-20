@@ -1,28 +1,25 @@
 <template>
-<div>
-    <div class="row header-resume">
-          <div class="col">
-            <small> Input </small><br>
-            <span>{{$route.params.id}} </span><br>
-          </div>
-    </div>
-<div class="container">
-        <div class="col s12 jumbo">
-            <div class="row">
-                <!-- ## If no curves, then display form ## -->
-                <div v-if="curves.length == 0">
-                    <curveform></curveform>
-                </div>
-                <!-- ## If curves, then display details ## -->
-                <div v-else>
-                   <curve></curve>
-                </div>
-                <!-- ## End of condition ## -->
+    <div>
+        <div class="row header-resume">
+            <div class="col">
+                <small> Input </small><br>
+                <span>{{$route.params.id}} </span><br>
             </div>
         </div>
+        <div v-if="isloaded == true">
+            <div class="preloader loading">
+                <span class="slice"></span>
+                <span class="slice"></span>
+                <span class="slice"></span>
+                <span class="slice"></span>
+                <span class="slice"></span>
+                <span class="slice"></span>
+            </div>
+        </div>
+        <div v-else class="container">
+            <curve></curve>
+        </div>
     </div>
-</div>
-</div>
 </template>
 
 <script>
@@ -38,12 +35,15 @@ export default {
   },
   data () {
     return {
-        curves: []
+        curves: [],
+        isloaded: ''
     }
   },
   mounted() {
+        this.isloaded = true;
         this.$http.get(process.env.API_URL+'/input/curves/'+this.$route.params.id)
         .then(response => {
+            this.isloaded = false;
             this.curves = response.data;
         })
         .catch(function (error) {
@@ -68,4 +68,8 @@ export default {
         margin-bottom: 5%;
     }
 
+    [v-cloak] {
+        display: none;
+    }
+    
 </style>

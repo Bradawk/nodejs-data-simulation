@@ -9,11 +9,20 @@
             <small> Total of curves </small><br>
             <span> {{curvesCount}} </span><br>
           </div>
-
+        </div>
+        <div v-if="isloaded == true">
+            <div class="preloader loading">
+                <span class="slice"></span>
+                <span class="slice"></span>
+                <span class="slice"></span>
+                <span class="slice"></span>
+                <span class="slice"></span>
+                <span class="slice"></span>
+            </div>
         </div>
         <div class="row main-content">
               <div class="col s12">
-                    <form v-on:submit="addInput">     
+                    <form v-on:submit.prevent="addInput">     
                       <button class="btn left waves-effect"><i class="material-icons">add</i></button>
                       <div class="Nfloat"></div>
                     </form>
@@ -22,14 +31,11 @@
                       <div v-for="i in inputs" v-bind:key="i" class="list-item input-div jumbo col s3">
                        <div class="jumbo-head">
                           <span class="right">
-                              <form v-on:submit="deleteInput(i._id)"> 
+                              <form v-on:submit.prevent="deleteInput(i._id)"> 
                                   <input type="submit" value="X" />
                               </form>
                           </span>
                           <div class="Nfloat"></div>
-                      </div>
-                      <div class="input-link">
-                        <router-link :to="{ name: 'Input', params: { id: i._id }}">Open Input<i class="material-icons left">remove_red_eye</i></router-link><br>   
                       </div>
                       <inputblock :id="i._id"></inputblock>
                       </div>
@@ -52,12 +58,15 @@ export default {
       inputs: [],
       errors: [],
       count: '',
-      curvesCount: ''
+      curvesCount: '',
+      isloaded: ''
     }
   },
   mounted() {
+      this.isloaded = true;
       this.$http.get(process.env.API_URL)
       .then(response => {
+        this.isloaded = false;
         this.inputs = response.data;
         this.count = this.inputs.length;
       })
@@ -105,6 +114,6 @@ export default {
 /* .slide-fade-leave-active for <2.1.8 */ {
   transform: translateX(10px);
   opacity: 0;
-}
+} 
 
 </style>
