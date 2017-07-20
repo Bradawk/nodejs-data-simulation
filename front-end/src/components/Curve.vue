@@ -24,7 +24,11 @@
                             </tbody>
                         </table>
                     </div>
+                    <div v-if="c.delta">
+                        <button class="btn"> Update Curve </button>
+                    </div>
                 </div>
+                
                 <div class="chart">
                     <div>
                         <function-plot></function-plot>

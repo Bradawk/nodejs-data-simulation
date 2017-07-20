@@ -79,7 +79,15 @@ export default {
     }
   },
   mounted(){
-    
+    this.$http.get(process.env.API_URL+'/input/curves/'+this.$route.params.id)
+        .then(response => {
+           if(response.data.length > 0){
+               this.$router.push('/');
+           }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
   },
   methods: {
     addType(){
