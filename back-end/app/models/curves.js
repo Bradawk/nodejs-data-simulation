@@ -6,7 +6,8 @@ var curveSchema = new Schema({
     delta: Number,
     data_objects: Array,
     input_id: String,
-    types: Array
+    types: Array,
+    params: Array
 
 });
 

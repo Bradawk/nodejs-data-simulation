@@ -3,7 +3,7 @@
         <div class="col s6">
             <h2> Curve Maker </h2>
             <label> Basic Function Type</label>
-            <form id="add_curve_form" @submit="addCurve">
+            <form id="add_curve_form" v-on:submit.prevent="addCurve">
                     <div class="select-wrapper" v-for="c in curve" v-bind:key="c">
                         <select v-model="c.value" style="margin-top: 2%;" required>
                             <option value="gaussian"> Gaussian </option>
@@ -93,12 +93,11 @@ export default {
     addType(){
             this.curve.push({value:'gaussian', params:{"sigma":'',"mu":"","lambda":''}});
         },
-    addCurve: function(e){
-    e.preventDefault();
+    addCurve(){
     this.$http.post(process.env.API_URL+'/curve',{'curve':this.curve,'input_id':this.$route.params.id,'delta': this.delta, 'coefficient': this.coefficient})
         .then(response => {
             this.curves.push(response.data);
-            this.$router.push('/');
+            this.$router.push('/input/'+this.$route.params.id);
         })
         .catch(function (error) {
             console.log(error);

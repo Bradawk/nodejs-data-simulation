@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var outputSchema = new Schema({
-    pcorr : Array,
+    pcorr : Number,
     input_id : String
 });
 

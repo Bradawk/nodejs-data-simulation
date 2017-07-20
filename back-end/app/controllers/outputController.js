@@ -2,6 +2,8 @@ var Output = require('../models/outputs.js');
 var isEmptyObject = require('../lib/empty');
 var Curve = require('../models/curves.js');
 var pcorr = require('compute-pcorr');
+var pcorrelation = require('../lib/pcorrelation');
+
 
 
 exports.findOne = (req, res) => {
@@ -44,9 +46,7 @@ exports.create = (req, res) => {
             y.push(curves[1].data_objects[i]);
         }
         // ################
-        x = x.slice(1,5);
-        y = y.slice(1,5);
-        var corr = pcorr(x,y);
+        var corr = pcorrelation(x,y);
         Output.create({'input_id': req.body.input_id,"pcorr":corr}, (err, output) => {
             if(err) res.json(err);
             res.json(output);
