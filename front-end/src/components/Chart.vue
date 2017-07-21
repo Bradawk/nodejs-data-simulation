@@ -39,7 +39,7 @@ data () {
                     data: [{
                     fn: response.data[1].expression,
                     sampler: 'builtIn',
-                    graphType: 'scatter'
+                    graphType: 'polyline'
                     }]
                 });
                 }

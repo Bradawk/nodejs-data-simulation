@@ -102,7 +102,7 @@ export default {
   },
   methods: {
     addType(){
-            this.curve.push({value:'gaussian', params:{"sigma":'',"mu":"","lambda":''}});
+            this.curve.push({value:'gaussian', params:{'mu':'', 'sigma':'', 'lambda':''}});
         },
     addCurve(){
     this.$http.post(process.env.API_URL+'/curve',{'curve':this.curve,'input_id':this.$route.params.id,'delta': this.delta, 'coefficient': this.coefficient})
