@@ -10,6 +10,7 @@
                             <option value="sigmoid"> Sigmoid </option>
                             <option value="polynomial"> Polynomial </option>
                             <option value="logarithmic"> Logarithmic </option>
+                            <option value="random"> Random </option>
                         </select>
                     </div>
                     <div class="options" v-for="(c, index) in curve">
@@ -27,6 +28,16 @@
                             <div class="col s6">
                                 <label> Param delta {{index}} </label>
                                 <input v-model="c.params.delta" type="number" placeholder="Param delta" step="0.01" required />
+                            </div>
+                        </div>
+                        <div class="col s12" v-if="c.value == 'random'">
+                            <div class="col s6">
+                                <label> Min </label>
+                                <input v-model="c.params.min" type="number" placeholder="Minimum" step="0.01" required />
+                            </div>
+                            <div class="col s6">
+                                <label> Max </label>
+                                <input v-model="c.params.max" type="number" placeholder="Maximum" step="0.01" required />
                             </div>
                         </div>
                     </div>

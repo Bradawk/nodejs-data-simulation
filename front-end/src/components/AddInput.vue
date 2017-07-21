@@ -25,15 +25,7 @@ export default {
   name: 'input',
   components: {
     'curveform': CurveForm,
-  },
-  data () {
-    return {
-
-    }
-  },
-  mounted() {
-    
- },
+  }
 }
 
 </script>

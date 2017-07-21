@@ -44,6 +44,7 @@
 
 <script>
 import Chart from './Chart'
+
 export default {
     
   name: 'curve',

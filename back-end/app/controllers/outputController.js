@@ -1,7 +1,6 @@
 var Output = require('../models/outputs.js');
 var isEmptyObject = require('../lib/empty');
 var Curve = require('../models/curves.js');
-var pcorr = require('compute-pcorr');
 var pcorrelation = require('../lib/pcorrelation');
 
 
@@ -37,17 +36,20 @@ exports.create = (req, res) => {
         if(err) res.json(err);
 
         // ################ A REFACTO
-        var x = []
-            y = [];
-        for(var i in curves[0].data_objects){
-            x.push(curves[0].data_objects[i]);
+        var x = curves[0].data_objects
+            y = curves[1].data_objects;
+        
+        for(var i = 0; i < x.length; i++){
+            x[i] = isFinite(x[i]) ? x[i] : 0.0;
+            y[i] = isFinite(y[i]) ? y[i] : 0.0;
         }
-        for(var i in curves[1].data_objects){
-            y.push(curves[1].data_objects[i]);
-        }
+
+        var corr = pcorrelation(x, y);
+        var delta = curves[1].delta
+        
         // ################
-        var corr = pcorrelation(x,y);
-        Output.create({'input_id': req.body.input_id,"pcorr":corr}, (err, output) => {
+
+        Output.create({'input_id': req.body.input_id, 'pcorr': corr, 'delta': delta}, (err, output) => {
             if(err) res.json(err);
             res.json(output);
         });

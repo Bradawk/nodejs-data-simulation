@@ -18,6 +18,7 @@
         </div>
         <div v-else class="container">
             <curve></curve>
+            <output-block></output-block>
         </div>
     </div>
 </template>
@@ -26,12 +27,14 @@
 
 import CurveForm from './forms/CurveForm'
 import Curve from './Curve'
+import OutputBlock from './OutputBlock'
 
 export default {
   name: 'input',
   components: {
     'curveform': CurveForm,
-    'curve': Curve
+    'curve': Curve,
+    'output-block': OutputBlock
   },
   data () {
     return {

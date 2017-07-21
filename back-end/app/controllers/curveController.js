@@ -46,6 +46,9 @@ exports.create = (req, res) => {
         }else if(e.value == "polynomial"){
             expressions.push('x^4+x^3+x^2+x');
 
+        }else if(e.value == "random"){
+            expressions.push('random('+e.params.min+','+e.params.max+')');
+
         }else{
             expressions.push('');
             

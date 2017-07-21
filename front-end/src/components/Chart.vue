@@ -31,7 +31,7 @@ data () {
                     fn: response.data[0].expression,
                     sampler: 'builtIn',
                     color: '#C9263B',
-                    graphType: 'scatter'
+                    graphType: 'polyline'
                     }]
                 });
                 functionPlot({

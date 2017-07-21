@@ -30,12 +30,8 @@ function cov(array1, array2){
 function pcorrelation(array1, array2){
     var covariance = cov(array1, array2);
     var corrCoef = covariance/(math.std(array1)*math.std(array2));
-    console.log(typeof(covariance));
+
     return corrCoef;
 }
-
-var a = [1,2]
-var b = [2,4]
-var r = pcorrelation(a,b);
 
 module.exports = pcorrelation;
