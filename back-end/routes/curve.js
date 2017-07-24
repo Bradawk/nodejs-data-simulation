@@ -10,5 +10,8 @@ router.route('/')
     .get(curveController.findAll)
     .post(curveController.create);
 
+router.route('/update')
+    .post(curveController.update);
+
 
 module.exports = router;

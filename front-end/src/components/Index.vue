@@ -96,7 +96,7 @@ export default {
             this.inputs.splice(index, 1);
             this.count = this.inputs.length;
           })
-      }
+      },
     }
  
 }

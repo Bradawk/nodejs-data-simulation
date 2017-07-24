@@ -2,7 +2,7 @@
 <div>
     <div class="row header-resume">
           <div class="col">
-            <small> Input </small><br>
+            <small> Curve </small><br>
             <span>{{$route.params.id}} </span><br>
           </div>
     </div>

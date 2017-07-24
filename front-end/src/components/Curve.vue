@@ -26,7 +26,7 @@
                         </table>
                     </div>
                     <div v-if="c.delta">
-                        <router-link class="btn right" :to="{ name: 'UpdateInput', params: { id: c.input_id }}">Update curve<i class="material-icons left">edit</i></router-link><br>
+                        <router-link class="btn right" :to="{ name: 'UpdateInput', params: { id: c._id }}">Update curve<i class="material-icons left">edit</i></router-link><br>
                     </div>
                 </div>
                 

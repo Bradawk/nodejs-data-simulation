@@ -7,7 +7,7 @@ var curveSchema = new Schema({
     data_objects: Array,
     input_id: String,
     types: Array,
-    params: Array
+    curve: Array
 
 });
 
