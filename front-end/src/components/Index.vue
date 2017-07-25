@@ -87,6 +87,7 @@ export default {
           .then(response => {
             this.inputs.push(response.data);
             this.count = this.inputs.length;
+            Materialize.toast('Input added successfully !', 2000);
           })
       },
       deleteInput(id){
@@ -95,6 +96,14 @@ export default {
             var index = this.inputs.findIndex(input => input._id === id);
             this.inputs.splice(index, 1);
             this.count = this.inputs.length;
+            this.$http.get(process.env.API_URL+"/curve")
+            .then(response => {
+                this.curvesCount = response.data.length;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+            Materialize.toast(response.data.message,'2000');
           })
       },
     }

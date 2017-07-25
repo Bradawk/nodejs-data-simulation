@@ -1,5 +1,6 @@
 var Input = require('../models/inputs.js');
 var Curve = require('../models/curves.js');
+var Output = require('../models/outputs.js');
 var isEmptyObject = require('../lib/empty');
 
 exports.index = (req, res) => {
@@ -26,13 +27,17 @@ exports.create = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-    Curve.remove({'input_id': req.params.id}, function(err, curve){
+    Output.remove({'input_id': req.params.id}, function(err, output){
         if(err) throw err;
-        Input.remove({'_id': req.params.id}, function (err, curve){
-            if(err) throw err;
-            res.json({'message':'Input and associated curves deleted'});
+        Curve.remove({'input_id': req.params.id}, function(err, curve){
+        if(err) throw err;
+            Input.remove({'_id': req.params.id}, function (err, curve){
+                if(err) throw err;
+                res.json({'message':'Input, Output and associated curves deleted'});
+            })
         })
-    })
+    });
+    
 }
 
 exports.getCurves = (req, res) => {
