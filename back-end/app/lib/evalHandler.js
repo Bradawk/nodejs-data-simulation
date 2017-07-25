@@ -11,6 +11,7 @@ function evalHandler(curve){
         
         if(e.value == "gaussian"){
             expressions.push('((1/('+e.params.sigma+'*sqrt(2*pi)))*exp(-((x-'+e.params.mu+')^2/2*'+e.params.sigma+'^2)))');
+            // expressions.push('('+e.params.height+'*exp(-((x-'+e.params.mu+')^2/2*'+e.params.sigma+'^2)))');
 
         }else if(e.value == "sigmoid"){
             expressions.push('(1/(1+exp(-'+e.params.lambda+'*x)))');
@@ -21,7 +22,7 @@ function evalHandler(curve){
         }else if(e.value == "polynomial"){
             expressions.push('x^4+x^3+x^2+x');
 
-        }else if(e.value == "random"){
+        }else if(e.value == "noise"){
             expressions.push('random('+e.params.min+','+e.params.max+')');
 
         }else{

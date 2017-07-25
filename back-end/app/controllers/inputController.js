@@ -24,6 +24,7 @@ exports.create = (req, res) => {
         if(err) res.send('Error');
         res.json(input);
     });
+    
 };
 
 exports.delete = (req, res) => {

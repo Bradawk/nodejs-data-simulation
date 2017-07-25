@@ -25,9 +25,11 @@ exports.create = (req, res) => {
 
     var delta_curve = '';
     var handler = evalHandler(req.body.curve);
-    if(req.body.delta &&  req.body.coefficient){
+
+    if(req.body.delta ||  req.body.coefficient){
         delta_curve = handler.curve.replace(/x(?!p)/g, "x+("+req.body.delta+")");
-        delta_curve = delta_curve+'*'+req.body.coefficient
+        delta_curve = delta_curve+'*'+req.body.coefficient;
+        handler.curve = handler.curve+'*'+req.body.coefficient;
     }else{
         delta_curve = handler.curve;
     }
@@ -56,7 +58,6 @@ exports.create = (req, res) => {
         })
     }); 
 };
-
 
 // ## DELETE
 exports.delete = (req, res) => {
