@@ -49,7 +49,7 @@
                             <input placeholder="Delta" type="number" name="delta" v-model="delta" step="0.01" required />                        
                         </div>
                     </div>
-                <input style="margin-top: 2%;" class="btn waves-effect" type="submit" value="SAVE CURVE" />
+                <input class="btn waves-effect" type="submit" value="SAVE CURVE" />
             </form>
             <button class="btn-floating waves-effect waves-light" v-on:click="addType">
                     <i class="material-icons">add</i>

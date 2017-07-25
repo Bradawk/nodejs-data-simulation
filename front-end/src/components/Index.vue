@@ -40,7 +40,13 @@
                       <inputblock :id="i._id"></inputblock>
                       </div>
                     </transition-group>
-                    </div>
+                    </div>        
+              </div>
+              <div class="col s3">
+                <form v-on:submit="randomizer">
+                  <input v-model="iNum" type="number" step="1" min="1" placeholder="Number of inputs" />
+                  <input class="btn" type="submit" value="Create" />
+                </form>
               </div>
         </div>
   </div>
@@ -59,7 +65,8 @@ export default {
       errors: [],
       count: '',
       curvesCount: '',
-      isloaded: ''
+      isloaded: '',
+      iNum: ''
     }
   },
   mounted() {
@@ -106,6 +113,16 @@ export default {
             Materialize.toast(response.data.message,'2000');
           })
       },
+      randomizer(){
+        this.$http.post(process.env.API_URL+'/input/random',{'iNum':this.iNum})
+          .then(response => {
+            this.inputs.push(response.data);
+            this.count = this.inputs.length;
+          })
+          .catch(function(error){
+            console.log(error);
+          });
+      }
     }
  
 }

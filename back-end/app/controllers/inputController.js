@@ -23,9 +23,21 @@ exports.create = (req, res) => {
     }, function(err, input){
         if(err) res.send('Error');
         res.json(input);
-    });
-    
+    });  
 };
+
+exports.createRandom = (req, res) => {
+    for(var i = 0; i <= req.body.iNum; i++){
+        Input.create({
+            'created_at' : Date.now(),
+            'updated_at': Date.now()
+        }, function(err, input){
+            if(err) return res.send('Error');
+            res.json(input);
+        });  
+    }
+}
+
 
 exports.delete = (req, res) => {
     Output.remove({'input_id': req.params.id}, function(err, output){
