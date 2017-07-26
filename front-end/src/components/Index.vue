@@ -116,6 +116,7 @@ export default {
       randomizer(){
         this.$http.post(process.env.API_URL+'/input/random',{'iNum':this.iNum})
           .then(response => {
+              this.obt = respose.data
               this.$router.go('/');
             })
           .catch(function(error){

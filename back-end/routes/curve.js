@@ -13,7 +13,4 @@ router.route('/')
 router.route('/update')
     .post(curveController.update);
 
-router.route('/random')
-    .post(curveController.createRandom);
-
 module.exports = router;

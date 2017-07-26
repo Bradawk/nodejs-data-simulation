@@ -10,14 +10,13 @@ function evalHandler(curve){
         types.push(e.value);
         
         if(e.value == "gaussian"){
-            expressions.push('((1/('+e.params.sigma+'*sqrt(2*pi)))*exp(-((x-'+e.params.mu+')^2/2*'+e.params.sigma+'^2)))');
-            // expressions.push('('+e.params.height+'*exp(-((x-'+e.params.mu+')^2/2*'+e.params.sigma+'^2)))');
+            expressions.push('((1/('+e.params.sigma+'*sqrt(2*pi)))*exp(-((x-'+e.params.mu+')^2/2*'+e.params.sigma+'^2)))*'+e.params.coef);
 
         }else if(e.value == "sigmoid"){
-            expressions.push('(1/(1+exp(-'+e.params.lambda+'*x)))');
+            expressions.push('(1/(1+exp(-'+e.params.lambda+'*x+'+e.params.delta+')))*'+e.params.coef);
 
         }else if(e.value == "logarithmic"){
-            expressions.push('log(x)');
+            expressions.push('log(x+'+e.params.delta+')*'+e.params.coef);
 
         }else if(e.value == "polynomial"){
             expressions.push('x^4+x^3+x^2+x');

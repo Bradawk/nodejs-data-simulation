@@ -14,6 +14,16 @@
                         </select>
                     </div>
                     <div class="options" v-for="(c, index) in curve">
+                        <div class="col s12">
+                            <div class="col s6">
+                                <label> Coefficient {{index}} </label>
+                                <input v-model="c.params.coef" type="number" placeholder="Self Coefficient" step="0.01" required />
+                            </div>
+                            <div class="col s6" v-if="c.value != 'gaussian'">
+                                <label> Delta {{index}} </label>
+                                <input v-model="c.params.delta" type="number" placeholder="Self Delta" step="0.01" required />
+                            </div>
+                        </div>
                         <div class="col s12" v-if="c.value == 'gaussian'">
                             <div class="col s6">
                                 <label> Mean {{index}} </label>
@@ -46,7 +56,7 @@
                             <input placeholder="Coefficient | Example : -2.2" type="number" name="coefficient" v-model="coefficient" step="0.01" required />
                         </div>
                         <div class="col s6">
-                            <input placeholder="Delta" type="number" name="delta" v-model="delta" step="0.01" required />                        
+                            <input placeholder="Lag" type="number" name="lag" v-model="lag" step="0.01" required />                        
                         </div>
                     </div>
                 <input class="btn waves-effect" type="submit" value="SAVE CURVE" />
@@ -63,6 +73,12 @@
                     <i class="material-icons">show_chart</i>
                     <h5> {{"Curve "+index}} </h5>
                     <small> {{"Type : "+i.value}} </small>
+                    <div>
+                        <p> {{"Self coefficient : "+i.params.coef}} </p>
+                    </div>
+                    <div>
+                        <p> {{"Delta : "+i.params.delta}} </p>
+                    </div>
                     <div v-if="i.value == 'gaussian'">
                         <p> {{"Variance : "+i.params.sigma}} | {{" Mean : "+i.params.mu}} </p>
                     </div>
@@ -71,7 +87,7 @@
                     </div>
                 </div>
             </transition-group>
-            <span> {{"Delta : "+delta}} </span><br>
+            <span> {{"Lag : "+lag}} </span><br>
             <span> {{"Coefficient : "+coefficient}} </span>
         </div>
     </div>
@@ -85,7 +101,7 @@ export default {
     return {
         curve: [],
         curves: [],
-        delta: '',
+        lag: '',
         coefficient: '',
     }
   },
@@ -102,10 +118,10 @@ export default {
   },
   methods: {
     addType(){
-            this.curve.push({value:'gaussian', params:{'mu':'', 'sigma':'', 'lambda':''}});
+            this.curve.push({value:'gaussian', params:{'mu':'', 'sigma':'', 'lambda':'','delta':'','coef':''}});
         },
     addCurve(){
-    this.$http.post(process.env.API_URL+'/curve',{'curve':this.curve,'input_id':this.$route.params.id,'delta': this.delta, 'coefficient': this.coefficient})
+    this.$http.post(process.env.API_URL+'/curve',{'curve':this.curve,'input_id':this.$route.params.id,'lag': this.lag, 'coefficient': this.coefficient})
         .then(response => {
             this.curves.push(response.data);
             this.$router.push('/input/'+this.$route.params.id);

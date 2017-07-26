@@ -3,7 +3,7 @@
       <div class="col s6">
             <h2> Update your curve </h2>
             <form v-on:submit.prevent="updateCurve">
-              <input type="number" placeholder="Delta" disabled />
+              <input type="number" placeholder="Lag" disabled />
               <input type="number" placeholder="Coefficient" v-model="coefficient"/>
               <input type="submit" class="btn" value="Update" />
             </form>
@@ -19,7 +19,7 @@ export default {
     return {
         curve: [],
         coefficient:'',
-        delta: '',
+        lag: '',
     }
   },
   mounted(){
@@ -27,7 +27,7 @@ export default {
         .then(response => {
            this.curve = response.data.curve
            this.id = response.data._id;
-           this.delta = response.data.delta;
+           this.lag = response.data.lag;
         })
         .catch(function (error) {
             console.log(error);
@@ -40,7 +40,7 @@ export default {
         'id': this.id,
         'curve': this.curve,
         'coefficient': this.coefficient,
-        'delta': this.delta
+        'lag': this.lag
       })
         .then(response => {
           this.$router.push('/');

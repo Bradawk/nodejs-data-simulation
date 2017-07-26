@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var curveSchema = new Schema({
     expression: String,
-    delta: Number,
+    lag: Number,
     data_objects: Array,
     input_id: String,
     types: Array,
