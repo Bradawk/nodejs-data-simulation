@@ -116,9 +116,8 @@ export default {
       randomizer(){
         this.$http.post(process.env.API_URL+'/input/random',{'iNum':this.iNum})
           .then(response => {
-            this.inputs.push(response.data);
-            this.count = this.inputs.length;
-          })
+              this.$router.go('/');
+            })
           .catch(function(error){
             console.log(error);
           });

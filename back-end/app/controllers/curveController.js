@@ -2,6 +2,7 @@ var Curve = require('../models/curves.js')
 var isEmptyObject = require('../lib/empty');
 var evalHandler = require('../lib/evalHandler');
 var getData = require('../lib/getData');
+var randoms = require('../lib/randoms');
 
 var math = require('mathjs');
 
@@ -27,7 +28,7 @@ exports.create = (req, res) => {
     var handler = evalHandler(req.body.curve);
 
     if(req.body.delta ||  req.body.coefficient){
-        delta_curve = handler.curve.replace(/x(?!p)/g, "x+("+req.body.delta+")");
+        delta_curve = handler.curve.replace(/x(?!p)/g, "x+(-"+req.body.delta+")");
         delta_curve = delta_curve+'*'+req.body.coefficient;
         handler.curve = handler.curve+'*'+req.body.coefficient;
     }else{
@@ -86,4 +87,53 @@ exports.update = (req, res) => {
         res.json(curve);
     });
 }
+
+// ## RANDOMIZER
+
+exports.createRandom = (req, res) => {
+    var curve = [];
+    var delta = Math.random() * (1400 - 1) + 1;
+    var coefficient = Math.floor(Math.random() * (10 + 10) -10);
+    var delta_curve = '';
+
+    for(var i = 0; i < Math.floor(Math.random() * (20 - 1) + 1); i ++){
+        curve.push({value: 'gaussian', params:{'sigma': Math.random() * (0.6 - 0) + 0, 'mu': Math.random() * (5 - 1) + 1}});
+    }
+    for(var i = 0; i < Math.floor(Math.random()); i ++){
+        curve.push({value: 'logarithmic'});
+    }
+    for(var i = 0; i < Math.floor(Math.random() * (2 - 0) + 0); i ++){
+        curve.push({value: 'sigmoid', params:{'lambda':Math.random() * (2 - 0) + 0}});
+    }
+
+    var handler = evalHandler(curve);
+    handler.curve = handler.curve +'*'+coefficient;
+    delta_curve = handler.curve.replace(/x(?!p)/g, "x+(-"+delta+")");
+
+    var data_1 = getData(handler.curve);
+    var data_2 = getData(delta_curve);
+
+    Curve.create({
+        'expression': handler.curve,
+        'input_id': req.body.input_id,
+        'types': handler.types,
+        'data_objects': data_1,
+        'curve': curve
+    }, (err, curve) => {
+        if(err) res.json(err);
+        Curve.create({
+            'expression': delta_curve,
+            'input_id': req.body.input_id,
+            'types': handler.types,
+            'delta': delta,
+            'data_objects': data_2,
+            'curve': curve
+        },(err, d) => {
+            if(err) console.log(err);
+            res.json(d);
+        })
+    });
+    
+}
+
 

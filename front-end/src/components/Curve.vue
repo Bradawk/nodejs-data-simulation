@@ -6,7 +6,6 @@
             <div>
                 <div class="col s6" v-for="c in curves">
                     <span> ID : {{c._id}} </span><br>
-                    <span> Expression : {{c.expression}} </span><br>
                     <span> Types : {{c.types}} </span><br>
                     <span v-if="c.delta"> Delta : {{c.delta}} </span><br>
                     <div class="scroll curve_table_container">
