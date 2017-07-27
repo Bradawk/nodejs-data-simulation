@@ -19,7 +19,7 @@ function evalHandler(curve){
             expressions.push('log(x+'+e.params.delta+')*'+e.params.coef);
 
         }else if(e.value == "polynomial"){
-            expressions.push('x^4+x^3+x^2+x');
+            expressions.push('3x^2+x+2');
 
         }else if(e.value == "noise"){
             expressions.push('random('+e.params.min+','+e.params.max+')');
