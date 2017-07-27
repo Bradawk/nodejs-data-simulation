@@ -86,3 +86,52 @@ exports.update = (req, res) => {
         res.json(curve);
     });
 }
+
+
+// ## RANDOMIZER
+
+exports.createRandom = (req, res) => {
+    var curve = [];
+    var lag = Math.random() * (1400 - 1) + 1;
+    var coefficient = Math.floor(Math.random() * (10 + 10) -10);
+    var delta_curve = '';
+
+    for(var i = 0; i < Math.floor(Math.random() * (6 - 2) + 2); i ++){
+        curve.push({value: 'gaussian', params:{'sigma': Math.random() * (0.6 - 0) + 0, 'mu': Math.random() * (1400 - 1) + 1,'coef':Math.random() * (100 + 10) -10}});
+    }
+    for(var i = 0; i < Math.floor(Math.random()); i ++){
+        curve.push({value: 'logarithmic', params:{'delta': Math.random()*(1400 - 1) + 1, 'coef':Math.random() * (100 + 10) -10}});
+    }
+    for(var i = 0; i < Math.floor(Math.random() * (2 - 0) + 0); i ++){
+        curve.push({value: 'sigmoid', params:{'lambda':Math.random() * (2 - 0) + 0,'delta': Math.random()*(1400 - 1) + 1,'coef':Math.random() * (100 + 10) -10}});
+    }
+
+    var handler = evalHandler(curve);
+    handler.curve = handler.curve +'*'+coefficient;
+    delta_curve = handler.curve.replace(/x(?!p)/g, "x+(-"+lag+")");
+
+    var data_1 = getData(handler.curve);
+    var data_2 = getData(delta_curve);
+
+    Curve.create({
+        'expression': handler.curve,
+        'input_id': req.body.input_id,
+        'types': handler.types,
+        'data_objects': data_1,
+        'curve': curve
+    }, (err, curve) => {
+        if(err) res.json(err);
+        Curve.create({
+            'expression': delta_curve,
+            'input_id': req.body.input_id,
+            'types': handler.types,
+            'lag': lag,
+            'data_objects': data_2,
+            'curve': curve
+        },(err, d) => {
+            if(err) console.log(err);
+            res.json(d);
+        })
+    });
+    
+}
