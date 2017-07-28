@@ -13,13 +13,13 @@ function evalHandler(curve){
             expressions.push('((1/('+e.params.sigma+'*sqrt(2*pi)))*exp(-((x/10-'+e.params.mu+')^2/2*'+e.params.sigma+'^2)))*'+e.params.coef);
 
         }else if(e.value == "sigmoid"){
-            expressions.push('(1/(1+exp(-'+e.params.lambda+'*x+'+e.params.delta+')))*'+e.params.coef);
+            expressions.push('(1/(1+exp(-'+e.params.lambda+'*(x-'+e.params.delta+'))))*'+e.params.coef);
 
         }else if(e.value == "logarithmic"){
-            expressions.push('log(x+'+e.params.delta+')*'+e.params.coef);
+            expressions.push('log(x-'+e.params.delta+')*'+e.params.coef);
 
         }else if(e.value == "polynomial"){
-            expressions.push('3x^2+x+2');
+            expressions.push('-0.05*x+40');
 
         }else if(e.value == "noise"){
             expressions.push('random('+e.params.min+','+e.params.max+')');
