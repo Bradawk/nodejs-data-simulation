@@ -77,7 +77,7 @@
                         <p> {{"Self coefficient : "+i.params.coef}} </p>
                     </div>
                     <div>
-                        <p> {{"Delta : "+i.params.delta}} </p>
+                        <p v-if="i.value != 'gaussian'"> {{"Delta : "+i.params.delta}} </p>
                     </div>
                     <div v-if="i.value == 'gaussian'">
                         <p> {{"Variance : "+i.params.sigma}} | {{" Mean : "+i.params.mu}} </p>

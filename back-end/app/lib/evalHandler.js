@@ -10,7 +10,7 @@ function evalHandler(curve){
         types.push(e.value);
         
         if(e.value == "gaussian"){
-            expressions.push('((1/('+e.params.sigma+'*sqrt(2*pi)))*exp(-((x-'+e.params.mu+')^2/2*'+e.params.sigma+'^2)))*'+e.params.coef);
+            expressions.push('((1/('+e.params.sigma+'*sqrt(2*pi)))*exp(-((x/10-'+e.params.mu+')^2/2*'+e.params.sigma+'^2)))*'+e.params.coef);
 
         }else if(e.value == "sigmoid"){
             expressions.push('(1/(1+exp(-'+e.params.lambda+'*x+'+e.params.delta+')))*'+e.params.coef);
