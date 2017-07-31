@@ -24,7 +24,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div v-if="c.delta">
+                    <div v-if="c.lag">
                         <router-link class="btn right" :to="{ name: 'UpdateInput', params: { id: c._id }}">Update curve<i class="material-icons left">edit</i></router-link><br>
                     </div>
                 </div>

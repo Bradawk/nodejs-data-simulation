@@ -23,6 +23,10 @@
                                 <label> Delta {{index}} </label>
                                 <input v-model="c.params.delta" type="number" placeholder="Self Delta" step="0.01" required />
                             </div>
+                            <div class="col s6" v-if="c.value != 'gaussian'">
+                                <label> Const {{index}} </label>
+                                <input v-model="c.params.const" type="number" placeholder="Const" step="0.01" required />
+                            </div>
                         </div>
                         <div class="col s12" v-if="c.value == 'gaussian'">
                             <div class="col s6">
@@ -36,8 +40,8 @@
                         </div>
                         <div class="col s12" v-if="c.value == 'sigmoid'">
                             <div class="col s6">
-                                <label> Param delta {{index}} </label>
-                                <input v-model="c.params.delta" type="number" placeholder="Param delta" step="0.01" required />
+                                <label> Lambda {{index}} </label>
+                                <input v-model="c.params.lambda" type="number" placeholder="Lambda" step="0.01" required />
                             </div>
                         </div>
                         <div class="col s12" v-if="c.value == 'noise'">

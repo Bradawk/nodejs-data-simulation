@@ -81,8 +81,8 @@ exports.update = (req, res) => {
     }
 
     var data = getData(new_curve);
-
-    Curve.findOneAndUpdate({'_id': req.body.id},{$set:{"expression":new_curve,"data_objects": data}}, function(err, curve){
+    console.log(new_curve);
+    Curve.findOneAndUpdate({'_id': req.body.id},{$set:{"expression":new_curve,"data_objects": data, "curve": req.body.curve}}, function(err, curve){
         if(err) throw err;
         res.json(curve);
     });
