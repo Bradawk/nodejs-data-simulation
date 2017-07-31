@@ -44,7 +44,7 @@
               </div>
               <div class="col s3">
                 <form v-on:submit="randomizer">
-                  <input v-model="iNum" type="number" step="1" min="1" placeholder="Number of inputs" />
+                  <input v-model="iNum" type="number" step="1" min="1" placeholder="Number of inputs" required />
                   <input class="btn" type="submit" value="Create" />
                 </form>
               </div>
