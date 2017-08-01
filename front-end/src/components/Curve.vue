@@ -24,16 +24,16 @@
                             </tbody>
                         </table>
                     </div>
-                    <div v-if="c.lag">
+                    <div>
                         <router-link class="btn right" :to="{ name: 'UpdateInput', params: { id: c._id }}">Update curve<i class="material-icons left">edit</i></router-link><br>
+                        <div class="Nfloat"></div>
                     </div>
-                </div>
-                
+                </div>   
                 <div class="chart">
                     <div>
                         <function-plot></function-plot>
                     </div>
-                </div>
+                </div>  
             </div>
         </div>
     </div>

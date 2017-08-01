@@ -3,6 +3,7 @@ var Curve = require('../models/curves.js');
 var Output = require('../models/outputs.js');
 var isEmptyObject = require('../lib/empty');
 var async = require('async');
+var curveController = require('./curveController');
 
 exports.index = (req, res) => {
     Input.find({},(err, inputs)=> {

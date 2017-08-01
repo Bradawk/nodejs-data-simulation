@@ -94,27 +94,16 @@ exports.update = (req, res) => {
 exports.createRandom = (req, res) => {
 
     var curve = [];
-    var base_delta = Math.random() * (10 - 1) + 1;
-    var mu = 1.0;
     var lag = Math.random() * (1400 - 1) + 1;
     var coefficient = Math.floor(Math.random() * (10 + 10) -10);
     var delta_curve = '';
-
-
-    var carrier_curves = carrier.getCarrier(); 
-
-    if(carrier_curves[0] == 'sigmoid'){
-        curve.push({value: 'sigmoid', params:{'lambda':Math.random() * (2 - 0) + 0,'delta': base_delta,'coef':Math.random() * (20 + 10) -10}});
-        curve.push({value: carrier_curves[1], params:{'coef': Math.random() * (25 + 10) -10}, 'delta': base_delta+1400});
-    }else{
-        curve.push({value: carrier_curves[0], params:{'coef': 1, 'delta': base_delta}});
-        curve.push({value: 'sigmoid', params:{'lambda':Math.random() * (2 - 0) + 0,'delta': base_delta,'coef':Math.random() * (20 + 10) -10}});
-    }
     
+    
+    curve.push({value:'sigmoid', params:{'lambda':(Math.random()*(0.04 - 0.01) + 0.01).toFixed(2), 'coef':(Math.random()*(90 - 20)+20).toFixed(2),'const':(Math.random()*(20-10)+10).toFixed(2),'delta':(Math.random()*(700-100)+100).toFixed(2)}})
+    curve.push({value:'sigmoid', params:{'lambda':(Math.random()*(0.04 - 0.01) + 0.01).toFixed(2), 'coef':(Math.random()*(-10 - 90) - 90).toFixed(2),'const':(Math.random()*(15-0)+0).toFixed(2),'delta':(Math.random()*(2300-1900)+1900).toFixed(2)}})
 
     for(var i = 0; i < Math.floor(Math.random() * (8 - 2) + 2); i ++){
-        curve.push({value: 'gaussian', params:{'sigma': Math.random() * (1.0 - 0.7) + 0.7, 'mu': mu,'coef':Math.random() * (30 + 10) -10}});
-        mu += 400.0;
+        curve.push({value: 'gaussian', params:{'sigma': (Math.random() * (200 - 20.0) + 20.0).toFixed(2), 'mu': (Math.random() * (2300 - 1200) + 1200).toFixed(2),'coef':(Math.random() * (1500 - 1500) - 1500).toFixed(2)}});
     }
 
     var handler = evalHandler(curve);
@@ -128,7 +117,8 @@ exports.createRandom = (req, res) => {
         'expression': handler.curve,
         'types': handler.types,
         'data_objects': data_1,
-        'curve': curve
+        'curve': curve,
+        'input_id': req.body.input_id
     }, (err, curve) => {
         if(err) res.json(err);
         Curve.create({
@@ -136,7 +126,8 @@ exports.createRandom = (req, res) => {
             'types': handler.types,
             'lag': lag,
             'data_objects': data_2,
-            'curve': curve
+            'curve': curve,
+            'input_id': req.body.input_id
         },(err, d) => {
             if(err) console.log(err);
             res.json(d);

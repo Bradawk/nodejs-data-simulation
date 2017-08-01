@@ -46,7 +46,7 @@ export default {
      addOutput(){
          this.$http.post(process.env.API_URL+'/output',{'input_id':this.$route.params.id})
             .then(response => {
-                this.$router.push('/input/'+this.$route.params.id);
+                this.$router.go('/input/'+this.$route.params.id);
             })
             .catch(function(error){
                 console.log(error)

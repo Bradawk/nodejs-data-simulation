@@ -26,11 +26,11 @@
                     <label> Self Coefficient : </label>
                     <input type="number" placeholder="Self Coefficient" v-model="c.params.coef" step="0.01"/>
                   </div>
-                  <div class="col s6">
+                  <div v-if="c.value != 'gaussian'" class="col s6">
                     <label> Delta : </label>
                     <input type="number" placeholder="Self Delta" v-model="c.params.delta" step="0.01"/>
                   </div>
-                  <div class="col s6">
+                  <div v-if="c.value != 'gaussian'" class="col s6">
                     <label> Const : </label>
                     <input type="number" placeholder="Const" v-model="c.params.const" step="0.01"/>
                   </div>
@@ -51,13 +51,15 @@ export default {
     return {
         curve: [{value:'', params: {}}],
         coefficient:'',
-        lag: ''
+        lag: '',
+        res: ''
     }
   },
   mounted(){
     this.$http.get(process.env.API_URL+'/curve/'+this.$route.params.id)
         .then(response => {
            this.curve = response.data.curve;
+           this.res = response.data;
            this.id = response.data._id;
            this.lag = response.data.lag;
            this.coefficient = response.data.coefficient;
@@ -78,7 +80,7 @@ export default {
       })
         .then(response => {
           console.log(this.curve)
-          this.$router.push('/');
+          this.$router.push('/input/'+this.res.input_id);
         })
         .catch(error =>{
           console.log(error);

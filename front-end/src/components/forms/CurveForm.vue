@@ -9,7 +9,6 @@
                             <option value="gaussian"> Gaussian </option>
                             <option value="sigmoid"> Sigmoid </option>
                             <option value="polynomial"> Polynomial </option>
-                            <option value="logarithmic"> Logarithmic </option>
                             <option value="noise"> Random </option>
                         </select>
                     </div>
