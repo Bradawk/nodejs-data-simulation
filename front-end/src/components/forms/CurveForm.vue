@@ -1,5 +1,15 @@
 <template>
     <div>
+        <div v-if="isloaded == true">
+            <div class="preloader loading">
+                <span class="slice"></span>
+                <span class="slice"></span>
+                <span class="slice"></span>
+                <span class="slice"></span>
+                <span class="slice"></span>
+                <span class="slice"></span>
+            </div>
+        </div>
         <div class="col s6">
             <h2> Curve Maker </h2>
             <label> Basic Function Type</label>
@@ -30,6 +40,10 @@
                                 <label> Lambda {{index}} </label>
                                 <input v-model="c.params.lambda" type="number" placeholder="Lambda" step="0.01" required />
                             </div>
+                            <div class="col s6">
+                                <label> Const {{index}} </label>
+                                <input v-model="c.params.const" type="number" placeholder="Const" step="0.01" required />
+                            </div>
                         </div>
                         <div class="col s12" v-if="c.value == 'noise'">
                             <div class="col s6">
@@ -48,17 +62,13 @@
                             </div>
                         </div>
                         <div class="col s12">
-                            <div class="col s6" v-if="c.value != 'polynomial'">
+                            <div class="col s6" v-if="c.value != 'polynomial' && c.value != 'noise'">
                                 <label> Coefficient {{index}} </label>
                                 <input v-model="c.params.coef" type="number" placeholder="Self Coefficient" step="0.01" required />
                             </div>
                             <div class="col s6" v-if="c.value != 'gaussian'">
                                 <label> Delta {{index}} </label>
                                 <input v-model="c.params.delta" type="number" placeholder="Self Delta" step="0.01" required />
-                            </div>
-                            <div class="col s6" v-if="c.value != 'gaussian' && c.value !='polynomial'">
-                                <label> Const {{index}} </label>
-                                <input v-model="c.params.const" type="number" placeholder="Const" step="0.01" required />
                             </div>
                         </div>
                     </div>
@@ -121,9 +131,11 @@ export default {
         curves: [],
         lag: '',
         coefficient: '',
+        isloaded: ''
     }
   },
   mounted(){
+    
     this.$http.get(process.env.API_URL+'/input/curves/'+this.$route.params.id)
         .then(response => {
            if(response.data.length > 0){
@@ -135,6 +147,7 @@ export default {
         });
   },
   created(){
+    this.isloaded = false;
     this.curve.push({value:'gaussian', params:{'mu':'', 'sigma':'', 'delta':'','coef':''}});
   },
 
@@ -153,10 +166,12 @@ export default {
         });
     },
     randomize(){
+        this.isloaded = true;
         this.$http.post(process.env.API_URL+'/curve/random',{'input_id':this.$route.params.id})
         .then(response => {
+            this.isloaded = false;
             this.curves.push(response.data);
-            this.$router.go('/');
+            this.$router.push('/input/'+this.$route.params.id);
         })
         .catch(function (error) {
             console.log(error);

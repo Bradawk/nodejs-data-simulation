@@ -7,4 +7,4 @@ function randomPolynomial(degree){
     return poly;
 }
 
-exports.randomPolynomial = randomPolynomial;
+module.exports = randomPolynomial;

@@ -136,6 +136,7 @@ select{
 	border-bottom: 2px solid #EFEFEF;
 	height:150px;
 	background: #26a69a;
+	/*background: url('../img/background_curve.png');*/
 	border-radius: 2px;
 	
 }

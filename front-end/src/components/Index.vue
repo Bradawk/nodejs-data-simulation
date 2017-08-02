@@ -29,7 +29,7 @@
                     <div>
                     <transition-group name="slide-fade" tag="p">
                       <div v-for="i in inputs" v-bind:key="i" class="list-item input-div jumbo col s3">
-                       <div class="jumbo-head">
+                       <div style="background" class="jumbo-head">
                           <span class="right">
                               <form v-on:submit.prevent="deleteInput(i._id)"> 
                                   <input type="submit" value="X" />
@@ -44,7 +44,7 @@
               </div>
               <div class="col s3">
                 <form v-on:submit="randomizer">
-                  <input v-model="iNum" type="number" step="1" min="1" placeholder="Number of inputs" />
+                  <input v-model="iNum" type="number" step="1" min="1" placeholder="Number of inputs" required />
                   <input class="btn" type="submit" value="Create" />
                 </form>
               </div>

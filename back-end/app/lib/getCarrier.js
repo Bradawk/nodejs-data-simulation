@@ -17,8 +17,6 @@ function shuffle (array) {
 function getCarrier() {
     var options = ['sigmoid', 'logarithmic'];
     options = shuffle(options);
-    // options.pop();
-
     return options;
 }
 
