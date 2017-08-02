@@ -14,6 +14,10 @@
                     <label> Lambda : </label>
                     <input type="number" placeholder="Lambda" v-model="c.params.lambda" step="0.01"/>
                   </div>
+                  <div v-if="c.value == 'polynomial'" class="col s6">
+                    <label> Polynomial expression : </label>
+                    <input type="number" placeholder="Polynomial Expression" v-model="c.params.poly" step="0.01"/>
+                  </div>
                   <div v-if="c.value == 'gaussian'" class="col s6">
                     <label> Mean : </label>
                     <input type="number" placeholder="Mean" v-model="c.params.mu" step="0.01"/>
@@ -26,11 +30,11 @@
                     <label> Self Coefficient : </label>
                     <input type="number" placeholder="Self Coefficient" v-model="c.params.coef" step="0.01"/>
                   </div>
-                  <div v-if="c.value != 'gaussian'" class="col s6">
+                  <div v-if="c.value != 'gaussian' && c.value != 'polynomial'" class="col s6">
                     <label> Delta : </label>
                     <input type="number" placeholder="Self Delta" v-model="c.params.delta" step="0.01"/>
                   </div>
-                  <div v-if="c.value != 'gaussian'" class="col s6">
+                  <div v-if="c.value != 'gaussian' && c.value != 'polynomial'" class="col s6">
                     <label> Const : </label>
                     <input type="number" placeholder="Const" v-model="c.params.const" step="0.01"/>
                   </div>

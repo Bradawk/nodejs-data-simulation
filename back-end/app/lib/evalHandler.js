@@ -17,7 +17,7 @@ function evalHandler(curve){
             expressions.push(e.params.coef+'*(1/(1+exp(-'+e.params.lambda+'*(x-'+e.params.delta+'))))+'+e.params.const);
             
         }else if(e.value == "polynomial"){
-            expressions.push('-0.05*x+40');
+            expressions.push(e.params.poly);
 
         }else if(e.value == "noise"){
             expressions.push('random('+e.params.min+','+e.params.max+')');

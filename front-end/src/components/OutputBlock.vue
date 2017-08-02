@@ -8,7 +8,6 @@
                     <div  v-if="output">  
                         <span>Pearson Correlation : {{output.pcorr}}</span><br>
                         <span>Delta : {{output.delta}}</span><br>
-                        <span>Consistency : {{output.consistency}}</span>
                     </div>
                     <div v-else>
                         <span> No outputs yet. </span><br>

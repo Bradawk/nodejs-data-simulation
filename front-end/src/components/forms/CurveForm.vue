@@ -13,20 +13,8 @@
                         </select>
                     </div>
                     <div class="options" v-for="(c, index) in curve">
-                        <div class="col s12">
-                            <div class="col s6">
-                                <label> Coefficient {{index}} </label>
-                                <input v-model="c.params.coef" type="number" placeholder="Self Coefficient" step="0.01" required />
-                            </div>
-                            <div class="col s6" v-if="c.value != 'gaussian'">
-                                <label> Delta {{index}} </label>
-                                <input v-model="c.params.delta" type="number" placeholder="Self Delta" step="0.01" required />
-                            </div>
-                            <div class="col s6" v-if="c.value != 'gaussian'">
-                                <label> Const {{index}} </label>
-                                <input v-model="c.params.const" type="number" placeholder="Const" step="0.01" required />
-                            </div>
-                        </div>
+       
+                            <h5 style="text-transform: uppercase;">{{c.value}}</h5>
                         <div class="col s12" v-if="c.value == 'gaussian'">
                             <div class="col s6">
                                 <label> Mean {{index}} </label>
@@ -53,6 +41,26 @@
                                 <input v-model="c.params.max" type="number" placeholder="Maximum" step="0.01" required />
                             </div>
                         </div>
+                        <div class="col s12" v-if="c.value == 'polynomial'">
+                            <div class="col s6">
+                                <label> Polynomial expression </label>
+                                <input v-model="c.params.poly" type="text" placeholder="Polynomial expression" required />
+                            </div>
+                        </div>
+                        <div class="col s12">
+                            <div class="col s6" v-if="c.value != 'polynomial'">
+                                <label> Coefficient {{index}} </label>
+                                <input v-model="c.params.coef" type="number" placeholder="Self Coefficient" step="0.01" required />
+                            </div>
+                            <div class="col s6" v-if="c.value != 'gaussian'">
+                                <label> Delta {{index}} </label>
+                                <input v-model="c.params.delta" type="number" placeholder="Self Delta" step="0.01" required />
+                            </div>
+                            <div class="col s6" v-if="c.value != 'gaussian' && c.value !='polynomial'">
+                                <label> Const {{index}} </label>
+                                <input v-model="c.params.const" type="number" placeholder="Const" step="0.01" required />
+                            </div>
+                        </div>
                     </div>
                     <div class="col s12">
                         <div class="col s6">
@@ -64,9 +72,13 @@
                     </div>
                 <input class="btn waves-effect" type="submit" value="SAVE CURVE" />
             </form>
+            <form class="random" v-on:submit="randomize">
+                <input class="btn waves-effect" type="submit" value="RANDOMIZE" />
+            </form>
             <button class="btn-floating waves-effect waves-light" v-on:click="addType">
                     <i class="material-icons">add</i>
             </button><br>
+            
         </div>
 
         <div class="col s6 curve-container" >
@@ -87,6 +99,9 @@
                     </div>
                     <div v-if="i.value == 'sigmoid'">
                         <p> {{"Lambda : "+i.params.lambda}} </p>
+                    </div>
+                    <div v-if="i.value == 'polynomial'">
+                        <p> {{"Polynomial expression : "+i.params.poly}} </p>
                     </div>
                 </div>
             </transition-group>
@@ -119,9 +134,13 @@ export default {
             console.log(error);
         });
   },
+  created(){
+    this.curve.push({value:'gaussian', params:{'mu':'', 'sigma':'', 'delta':'','coef':''}});
+  },
+
   methods: {
     addType(){
-            this.curve.push({value:'gaussian', params:{'mu':'', 'sigma':'', 'lambda':'','delta':'','coef':''}});
+            this.curve.push({value:'gaussian', params:{'mu':'', 'sigma':'', 'lambda':'','delta':'','coef':'','poly':''}});
         },
     addCurve(){
     this.$http.post(process.env.API_URL+'/curve',{'curve':this.curve,'input_id':this.$route.params.id,'lag': this.lag, 'coefficient': this.coefficient})
@@ -133,6 +152,16 @@ export default {
             console.log(error);
         });
     },
+    randomize(){
+        this.$http.post(process.env.API_URL+'/curve/random',{'input_id':this.$route.params.id})
+        .then(response => {
+            this.curves.push(response.data);
+            this.$router.go('/');
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
   }
 }
 </script>
@@ -162,6 +191,7 @@ export default {
     h5{
         font-weight: bold;
         color: #687D94;
+        text-align: center;
     }
 
     .curve-container span{
@@ -188,4 +218,7 @@ export default {
         width: 80%;
     }
 
+    .random, input[type="submit"]{
+        margin-top: 2%;
+    }
 </style>

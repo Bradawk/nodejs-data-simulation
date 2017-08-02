@@ -45,7 +45,7 @@ exports.create = (req, res) => {
         }
 
         var corr = pcorrelation(x, y);
-        var delta = curves[1].delta
+        var delta = curves[1].lag
         
         // ################
 
