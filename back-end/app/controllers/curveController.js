@@ -7,6 +7,7 @@ var randoms = require('../lib/randoms');
 var carrier = require('../lib/getCarrier');
 var poly = require('../lib/randomPolynomial');
 var outputCalculation = require('../lib/outputCalculation');
+var outputController = require('./outputController');
 
 var math = require('mathjs');
 
@@ -60,11 +61,12 @@ exports.create = (req, res) => {
             'input_id': req.body.input_id,
             'types': handler.types,
             'lag': req.body.lag,
+            'coefficient': req.body.coefficient,
             'data_objects': data_2,
             'curve': req.body.curve
         },(err, d) => {
             if(err) console.log(err);
-            res.json(d);
+            outputController.create(req, res);
         })
     }); 
 };
@@ -93,7 +95,9 @@ exports.update = (req, res) => {
 
     Curve.findOneAndUpdate({'_id': req.body.id},{$set:{"expression":new_curve,"data_objects": data, "curve": req.body.curve}}, function(err, curve){
         if(err) throw err;
-        res.json(curve);
+        Output.remove({'input_id':curve.input_id}, function(err, output){
+            res.json(curve)
+        });
     });
 }
 
@@ -127,7 +131,7 @@ exports.createRandom = (req, res) => {
         'data_objects': data_1,
         'curve': curve,
         'input_id': req.body.input_id
-    }, (err, curve) => {
+    }, (err, c) => {
         if(err) res.json(err);
         Curve.create({
             'expression': delta_curve,
@@ -137,8 +141,8 @@ exports.createRandom = (req, res) => {
             'curve': curve,
             'input_id': req.body.input_id
         },(err, d) => {
-            if(err) console.log(err);
-            res.json(d);
+            if(err) throw err;
+             outputController.create(req, res);
         })
     });
 }

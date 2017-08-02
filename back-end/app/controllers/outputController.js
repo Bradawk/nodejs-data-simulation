@@ -4,8 +4,6 @@ var Curve = require('../models/curves.js');
 var pcorrelation = require('../lib/pcorrelation');
 var outputCalculation = require('../lib/outputCalculation');
 
-
-
 exports.findOne = (req, res) => {
     Output.findOne({'_id': req.params.id}, function(err, output){
         if(err) res.json(err);
@@ -37,8 +35,9 @@ exports.create = (req, res) => {
         if(err) res.json(err);
         var corr = outputCalculation(curves[0].data_objects, curves[1].data_objects)
         var delta = curves[1].lag
+        var data = {'data1':curves[0].data_objects,'data2':curves[1].data_objects}
         
-        Output.create({'input_id': req.body.input_id, 'pcorr': corr, 'delta': delta}, (err, output) => {
+        Output.create({'input_id': req.body.input_id, 'pcorr': corr, 'delta': delta,'data':data}, (err, output) => {
             if(err) res.json(err);
             res.json(output);
         });

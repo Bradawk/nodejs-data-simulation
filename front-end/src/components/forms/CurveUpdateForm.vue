@@ -1,12 +1,12 @@
 <template>
   <div>
-      <div class="col s6">
+      <div class="container">
             <h2> Update your curve </h2>
             <form v-on:submit.prevent="updateCurve">
               <label> Lag : </label>
-              <input type="number" placeholder="Lag" disabled />
+              <input v-model="lag" type="number" placeholder="Lag" disabled />
               <label> Coefficient : </label>
-              <input type="number" placeholder="Coefficient" disabled/>
+              <input v-model="coefficient" type="number" placeholder="Coefficient" disabled/>
               <div v-for="(c, index) in curve">
                 <div>
                   <h5> Curve {{index}} </h5>
@@ -18,13 +18,15 @@
                     <label> Polynomial expression : </label>
                     <input type="number" placeholder="Polynomial Expression" v-model="c.params.poly" step="0.01"/>
                   </div>
-                  <div v-if="c.value == 'gaussian'" class="col s6">
-                    <label> Mean : </label>
-                    <input type="number" placeholder="Mean" v-model="c.params.mu" step="0.01"/>
-                  </div>
-                  <div v-if="c.value == 'gaussian'" class="col s6">
-                    <label> Variance : </label>
-                    <input type="number" placeholder="Variance" v-model="c.params.sigma" step="0.01"/>
+                  <div class="col s12" v-if="c.value == 'gaussian'">
+                    <div class="col s6">
+                      <label> Mean : </label>
+                      <input type="number" placeholder="Mean" v-model="c.params.mu" step="0.01"/>
+                    </div>
+                    <div class="col s6">
+                      <label> Variance : </label>
+                      <input type="number" placeholder="Variance" v-model="c.params.sigma" step="0.01"/>
+                    </div>
                   </div>
                   <div class="col s6">
                     <label> Self Coefficient : </label>
@@ -34,7 +36,7 @@
                     <label> Delta : </label>
                     <input type="number" placeholder="Self Delta" v-model="c.params.delta" step="0.01"/>
                   </div>
-                  <div v-if="c.value != 'gaussian' && c.value != 'polynomial'" class="col s6">
+                  <div v-if="c.value == 'sigmoid'" class="col s6">
                     <label> Const : </label>
                     <input type="number" placeholder="Const" v-model="c.params.const" step="0.01"/>
                   </div>
@@ -63,6 +65,7 @@ export default {
     this.$http.get(process.env.API_URL+'/curve/'+this.$route.params.id)
         .then(response => {
            this.curve = response.data.curve;
+           console.log(this.curve);
            this.res = response.data;
            this.id = response.data._id;
            this.lag = response.data.lag;
@@ -94,6 +97,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+h2{
+  text-align: center;
+}
 </style>

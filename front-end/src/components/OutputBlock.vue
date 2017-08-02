@@ -5,15 +5,9 @@
             <div class="row">
                 <div>
                     <h5> Output </h5>
-                    <div  v-if="output">  
+                    <div>  
                         <span>Pearson Correlation : {{output.pcorr}}</span><br>
                         <span>Delta : {{output.delta}}</span><br>
-                    </div>
-                    <div v-else>
-                        <span> No outputs yet. </span><br>
-                        <form v-on:submit.prevent="addOutput" method="POST">
-                            <input style="margin-top: 2%;" class="btn waves-effect" type="submit" value="ADD OUTPUT" />
-                        </form>
                     </div>
                 </div>
             </div>
