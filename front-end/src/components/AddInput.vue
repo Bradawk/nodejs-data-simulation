@@ -6,16 +6,9 @@
             <span>{{$route.params.id}} </span><br>
           </div>
     </div>
-<div class="container">
-        <div class="col s12 jumbo">
-            <div class="row">
-                <div>
-                   <curveform></curveform>
-                </div>
-            </div>
-        </div>
+    <div class="container">     
+        <curveform></curveform>
     </div>
-</div>
 </div>
 </template>
 

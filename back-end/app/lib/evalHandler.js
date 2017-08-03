@@ -11,10 +11,10 @@ function evalHandler(curve){
         
         if(e.value == "gaussian"){
             //expressions.push('((1/('+e.params.sigma+'*sqrt(2*pi)))*exp(-((x/10-'+e.params.mu+')^2/2*'+e.params.sigma+'^2)))*'+e.params.coef);
-            expressions.push('((1/(sqrt((2*pi*'+e.params.sigma+')^2)))*exp(-(x-'+e.params.mu+')^2/(2*'+e.params.sigma+')^2))*'+e.params.coef);
+            expressions.push('(((1/(sqrt((2*pi*'+e.params.sigma+')^2)))*exp(-(x-'+e.params.mu+')^2/(2*'+e.params.sigma+')^2))*'+e.params.coef+')');
             
         }else if(e.value == "sigmoid"){
-            expressions.push(e.params.coef+'*(1/(1+exp(-'+e.params.lambda+'*(x-'+e.params.delta+'))))+'+e.params.const);
+            expressions.push('('+e.params.coef+'*(1/(1+exp(-'+e.params.lambda+'*(x-'+e.params.delta+'))))+'+e.params.const+')');
             
         }else if(e.value == "polynomial"){
             expressions.push(e.params.poly);

@@ -3,7 +3,6 @@ var Output = require('../models/outputs.js');
 var isEmptyObject = require('../lib/empty');
 var evalHandler = require('../lib/evalHandler');
 var getData = require('../lib/getData');
-var randoms = require('../lib/randoms');
 var carrier = require('../lib/getCarrier');
 var poly = require('../lib/randomPolynomial');
 var outputCalculation = require('../lib/outputCalculation');
@@ -32,12 +31,8 @@ exports.create = (req, res) => {
     var delta_curve = '';
     var handler = evalHandler(req.body.curve);
 
-    if(req.body.lag ||  req.body.coefficient){
-        delta_curve = handler.curve.replace(/x(?!p)/g, "x+(-"+req.body.lag+")");
-        delta_curve = delta_curve+'*'+req.body.coefficient;
-    }else{
-        delta_curve = handler.curve;
-    }
+    delta_curve = handler.curve.replace(/x(?!p)/g, "x+(-"+req.body.lag+")");
+    delta_curve = delta_curve+'*'+req.body.coefficient;
     
     var data_1 = getData(handler.curve);
     var data_2 = getData(delta_curve);
@@ -84,16 +79,12 @@ exports.update = (req, res) => {
     var handler = evalHandler(req.body.curve);
     var new_curve = '';
 
-    if(req.body.lag && req.body.coefficient){
-        new_curve = handler.curve.replace(/x(?!p)/g, "x+("+req.body.lag+")");
-        new_curve = new_curve+'*'+req.body.coefficient
-    }else{
-        new_curve = handler.curve;
-    }
+    new_curve = handler.curve.replace(/x(?!p)/g, "x+("+req.body.lag+")");
+    new_curve = new_curve+'*'+req.body.coefficient
 
     var data = getData(new_curve);
 
-    Curve.findOneAndUpdate({'_id': req.body.id},{$set:{"expression":new_curve,"data_objects": data, "curve": req.body.curve}}, function(err, curve){
+    Curve.findOneAndUpdate({'_id': req.body.id},{$set:{"expression":new_curve,"data_objects": data, "curve": req.body.curve,'coefficient':req.body.coefficient,'lag': req.body.lag}}, function(err, curve){
         if(err) throw err;
         Output.remove({'input_id':curve.input_id}, function(err, output){
             res.json(curve)
@@ -114,17 +105,17 @@ exports.createRandom = (req, res) => {
     curve.push({value:'sigmoid', params:{'lambda':(Math.random()*(0.04 - 0.01) + 0.01).toFixed(2), 'coef':(Math.random()*(80 - 20)+20).toFixed(2),'const':(Math.random()*(20-10)+10).toFixed(2),'delta':(Math.random()*(700-100)+100).toFixed(2)}})
     curve.push({value:'sigmoid', params:{'lambda':(Math.random()*(0.04 - 0.01) + 0.01).toFixed(2), 'coef':(Math.random()*(-80)).toFixed(2),'const':(Math.random()*(15-0)+0).toFixed(2),'delta':(Math.random()*(2300-1900)+1900).toFixed(2)}})
 
-    for(var i = 0; i < Math.floor(Math.random() * (8 - 2) + 2); i ++){
-        curve.push({value: 'gaussian', params:{'sigma': (Math.random() * (200 - 20.0) + 20.0).toFixed(2), 'mu': (Math.random() * (2300 - 1200) + 1200).toFixed(2),'coef':(Math.random() * (3001) - 1500).toFixed(2)}});
+    for(var i = 0; i < Math.floor(Math.random() * (10 - 2) + 2); i ++){
+        curve.push({value: 'gaussian', params:{'sigma': (Math.random() * (200 - 20.0) + 20.0).toFixed(2), 'mu': (Math.random() * (2300 - 800) + 800).toFixed(2),'coef':(Math.random() * (3001) - 1500).toFixed(2)}});
     }
 
     var handler = evalHandler(curve);
-    handler.curve = handler.curve +'*'+coefficient;
-    delta_curve = handler.curve.replace(/x(?!p)/g, "x+(-"+lag+")");
+    delta_curve = handler.curve.replace(/x(?!p)/g, "x+(-"+lag.toFixed(2)+")");
+    delta_curve = delta_curve +'*'+coefficient.toFixed(2);
 
     var data_1 = getData(handler.curve);
     var data_2 = getData(delta_curve);
-    
+
     Curve.create({
         'expression': handler.curve,
         'types': handler.types,
@@ -132,17 +123,18 @@ exports.createRandom = (req, res) => {
         'curve': curve,
         'input_id': req.body.input_id
     }, (err, c) => {
-        if(err) res.json(err);
+        if(err) throw err;
         Curve.create({
             'expression': delta_curve,
             'types': handler.types,
             'lag': lag,
             'data_objects': data_2,
             'curve': curve,
-            'input_id': req.body.input_id
+            'input_id': req.body.input_id,
+            'coefficient': coefficient
         },(err, d) => {
             if(err) throw err;
-             outputController.create(req, res);
+            outputController.create(req, res);
         })
     });
 }

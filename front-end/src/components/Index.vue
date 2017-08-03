@@ -73,9 +73,9 @@ export default {
       this.isloaded = true;
       this.$http.get(process.env.API_URL)
       .then(response => {
-        this.isloaded = false;
         this.inputs = response.data;
         this.count = this.inputs.length;
+        this.isloaded = false;
       })
       .catch(function (error) {
         console.log(error);
@@ -113,8 +113,12 @@ export default {
             Materialize.toast(response.data.message,'2000');
           })
       },
-      randomizer(){
-        this.$http.post(process.env.API_URL+'/input/random',{'iNum':this.iNum})
+      randomizer(e){
+        if(this.iNum > 1000){
+          e.preventDefault();
+          Materialize.toast('Number of random inputs to generate is to high',2000);
+        }else{
+            this.$http.post(process.env.API_URL+'/input/random',{'iNum':this.iNum})
           .then(response => {
               this.obt = respose.data
               this.$router.go('/');
@@ -122,6 +126,7 @@ export default {
           .catch(function(error){
             console.log(error);
           });
+        }
       }
     }
  

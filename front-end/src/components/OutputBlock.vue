@@ -23,7 +23,6 @@ export default {
   data () {
     return {
         output: [],
-        input_id: ''
     }
   },
   mounted() {
@@ -35,17 +34,6 @@ export default {
             console.log(error);
         });
  },
- methods:{
-     addOutput(){
-         this.$http.post(process.env.API_URL+'/output',{'input_id':this.$route.params.id})
-            .then(response => {
-                this.$router.go('/input/'+this.$route.params.id);
-            })
-            .catch(function(error){
-                console.log(error)
-            });
-     }
- }
 }
 
 </script>

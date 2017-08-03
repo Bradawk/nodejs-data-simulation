@@ -86,8 +86,7 @@ export default {
         'lag': this.lag
       })
         .then(response => {
-          console.log(this.curve)
-          this.$router.push('/input/'+this.res.input_id);
+          this.$router.go('/input/'+this.res.input_id);
         })
         .catch(error =>{
           console.log(error);
