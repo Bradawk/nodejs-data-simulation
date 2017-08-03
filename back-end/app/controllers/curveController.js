@@ -76,6 +76,7 @@ exports.delete = (req, res) => {
 
 // ## UPDATE
 exports.update = (req, res) => {
+
     var handler = evalHandler(req.body.curve);
     var new_curve = '';
 
@@ -86,10 +87,8 @@ exports.update = (req, res) => {
 
     Curve.findOneAndUpdate({'_id': req.body.id},{$set:{"expression":new_curve,"data_objects": data, "curve": req.body.curve,'coefficient':req.body.coefficient,'lag': req.body.lag}}, function(err, curve){
         if(err) throw err;
-        Output.remove({'input_id':curve.input_id}, function(err, output){
-            res.json(curve)
-        });
-    });
+        outputController.update(req,res);
+    });  
 }
 
 

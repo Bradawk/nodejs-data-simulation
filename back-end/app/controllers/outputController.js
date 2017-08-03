@@ -43,3 +43,18 @@ exports.create = (req, res) => {
         });
     })
 }
+
+exports.update = (req, res) => {
+    Curve.find({'input_id': req.body.input_id}, (err, curves) => {
+        if(err) res.json(err);
+        var corr = outputCalculation(curves[0].data_objects, curves[1].data_objects)
+        var delta = curves[1].lag
+        var data = {'data1':curves[0].data_objects,'data2':curves[1].data_objects}
+        
+        Output.findOneAndUpdate({'input_id': req.body.input_id},{$set:{'pcorr': corr, 'delta': delta,'data':data}}, (err, output) => {
+            if(err) res.json(err);
+            res.json(output);
+        });
+    })
+}
+

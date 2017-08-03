@@ -4,14 +4,12 @@ var curveController = require('../app/controllers/curveController');
 
 router.route('/:id')
     .get(curveController.find)
-    .delete(curveController.delete);
+    .delete(curveController.delete)
+    .put(curveController.update);
 
 router.route('/')
     .get(curveController.findAll)
     .post(curveController.create);
-
-router.route('/update')
-    .post(curveController.update);
 
 router.route('/random')
     .post(curveController.createRandom);

@@ -3,10 +3,10 @@
       <div class="container">
             <h2> Update your curve </h2>
             <form v-on:submit.prevent="updateCurve">
-              <label> Lag : </label>
-              <input v-model="lag" type="number" placeholder="Lag" disabled />
-              <label> Coefficient : </label>
-              <input v-model="coefficient" type="number" placeholder="Coefficient" disabled/>
+                <label> Lag : </label>
+                <input v-model="lag" type="number" placeholder="Lag" disabled />
+                <label> Coefficient : </label>
+                <input v-model="coefficient" type="number" placeholder="Coefficient" disabled/>
               <div v-for="(c, index) in curve">
                 <div>
                   <h5> Curve {{index}} </h5>
@@ -58,19 +58,17 @@ export default {
         curve: [{value:'', params: {}}],
         coefficient:'',
         lag: '',
-        res: ''
+        res: '',
+        id: ''
     }
   },
   mounted(){
     this.$http.get(process.env.API_URL+'/curve/'+this.$route.params.id)
         .then(response => {
            this.curve = response.data.curve;
-           console.log(this.curve);
-           this.res = response.data;
-           this.id = response.data._id;
            this.lag = response.data.lag;
            this.coefficient = response.data.coefficient;
-           console.log(response.data);
+           this.res = response.data;
         })
         .catch(function (error) {
             console.log(error);
@@ -79,14 +77,15 @@ export default {
 
   methods: {
     updateCurve(){
-      this.$http.post(process.env.API_URL+'/curve/update',{
-        'id': this.id,
+      this.$http.put(process.env.API_URL+'/curve/'+this.$route.params.id,{
+        'id': this.$route.params.id,
         'curve': this.curve,
         'coefficient': this.coefficient,
-        'lag': this.lag
+        'lag': this.lag,
+        'input_id': this.res.input_id
       })
         .then(response => {
-          this.$router.go('/input/'+this.res.input_id);
+          this.$router.push('/input/'+this.res.input_id);
         })
         .catch(error =>{
           console.log(error);

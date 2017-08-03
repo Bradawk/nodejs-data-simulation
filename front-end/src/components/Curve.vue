@@ -26,7 +26,7 @@
                         </table>
                     </div>
                     <div>
-                        <router-link class="btn right" :to="{ name: 'UpdateInput', params: { id: c._id }}">Update curve<i class="material-icons left">edit</i></router-link><br>
+                        <router-link v-if="c.lag" class="btn right" :to="{ name: 'UpdateInput', params: { id: c._id }}">Update curve<i class="material-icons left">edit</i></router-link><br>
                         <div class="Nfloat"></div>
                     </div>
                 </div>   
