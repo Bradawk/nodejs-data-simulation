@@ -97,6 +97,7 @@ export default {
             Materialize.toast('Input added successfully !', 2000);
           })
       },
+      // See axios.all
       deleteInput(id){
         this.$http.delete(process.env.API_URL+'/input/delete/'+id)
           .then(response => {
