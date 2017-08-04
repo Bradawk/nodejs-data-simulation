@@ -41,7 +41,7 @@
                         <div class="col s6">
                            <label> Lambda {{index}} </label>
                            <input v-model="c.params.lambda" type="number" placeholder="Lambda" step="0.01" required />
-                        </div>
+                         </div>
                         <div class="col s6">
                            <label> Const {{index}} </label>
                            <input v-model="c.params.const" type="number" placeholder="Const" step="0.01" required />
