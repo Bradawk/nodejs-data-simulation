@@ -7,6 +7,8 @@ var carrier = require('../lib/getCarrier');
 var poly = require('../lib/randomPolynomial');
 var outputCalculation = require('../lib/outputCalculation');
 var outputController = require('./outputController');
+var randomCurve = require('../lib/randomCurve')
+
 
 var math = require('mathjs');
 
@@ -96,44 +98,31 @@ exports.update = (req, res) => {
 
 exports.createRandom = (req, res) => {
 
-    var curve = [];
-    var lag = Math.random() * (1400 - 1) + 1;
-    var coefficient = Math.floor(Math.random() * (10 + 10) -10);
-    var delta_curve = '';
-    
-    curve.push({value:'sigmoid', params:{'lambda':(Math.random()*(0.04 - 0.01) + 0.01).toFixed(2), 'coef':(Math.random()*(80 - 20)+20).toFixed(2),'const':(Math.random()*(20-10)+10).toFixed(2),'delta':(Math.random()*(700-100)+100).toFixed(2)}})
-    curve.push({value:'sigmoid', params:{'lambda':(Math.random()*(0.04 - 0.01) + 0.01).toFixed(2), 'coef':(Math.random()*(-80)).toFixed(2),'const':(Math.random()*(15-0)+0).toFixed(2),'delta':(Math.random()*(2300-1900)+1900).toFixed(2)}})
-
-    for(var i = 0; i < Math.floor(Math.random() * (10 - 2) + 2); i ++){
-        curve.push({value: 'gaussian', params:{'sigma': (Math.random() * (200 - 20.0) + 20.0).toFixed(2), 'mu': (Math.random() * (2300 - 800) + 800).toFixed(2),'coef':(Math.random() * (3001) - 1500).toFixed(2)}});
-    }
-
-    var handler = evalHandler(curve);
-    delta_curve = handler.curve.replace(/x(?!p)/g, "x+(-"+lag.toFixed(2)+")");
-    delta_curve = delta_curve +'*'+coefficient.toFixed(2);
-
-    var data_1 = getData(handler.curve);
-    var data_2 = getData(delta_curve);
-
+    var randCurve = randomCurve();  
+    // TO DO : REFACTO 
     Curve.create({
-        'expression': handler.curve,
-        'types': handler.types,
-        'data_objects': data_1,
-        'curve': curve,
+        'expression': randCurve.first_curve,
+        'types': randCurve.types,
+        'data_objects': randCurve.data.data1,
+        'curve': randCurve.curve,
         'input_id': req.body.input_id
     }, (err, c) => {
         if(err) throw err;
         Curve.create({
-            'expression': delta_curve,
-            'types': handler.types,
-            'lag': lag,
-            'data_objects': data_2,
-            'curve': curve,
+            'expression': randCurve.delta_curve,
+            'types': randCurve.types,
+            'lag': randCurve.lag,
+            'data_objects': randCurve.data.data2,
+            'curve': randCurve.curve,
             'input_id': req.body.input_id,
-            'coefficient': coefficient
+            'coefficient': randCurve.coefficient
         },(err, d) => {
             if(err) throw err;
-            outputController.create(req, res);
+            try {
+                outputController.create(req, res);
+            } catch (error) {
+                console.log(error);
+            }
         })
     });
 }

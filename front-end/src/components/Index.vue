@@ -20,7 +20,7 @@
                 <span class="slice"></span>
             </div>
         </div>
-        <div class="row main-content">
+        <div v-else class="row main-content">
               <div class="col s12">
                     <form v-on:submit.prevent="addInput">     
                       <button class="btn left waves-effect"><i class="material-icons">add</i></button>
@@ -121,7 +121,6 @@ export default {
         }else{
             this.$http.post(process.env.API_URL+'/input/random',{'iNum':this.iNum})
           .then(response => {
-              this.obt = respose.data
               this.$router.go('/');
             })
           .catch(function(error){
