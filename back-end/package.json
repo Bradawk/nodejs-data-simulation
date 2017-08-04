@@ -16,7 +16,7 @@
     "express": "~4.15.2",
     "math.js": "^1.1.40",
     "mathjs": "^3.14.2",
-    "mongoose": "^4.11.1",
+    "mongoose": "^4.11.5",
     "morgan": "~1.8.1",
     "numjs": "^0.14.0",
     "serve-favicon": "~2.4.2"

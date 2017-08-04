@@ -2,6 +2,8 @@ var Input = require('../models/inputs.js');
 var Curve = require('../models/curves.js');
 var Output = require('../models/outputs.js');
 var isEmptyObject = require('../lib/empty');
+var outputCalculation = require('../lib/outputCalculation');
+var randomCurve = require('../lib/randomCurve');
 var async = require('async');
 
 exports.index = (req, res) => {
@@ -34,6 +36,36 @@ exports.createRandom = (req, res) => {
             'updated_at': Date.now()
         }, function(err, input){
             if(err) throw err;
+            var randCurve = randomCurve();
+            var data = randCurve.data;
+            req.body.input_id = input._id;
+            // TO DO : REFACTO  
+            Curve.create({
+                'expression': randCurve.first_curve,
+                'types': randCurve.types,
+                'data_objects': data.data1,
+                'curve': randCurve.curve,
+                'input_id': input._id
+            }, (err, c) => {
+                if(err) throw err;
+                Curve.create({
+                    'expression': randCurve.delta_curve,
+                    'types': randCurve.types,
+                    'lag': randCurve.lag,
+                    'data_objects': data.data2,
+                    'curve': randCurve.curve,
+                    'input_id': input._id,
+                    'coefficient': randCurve.coefficient
+                },(err, d) => {
+                    if(err) throw err;
+                    var corr = outputCalculation(c.data_objects, d.data_objects)
+                    var delta = d.lag
+                    var data = {'data1':c.data_objects,'data2':d.data_objects}
+                    Output.create({'input_id': input._id, 'pcorr': corr, 'delta': delta,'data':data}, (err, output) => {
+                        if(err) res.json(err);
+                    });
+                })
+            });
             next(err, input);
         }); 
     },function(err, inputs) {
@@ -54,7 +86,6 @@ exports.delete = (req, res) => {
             })
         })
     });
-    
 }
 
 exports.getCurves = (req, res) => {

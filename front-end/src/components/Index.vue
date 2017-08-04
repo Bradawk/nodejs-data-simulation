@@ -20,7 +20,7 @@
                 <span class="slice"></span>
             </div>
         </div>
-        <div class="row main-content">
+        <div v-else class="row main-content">
               <div class="col s12">
                     <form v-on:submit.prevent="addInput">     
                       <button class="btn left waves-effect"><i class="material-icons">add</i></button>
@@ -29,7 +29,7 @@
                     <div>
                     <transition-group name="slide-fade" tag="p">
                       <div v-for="i in inputs" v-bind:key="i" class="list-item input-div jumbo col s3">
-                       <div class="jumbo-head">
+                       <div style="background" class="jumbo-head">
                           <span class="right">
                               <form v-on:submit.prevent="deleteInput(i._id)"> 
                                   <input type="submit" value="X" />
@@ -73,9 +73,9 @@ export default {
       this.isloaded = true;
       this.$http.get(process.env.API_URL)
       .then(response => {
-        this.isloaded = false;
         this.inputs = response.data;
         this.count = this.inputs.length;
+        this.isloaded = false;
       })
       .catch(function (error) {
         console.log(error);
@@ -97,6 +97,7 @@ export default {
             Materialize.toast('Input added successfully !', 2000);
           })
       },
+      // See axios.all
       deleteInput(id){
         this.$http.delete(process.env.API_URL+'/input/delete/'+id)
           .then(response => {
@@ -113,15 +114,19 @@ export default {
             Materialize.toast(response.data.message,'2000');
           })
       },
-      randomizer(){
-        this.$http.post(process.env.API_URL+'/input/random',{'iNum':this.iNum})
+      randomizer(e){
+        if(this.iNum > 1000){
+          e.preventDefault();
+          Materialize.toast('Number of random inputs to generate is to high',2000);
+        }else{
+            this.$http.post(process.env.API_URL+'/input/random',{'iNum':this.iNum})
           .then(response => {
-              this.obt = respose.data
               this.$router.go('/');
             })
           .catch(function(error){
             console.log(error);
           });
+        }
       }
     }
  

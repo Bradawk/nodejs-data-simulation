@@ -28,6 +28,6 @@ export default new Router({
       path: '/input/update/:id',
       name: 'UpdateInput',
       component: UpdateInput
-    },
+    }
   ]
 })

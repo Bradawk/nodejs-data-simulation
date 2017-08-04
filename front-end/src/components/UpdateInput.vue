@@ -26,11 +26,6 @@ export default {
   components: {
       'curve-update-form': CurveUpdateForm
   },
-  data () {
-    return {
-
-    }
-  },
 }
 </script>
 

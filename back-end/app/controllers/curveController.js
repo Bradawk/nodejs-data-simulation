@@ -1,9 +1,14 @@
-var Curve = require('../models/curves.js')
+var Curve = require('../models/curves.js');
+var Output = require('../models/outputs.js');
 var isEmptyObject = require('../lib/empty');
 var evalHandler = require('../lib/evalHandler');
 var getData = require('../lib/getData');
-var randoms = require('../lib/randoms');
 var carrier = require('../lib/getCarrier');
+var poly = require('../lib/randomPolynomial');
+var outputCalculation = require('../lib/outputCalculation');
+var outputController = require('./outputController');
+var randomCurve = require('../lib/randomCurve')
+
 
 var math = require('mathjs');
 
@@ -28,16 +33,18 @@ exports.create = (req, res) => {
     var delta_curve = '';
     var handler = evalHandler(req.body.curve);
 
-    if(req.body.lag ||  req.body.coefficient){
-        delta_curve = handler.curve.replace(/x(?!p)/g, "x+(-"+req.body.lag+")");
-        delta_curve = delta_curve+'*'+req.body.coefficient;
-    }else{
-        delta_curve = handler.curve;
-    }
+    delta_curve = handler.curve.replace(/x(?!p)/g, "x+(-"+req.body.lag+")");
+    delta_curve = delta_curve+'*'+req.body.coefficient;
     
     var data_1 = getData(handler.curve);
     var data_2 = getData(delta_curve);
-    
+
+    for(var propName in req.body.curve[0].params){
+        if(req.body.curve[0].params[propName] == null || req.body.curve[0].params[propName] == undefined || req.body.curve[0].params[propName] == ''){
+            delete req.body.curve[0].params[propName]
+        }
+    }
+
     Curve.create({
         'expression': handler.curve,
         'input_id': req.body.input_id,
@@ -51,11 +58,12 @@ exports.create = (req, res) => {
             'input_id': req.body.input_id,
             'types': handler.types,
             'lag': req.body.lag,
+            'coefficient': req.body.coefficient,
             'data_objects': data_2,
             'curve': req.body.curve
         },(err, d) => {
             if(err) console.log(err);
-            res.json(d);
+            outputController.create(req, res);
         })
     }); 
 };
@@ -70,22 +78,19 @@ exports.delete = (req, res) => {
 
 // ## UPDATE
 exports.update = (req, res) => {
+
     var handler = evalHandler(req.body.curve);
     var new_curve = '';
 
-    if(req.body.lag && req.body.coefficient){
-        new_curve = handler.curve.replace(/x(?!p)/g, "x+("+req.body.lag+")");
-        new_curve = new_curve+'*'+req.body.coefficient
-    }else{
-        new_curve = handler.curve;
-    }
+    new_curve = handler.curve.replace(/x(?!p)/g, "x+("+req.body.lag+")");
+    new_curve = new_curve+'*'+req.body.coefficient
 
     var data = getData(new_curve);
 
-    Curve.findOneAndUpdate({'_id': req.body.id},{$set:{"expression":new_curve,"data_objects": data}}, function(err, curve){
+    Curve.findOneAndUpdate({'_id': req.body.id},{$set:{"expression":new_curve,"data_objects": data, "curve": req.body.curve,'coefficient':req.body.coefficient,'lag': req.body.lag}}, function(err, curve){
         if(err) throw err;
-        res.json(curve);
-    });
+        outputController.update(req,res);
+    });  
 }
 
 
@@ -93,53 +98,31 @@ exports.update = (req, res) => {
 
 exports.createRandom = (req, res) => {
 
-    var curve = [];
-    var base_delta = Math.random() * (10 - 1) + 1;
-    var mu = 1.0;
-    var lag = Math.random() * (1400 - 1) + 1;
-    var coefficient = Math.floor(Math.random() * (10 + 10) -10);
-    var delta_curve = '';
-
-
-    var carrier_curves = carrier.getCarrier(); 
-
-    if(carrier_curves[0] == 'sigmoid'){
-        curve.push({value: 'sigmoid', params:{'lambda':Math.random() * (2 - 0) + 0,'delta': base_delta,'coef':Math.random() * (20 + 10) -10}});
-        curve.push({value: carrier_curves[1], params:{'coef': Math.random() * (25 + 10) -10}, 'delta': base_delta+1400});
-    }else{
-        curve.push({value: carrier_curves[0], params:{'coef': 1, 'delta': base_delta}});
-        curve.push({value: 'sigmoid', params:{'lambda':Math.random() * (2 - 0) + 0,'delta': base_delta,'coef':Math.random() * (20 + 10) -10}});
-    }
-    
-
-    for(var i = 0; i < Math.floor(Math.random() * (8 - 2) + 2); i ++){
-        curve.push({value: 'gaussian', params:{'sigma': Math.random() * (1.0 - 0.7) + 0.7, 'mu': mu,'coef':Math.random() * (30 + 10) -10}});
-        mu += 400.0;
-    }
-
-    var handler = evalHandler(curve);
-    handler.curve = handler.curve +'*'+coefficient;
-    delta_curve = handler.curve.replace(/x(?!p)/g, "x+(-"+lag+")");
-
-    var data_1 = getData(handler.curve);
-    var data_2 = getData(delta_curve);
-
+    var randCurve = randomCurve();  
+    // TO DO : REFACTO 
     Curve.create({
-        'expression': handler.curve,
-        'types': handler.types,
-        'data_objects': data_1,
-        'curve': curve
-    }, (err, curve) => {
-        if(err) res.json(err);
+        'expression': randCurve.first_curve,
+        'types': randCurve.types,
+        'data_objects': randCurve.data.data1,
+        'curve': randCurve.curve,
+        'input_id': req.body.input_id
+    }, (err, c) => {
+        if(err) throw err;
         Curve.create({
-            'expression': delta_curve,
-            'types': handler.types,
-            'lag': lag,
-            'data_objects': data_2,
-            'curve': curve
+            'expression': randCurve.delta_curve,
+            'types': randCurve.types,
+            'lag': randCurve.lag,
+            'data_objects': randCurve.data.data2,
+            'curve': randCurve.curve,
+            'input_id': req.body.input_id,
+            'coefficient': randCurve.coefficient
         },(err, d) => {
-            if(err) console.log(err);
-            res.json(d);
+            if(err) throw err;
+            try {
+                outputController.create(req, res);
+            } catch (error) {
+                console.log(error);
+            }
         })
     });
 }

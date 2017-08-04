@@ -8,6 +8,7 @@
                     <span> ID : {{c._id}} </span><br>
                     <span> Types : {{c.types}} </span><br>
                     <span v-if="c.lag"> Delta : {{c.lag}} </span><br>
+                    <span v-if="c.coefficient"> Coefficient : {{c.coefficient}} </span><br>
                     <div class="scroll curve_table_container">
                         <table class="data_table bordered striped">
                             <thead>
@@ -24,16 +25,16 @@
                             </tbody>
                         </table>
                     </div>
-                    <div v-if="c.delta">
-                        <router-link class="btn right" :to="{ name: 'UpdateInput', params: { id: c._id }}">Update curve<i class="material-icons left">edit</i></router-link><br>
+                    <div>
+                        <router-link v-if="c.lag" class="btn right" :to="{ name: 'UpdateInput', params: { id: c._id }}">Update curve<i class="material-icons left">edit</i></router-link><br>
+                        <div class="Nfloat"></div>
                     </div>
-                </div>
-                
+                </div>   
                 <div class="chart">
                     <div>
                         <function-plot></function-plot>
                     </div>
-                </div>
+                </div>  
             </div>
         </div>
     </div>
