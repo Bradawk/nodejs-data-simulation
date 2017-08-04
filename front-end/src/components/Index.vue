@@ -115,7 +115,7 @@ export default {
           })
       },
       randomizer(e){
-        if(this.iNum > 1000){
+        if(this.iNum > 100){
           e.preventDefault();
           Materialize.toast('Number of random inputs to generate is to high',2000);
         }else{
