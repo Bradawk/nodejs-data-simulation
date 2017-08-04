@@ -1,4 +1,5 @@
 <template>
+    <div>
     <div v-if="isloaded == true">
             <div class="preloader loading">
                 <span class="slice"></span>
@@ -123,6 +124,7 @@
                 </div>
             </div>
         </div>
+    </div>
 </template>
 
 
