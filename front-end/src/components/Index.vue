@@ -10,37 +10,28 @@
             <span> {{curvesCount}} </span><br>
           </div>
         </div>
-        <div v-if="isloaded == true">
-            <div class="preloader loading">
-                <span class="slice"></span>
-                <span class="slice"></span>
-                <span class="slice"></span>
-                <span class="slice"></span>
-                <span class="slice"></span>
-                <span class="slice"></span>
-            </div>
-        </div>
+        <loader v-if="isloaded == true"></loader>
         <div v-else class="row main-content">
               <div class="col s12">
                     <form v-on:submit.prevent="addInput">     
                       <button class="btn left waves-effect"><i class="material-icons">add</i></button>
                       <div class="Nfloat"></div>
                     </form>
-                    <div>
-                    <transition-group name="slide-fade" tag="p">
-                      <div v-for="i in inputs" v-bind:key="i" class="list-item input-div jumbo col s3">
-                       <div style="background" class="jumbo-head">
-                          <span class="right">
-                              <form v-on:submit.prevent="deleteInput(i._id)"> 
-                                  <input type="submit" value="X" />
-                              </form>
-                          </span>
-                          <div class="Nfloat"></div>
-                      </div>
-                      <inputblock :id="i._id"></inputblock>
-                      </div>
-                    </transition-group>
-                    </div>        
+                    <div v-if="count">
+                      <transition-group name="slide-fade" tag="p">
+                        <div v-for="i in inputs" v-bind:key="i" class="list-item input-div jumbo col s3">
+                        <div style="background" class="jumbo-head">
+                            <span class="right">
+                                <form v-on:submit.prevent="deleteInput(i._id)"> 
+                                    <input type="submit" value="X" />
+                                </form>
+                            </span>
+                            <div class="Nfloat"></div>
+                        </div>
+                        <inputblock :id="i._id"></inputblock>
+                        </div>
+                      </transition-group>
+                    </div>      
               </div>
               <div class="col s3">
                 <form v-on:submit="randomizer">
@@ -53,11 +44,13 @@
 </template>
 <script>
 import InputBlock from './InputBlock'
+import Loader from './loaders/Loader'
 
 export default {
   name: 'index',
   components:{
-    'inputblock': InputBlock
+    'inputblock': InputBlock,
+    'loader': Loader
   },
   data () {
     return {
@@ -69,25 +62,23 @@ export default {
       iNum: ''
     }
   },
-  mounted() {
-      this.isloaded = true;
-      this.$http.get(process.env.API_URL)
-      .then(response => {
-        this.inputs = response.data;
-        this.count = this.inputs.length;
-        this.isloaded = false;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  beforeCreate(){
+    this.isloaded = true;
+  },
+  created(){
+    this.isloaded = false;
+    this.count = this.inputs.length;
+    this.$http.all([
+      this.$http.get(process.env.API_URL),
       this.$http.get(process.env.API_URL+"/curve")
-        .then(response => {
-            this.curvesCount = response.data.length;
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    },
+    ])
+      .then(this.$http.spread((inputResponse, counterResponse) => {
+        this.inputs = inputResponse.data;
+        this.count = inputResponse.data.length;
+        this.curvesCount = counterResponse.data.length; 
+    }));
+  },
+
   methods: {
       addInput(){
           this.$http.post(process.env.API_URL)
@@ -103,14 +94,7 @@ export default {
           .then(response => {
             var index = this.inputs.findIndex(input => input._id === id);
             this.inputs.splice(index, 1);
-            this.count = this.inputs.length;
-            this.$http.get(process.env.API_URL+"/curve")
-            .then(response => {
-                this.curvesCount = response.data.length;
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+            this.count = this.inputs.length;  
             Materialize.toast(response.data.message,'2000');
           })
       },

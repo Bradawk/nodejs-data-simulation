@@ -10,8 +10,6 @@ exports.index = (req, res) => {
     Input.find({},(err, inputs)=> {
         if(err){
             throw err;
-        }else if(isEmptyObject(inputs)){
-            res.json({'message':'No inputs registered.'})
         }else{
             res.json(inputs);
         }
