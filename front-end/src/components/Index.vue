@@ -16,7 +16,7 @@
                     <form v-on:submit.prevent="addInput">     
                       <button class="btn left waves-effect"><i class="material-icons">add</i></button>
                     </form>
-                    <form class="col s6" v-on:submit="randomizer">
+                    <form class="col s6" v-on:submit.prevent="randomizer">
                       <input class="left col s3" v-model="iNum" type="number" step="1" min="1" placeholder="Number of inputs" required />
                       <input class="btn left" type="submit" value="Create" />
                     </form>
@@ -98,8 +98,11 @@ export default {
           e.preventDefault();
           Materialize.toast('Number of random inputs to generate is to high',2000);
         }else{
-            this.$http.post(process.env.API_URL+'/input/random',{'iNum':this.iNum})
+          this.isloaded = true;
+          this.$http.post(process.env.API_URL+'/input/random',{'iNum':this.iNum})
           .then(response => {
+              this.isloaded = false;
+              console.log(response);
               this.$router.go('/');
             })
           .catch(function(error){
