@@ -1,15 +1,6 @@
 <template>
     <div>
-   <div v-if="isloaded == true">
-      <div class="preloader loading">
-         <span class="slice"></span>
-         <span class="slice"></span>
-         <span class="slice"></span>
-         <span class="slice"></span>
-         <span class="slice"></span>
-         <span class="slice"></span>
-      </div>
-   </div>
+   <loader v-if="isloaded == true"></loader>
    <div v-else class="col s12 jumbo">
       <div class="row">
          <div>
@@ -126,8 +117,13 @@
 
 
 <script>
+import Loader from '../loaders/Loader'
+
 export default {
   name: 'curveform',
+  components:{
+      'loader': Loader
+  },
   data () {
     return {
         curve: [],
@@ -138,7 +134,6 @@ export default {
     }
   },
   mounted(){
-    
     this.$http.get(process.env.API_URL+'/input/curves/'+this.$route.params.id)
         .then(response => {
            if(response.data.length > 0){

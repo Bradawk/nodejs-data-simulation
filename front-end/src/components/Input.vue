@@ -6,16 +6,7 @@
                 <span>{{$route.params.id}} </span><br>
             </div>
         </div>
-        <div v-if="isloaded == true">
-            <div class="preloader loading">
-                <span class="slice"></span>
-                <span class="slice"></span>
-                <span class="slice"></span>
-                <span class="slice"></span>
-                <span class="slice"></span>
-                <span class="slice"></span>
-            </div>
-        </div>
+        <loader v-if="isloaded == true"></loader>
         <div v-else class="container">
             <curve></curve>
             <output-block></output-block>
@@ -28,13 +19,15 @@
 import CurveForm from './forms/CurveForm'
 import Curve from './Curve'
 import OutputBlock from './OutputBlock'
+import Loader from './loaders/Loader'
 
 export default {
   name: 'input',
   components: {
     'curveform': CurveForm,
     'curve': Curve,
-    'output-block': OutputBlock
+    'output-block': OutputBlock,
+    'loader': Loader
   },
   data () {
     return {

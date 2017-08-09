@@ -1,7 +1,6 @@
 var Input = require('../models/inputs.js');
 var Curve = require('../models/curves.js');
 var Output = require('../models/outputs.js');
-var isEmptyObject = require('../lib/empty');
 var outputCalculation = require('../lib/outputCalculation');
 var randomCurve = require('../lib/randomCurve');
 var async = require('async');

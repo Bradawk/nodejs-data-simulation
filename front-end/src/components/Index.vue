@@ -15,8 +15,12 @@
               <div class="col s12">
                     <form v-on:submit.prevent="addInput">     
                       <button class="btn left waves-effect"><i class="material-icons">add</i></button>
-                      <div class="Nfloat"></div>
                     </form>
+                    <form class="col s6" v-on:submit="randomizer">
+                      <input class="left col s3" v-model="iNum" type="number" step="1" min="1" placeholder="Number of inputs" required />
+                      <input class="btn left" type="submit" value="Create" />
+                    </form>
+                    <div class="Nfloat"></div>
                     <div v-if="count">
                       <transition-group name="slide-fade" tag="p">
                         <div v-for="i in inputs" v-bind:key="i" class="list-item input-div jumbo col s3">
@@ -31,13 +35,7 @@
                         <inputblock :id="i._id"></inputblock>
                         </div>
                       </transition-group>
-                    </div>      
-              </div>
-              <div class="col s3">
-                <form v-on:submit="randomizer">
-                  <input v-model="iNum" type="number" step="1" min="1" placeholder="Number of inputs" required />
-                  <input class="btn" type="submit" value="Create" />
-                </form>
+                    </div>    
               </div>
         </div>
   </div>
@@ -62,20 +60,17 @@ export default {
       iNum: ''
     }
   },
-  beforeCreate(){
+  mounted(){
     this.isloaded = true;
-  },
-  created(){
-    this.isloaded = false;
-    this.count = this.inputs.length;
     this.$http.all([
       this.$http.get(process.env.API_URL),
       this.$http.get(process.env.API_URL+"/curve")
     ])
       .then(this.$http.spread((inputResponse, counterResponse) => {
         this.inputs = inputResponse.data;
-        this.count = inputResponse.data.length;
+        this.count = this.inputs.length;
         this.curvesCount = counterResponse.data.length; 
+        this.isloaded = false;
     }));
   },
 
