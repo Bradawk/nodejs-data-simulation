@@ -8,7 +8,7 @@ var async = require('async');
 exports.index = (req, res) => {
     Input.find({},(err, inputs)=> {
         if(err){
-            throw err;
+            res.status(500).json({ 'error': err });
         }else{
             res.json(inputs);
         }
@@ -32,7 +32,7 @@ exports.createRandom = (req, res) => {
             'created_at' : Date.now(),
             'updated_at': Date.now()
         }, function(err, input){
-            if(err) throw err;
+            if(err) res.status(500).json({ 'error': err });
             var randCurve = randomCurve();
             var data = randCurve.data;
             req.body.input_id = input._id;
@@ -44,7 +44,7 @@ exports.createRandom = (req, res) => {
                 'curve': randCurve.curve,
                 'input_id': input._id
             }, (err, c) => {
-                if(err) throw err;
+                if(err) res.status(500).json({ 'error': err });
                 Curve.create({
                     'expression': randCurve.delta_curve,
                     'types': randCurve.types,
@@ -54,19 +54,19 @@ exports.createRandom = (req, res) => {
                     'input_id': input._id,
                     'coefficient': randCurve.coefficient
                 },(err, d) => {
-                    if(err) throw err;
+                    if(err) res.status(500).json({ 'error': err });
                     var corr = outputCalculation(c.data_objects, d.data_objects)
                     var delta = d.lag
                     var data = {'data1':c.data_objects,'data2':d.data_objects}
                     Output.create({'input_id': input._id, 'pcorr': corr, 'delta': delta,'data':data}, (err, output) => {
-                        if(err) res.json(err);
+                        if(err) res.status(500).json({ 'error': err });
                     });
                 })
             });
             next(err, input);
         }); 
     },function(err, inputs) {
-        if(err) throw err;
+        if(err)  res.status(500).json({ 'error': err });
         res.json(inputs);
     });
 }
@@ -88,7 +88,7 @@ exports.delete = (req, res) => {
 exports.getCurves = (req, res) => {
     Curve.find({'input_id': req.params.id}, function(err, curves){
         if(err){
-            throw err;
+             res.status(400).json({ 'error': 'No curve with the given ID' });
         }else{
             res.json(curves);
         }
