@@ -6,10 +6,15 @@
                 <span>{{$route.params.id}} </span><br>
             </div>
         </div>
-        <loader v-if="isloaded == true"></loader>
-        <div v-else class="container">
-            <curve></curve>
-            <output-block></output-block>
+        <div v-if="curves.length != 0">
+            <loader v-if="isloaded == true"></loader>
+            <div v-else class="container">
+                <curve></curve>
+                <output-block></output-block>
+            </div>
+        </div>
+        <div class="container jumbo" v-else>
+            <h1> No inputs with that ID </h1>
         </div>
     </div>
 </template>
@@ -41,6 +46,7 @@ export default {
         .then(response => {
             this.isloaded = false;
             this.curves = response.data;
+            console.log(this.curves)
         })
         .catch(function (error) {
             console.log(error);

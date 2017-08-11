@@ -4,6 +4,7 @@ import Index from '@/components/Index'
 import Input from '@/components/Input'
 import AddInput from '@/components/AddInput'
 import UpdateInput from '@/components/UpdateInput'
+import NotFound from '@/components/errors/NotFound'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/input/update/:id',
       name: 'UpdateInput',
       component: UpdateInput
+    },
+    {
+      path: '*',
+      name: 'NotFound',
+      component: NotFound
     }
   ]
 })

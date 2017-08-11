@@ -228,20 +228,3 @@ select{
 .btn-floating{
 	margin-top: 5%;
 }
-
-/* TABLE */
-
-.curve_table_container{
-	max-height: 300px;
-	height: 300px;
-	overflow: auto;
-	margin-bottom: 5%;
-}
-
-table.striped>tbody>tr:nth-child(odd){
-	background: #fbfbfb !important;
-}
-
-table.striped>tbody>tr{
-	border: none;
-}

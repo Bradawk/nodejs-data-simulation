@@ -139,6 +139,7 @@ export default {
            if(response.data.length > 0){
                this.$router.push('/');
            }
+           console.log(response.data)
         })
         .catch(function (error) {
             console.log(error);
