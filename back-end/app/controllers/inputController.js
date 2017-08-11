@@ -77,9 +77,9 @@ exports.delete = (req, res) => {
         if(err) throw err;
         Curve.remove({'input_id': req.params.id}, function(err, curve){
         if(err) throw err;
-            Input.remove({'_id': req.params.id}, function (err, curve){
+            Input.remove({'_id': req.params.id}, function (err, input){
                 if(err) throw err;
-                res.json({'message':'Input, Output and associated curves deleted'});
+                res.json(input);
             })
         })
     });
