@@ -83,14 +83,20 @@ export default {
             Materialize.toast('Input added successfully !', 2000);
           })
       },
-      // See axios.all
       deleteInput(id){
         this.$http.delete(process.env.API_URL+'/input/delete/'+id)
           .then(response => {
             var index = this.inputs.findIndex(input => input._id === id);
             this.inputs.splice(index, 1);
-            this.count = this.inputs.length;  
-            Materialize.toast(response.data.message,'2000');
+            this.count = this.inputs.length;
+            this.$http.get(process.env.API_URL+"/curve")
+            .then(response => {
+                this.curvesCount = response.data.length;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+            Materialize.toast('Input, Output and associated curves deleted','2000');
           })
       },
       randomizer(e){

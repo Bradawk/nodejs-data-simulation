@@ -154,14 +154,15 @@ export default {
             this.curve.push({value:'gaussian', params:{'mu':'', 'sigma':'', 'lambda':'','delta':'','coef':'','poly':''}});
         },
     addCurve(){
-    this.$http.post(process.env.API_URL+'/curve',{'curve':this.curve,'input_id':this.$route.params.id,'lag': this.lag, 'coefficient': this.coefficient})
-        .then(response => {
-            this.curves.push(response.data);
-            this.$router.push('/input/'+this.$route.params.id);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+        this.isloaded = true;
+        this.$http.post(process.env.API_URL+'/curve',{'curve':this.curve,'input_id':this.$route.params.id,'lag': this.lag, 'coefficient': this.coefficient})
+            .then(response => {
+                this.curves.push(response.data);
+                this.$router.push('/input/'+this.$route.params.id);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     },
     randomize(){
         this.isloaded = true;
