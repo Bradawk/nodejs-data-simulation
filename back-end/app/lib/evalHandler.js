@@ -11,16 +11,16 @@ function evalHandler(curve){
         
         if(e.value == "gaussian"){
             //expressions.push('((1/('+e.params.sigma+'*sqrt(2*pi)))*exp(-((x/10-'+e.params.mu+')^2/2*'+e.params.sigma+'^2)))*'+e.params.coef);
-            expressions.push('(((1/(sqrt((2*pi*'+e.params.sigma+')^2)))*exp(-(x-'+e.params.mu+')^2/(2*'+e.params.sigma+')^2))*'+e.params.coef+')');
+            expressions.push('(((1/(Math.sqrt(Math.pow((2*Math.PI*'+e.params.sigma+'),2))))*Math.exp(-Math.pow((x-'+e.params.mu+'),2)/Math.pow((2*'+e.params.sigma+'),2)))*'+e.params.coef+')');
             
         }else if(e.value == "sigmoid"){
-            expressions.push('('+e.params.coef+'*(1/(1+exp(-'+e.params.lambda+'*(x-'+e.params.delta+'))))+'+e.params.const+')');
+            expressions.push('('+e.params.coef+'*(1/(1+Math.exp(-'+e.params.lambda+'*(x-'+e.params.delta+'))))+'+e.params.const+')');
             
         }else if(e.value == "polynomial"){
             expressions.push(e.params.poly);
 
         }else if(e.value == "noise"){
-            expressions.push('random('+e.params.min+','+e.params.max+')');
+            expressions.push('Math.random()*('+e.params.max+'-'+e.params.min+')-'+e.params.min);
 
         }else{
             expressions.push('');
@@ -28,8 +28,7 @@ function evalHandler(curve){
         }
     });
 
-    var expression = expressions.join();
-    var rep = expression.replace(/,/g,'+').toString();
+    var rep = expressions.join("+");
 
     var handlerRes = {
         'curve': rep,

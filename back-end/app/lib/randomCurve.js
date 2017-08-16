@@ -18,7 +18,7 @@ function randomCurve(){
     var first_curve = handler.curve;
     var types = handler.types;
     delta_curve = handler.curve.replace(/x(?!p)/g, "x+(-"+lag.toFixed(2)+")");
-    delta_curve = delta_curve +'*'+coefficient.toFixed(2);
+    delta_curve = '('+delta_curve +')*'+coefficient.toFixed(2);
 
     var data_1 = getData(first_curve);
     var data_2 = getData(delta_curve);

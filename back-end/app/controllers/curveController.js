@@ -34,7 +34,7 @@ exports.create = (req, res) => {
     var handler = evalHandler(req.body.curve);
 
     delta_curve = handler.curve.replace(/x(?!p)/g, "x+(-"+req.body.lag+")");
-    delta_curve = delta_curve+'*'+req.body.coefficient;
+    delta_curve = '('+delta_curve+')*'+req.body.coefficient;
     
     var data_1 = getData(handler.curve);
     var data_2 = getData(delta_curve);
@@ -83,7 +83,7 @@ exports.update = (req, res) => {
     var new_curve = '';
 
     new_curve = handler.curve.replace(/x(?!p)/g, "x+("+req.body.lag+")");
-    new_curve = new_curve+'*'+req.body.coefficient
+    new_curve = '('+new_curve+')*'+req.body.coefficient
 
     var data = getData(new_curve);
 

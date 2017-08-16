@@ -1,12 +1,13 @@
 var math = require('mathjs');
 
-function getData(exp){
+function getData(math_exp){
 
     var array = [];
 
+	var f=Function('x', 'return '+math_exp);
+
     for(var x = 0; x <= 2880; x ++){
-        var scope = {x};
-        array.push(math.eval(exp,scope));
+        array.push(f(x));
     }
 
     return array;
