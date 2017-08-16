@@ -12,7 +12,7 @@ var randomCurve = require('../lib/randomCurve')
 
 var math = require('mathjs');
 
-// ### FIND
+// ### FIND VOIR STREAM
 exports.find = (req, res) => {
     Curve.findOne({'_id': req.params.id}, function(err, curve){
         if(err) res.json(err);
