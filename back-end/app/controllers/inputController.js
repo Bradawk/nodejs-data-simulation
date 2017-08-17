@@ -55,9 +55,10 @@ exports.createRandom = (req, res) => {
                     'coefficient': randCurve.coefficient
                 },(err, d) => {
                     if(err) res.status(500).json({ 'error': err });
-                    var corr = outputCalculation(c.data_objects, d.data_objects)
-                    var delta = d.lag
-                    Output.create({'input_id': input._id, 'pcorr': corr, 'delta': delta}, (err, output) => {
+                    var corr = outputCalculation(c.data_objects, d.data_objects);
+                    var delta = d.lag;
+                    var data = {'data1':c.data_objects,'data2':d.data_objects};
+                    Output.create({'input_id': input._id, 'pcorr': corr, 'delta': delta, 'data':data}, (err, output) => {
                         if(err) res.status(500).json({ 'error': err });
                     });
                 })
