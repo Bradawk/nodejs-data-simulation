@@ -1,8 +1,9 @@
 var colors = require('colors');
 var mongoose = require('mongoose');
-var dbname = 'datasetdb';
-var host = 'ds143201.mlab.com:43201'
-mongoose.connect('mongodb://adrien:adrienlegrand@'+host+'/'+dbname);
+
+var config = require('../../conf/config');
+
+mongoose.connect('mongodb://'+config.db_user_name+':'+config.db_user_password+'@'+config.host+'/'+config.db_name);
 
 var db = mongoose.connection;
 
@@ -16,5 +17,6 @@ db.on('parseError', function(err) {
   console.log('✘ parseError... '.red, err);
 });
 db.on('open', function(err) {
-  console.log('✔ CONNECTED TO'.green+' '+host.green);
+  console.log('✔ CONNECTED TO'.green+' '+config.host.green);
+  console.log('Connected as : '.green+ config.db_user_name.green);
 });

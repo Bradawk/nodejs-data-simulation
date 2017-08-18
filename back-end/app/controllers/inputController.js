@@ -6,15 +6,11 @@ var randomCurve = require('../lib/randomCurve');
 var async = require('async');
 
 exports.index = (req, res) => {
-    Input.find({},(err, inputs)=> {
-        if(err){
-            res.status(500).json({ 'error': err });
-        }else{
-            res.json(inputs);
-        }
+    Input.find({}).lean().exec((err, inputs) => {
+        if(err) res.status(500).json({ 'error': err });
+        res.json(inputs);
     });
 };
-
 
 exports.create = (req, res) => {
     Input.create({
@@ -25,6 +21,25 @@ exports.create = (req, res) => {
         res.json(input);
     });  
 };
+
+// exports.createRandom = (req, res) => {
+//     async.times(req.body.iNum, function(n, next){
+//         async.waterfall([
+//             (callback) => {
+//                 console.log("FIRST FALL");
+//                 Input.find({}, (err, input) => {
+//                     if(err) callback(err);
+//                     callback(null, input);
+//                 });
+//             },
+//             (input, callback) => {
+//                 console.log("SECOND FALL");
+//                 console.log(input);
+//             },
+//         ]);
+//         next();
+//     });
+// }
 
 exports.createRandom = (req, res) => {
     async.times(req.body.iNum, function(n, next){
@@ -59,14 +74,13 @@ exports.createRandom = (req, res) => {
                     var delta = d.lag;
                     var data = {'data1':c.data_objects,'data2':d.data_objects};
                     Output.create({'input_id': input._id, 'pcorr': corr, 'delta': delta, 'data':data}, (err, output) => {
-                        if(err) res.status(500).json({ 'error': err });
+                        // if(err) res.status(500).json({ 'error': err });
                     });
                 })
             });
             next(err, input);
         }); 
     },function(err, inputs) {
-        if(err)  res.status(500).json({ 'error': err });
         res.json(inputs);
     });
 }
