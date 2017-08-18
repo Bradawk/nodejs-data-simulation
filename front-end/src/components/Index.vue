@@ -5,10 +5,6 @@
             <small> Total of inputs </small><br>
             <span> {{count}} </span><br>
           </div>
-          <div class="col s2">
-            <small> Total of curves </small><br>
-            <span> {{curvesCount}} </span><br>
-          </div>
         </div>
         <loader v-if="isloaded == true"></loader>
         <div v-else class="row main-content">
@@ -55,7 +51,6 @@ export default {
       inputs: [],
       errors: [],
       count: '',
-      curvesCount: '',
       isloaded: '',
       iNum: ''
     }
@@ -64,12 +59,10 @@ export default {
     this.isloaded = true;
     this.$http.all([
       this.$http.get(process.env.API_URL),
-      this.$http.get(process.env.API_URL+"/curve")
     ])
-      .then(this.$http.spread((inputResponse, counterResponse) => {
+      .then(this.$http.spread((inputResponse) => {
         this.inputs = inputResponse.data;
         this.count = this.inputs.length;
-        this.curvesCount = counterResponse.data.length; 
         this.isloaded = false;
     }));
   },

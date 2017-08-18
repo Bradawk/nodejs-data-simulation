@@ -8,7 +8,7 @@
                   <label> Lag : </label>
                   <input v-model="lag" type="number" placeholder="Lag" disabled />
                   <label> Coefficient : </label>
-                  <input v-model="coefficient" type="number" placeholder="Coefficient"/>
+                  <input v-model="coefficient" type="number" placeholder="Coefficient" step="0.0005"/>
                 <div v-for="(c, index) in curve">
                   <div>
                     <h5> Curve {{index}} </h5>

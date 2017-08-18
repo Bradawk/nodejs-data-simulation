@@ -22,25 +22,6 @@ exports.create = (req, res) => {
     });  
 };
 
-// exports.createRandom = (req, res) => {
-//     async.times(req.body.iNum, function(n, next){
-//         async.waterfall([
-//             (callback) => {
-//                 console.log("FIRST FALL");
-//                 Input.find({}, (err, input) => {
-//                     if(err) callback(err);
-//                     callback(null, input);
-//                 });
-//             },
-//             (input, callback) => {
-//                 console.log("SECOND FALL");
-//                 console.log(input);
-//             },
-//         ]);
-//         next();
-//     });
-// }
-
 exports.createRandom = (req, res) => {
     async.times(req.body.iNum, function(n, next){
         Input.create({
@@ -73,8 +54,8 @@ exports.createRandom = (req, res) => {
                     var corr = outputCalculation(c.data_objects, d.data_objects);
                     var delta = d.lag;
                     var data = {'data1':c.data_objects,'data2':d.data_objects};
-                    Output.create({'input_id': input._id, 'pcorr': corr, 'delta': delta, 'data':data}, (err, output) => {
-                        // if(err) res.status(500).json({ 'error': err });
+                    Output.create({'input_id': input._id, 'pcorr': corr, 'delta': delta, 'data':data}, (error, output) => {
+                        if(error) res.status(500).json({'error': error});
                     });
                 })
             });

@@ -1,10 +1,11 @@
 var evalHandler = require('./evalHandler');
 var getData = require('./getData');
+var randomExclude = require('./randomExclude');
 
 function randomCurve(){
     var curve = [];
     var lag = Math.random() * (1400 - 1) + 1;
-    var coefficient = Math.floor(Math.random() * (2 + 1) - 1);
+    var coefficient = randomExclude(-2,2,-0.2,0.2);
     var delta_curve = '';
     
     curve.push({value:'sigmoid', params:{'lambda':(Math.random()*(0.02 - 0.0005) + 0.005).toFixed(2), 'coef':(Math.random()*(80 - 20)+20).toFixed(2),'const':(Math.random()*(20-10)+10).toFixed(2),'delta':(Math.random()*(700-100)+100).toFixed(2)}})
