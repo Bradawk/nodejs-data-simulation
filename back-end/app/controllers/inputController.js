@@ -2,6 +2,7 @@ var Input = require('../models/inputs.js');
 var Curve = require('../models/curves.js');
 var Output = require('../models/outputs.js');
 var outputCalculation = require('../lib/outputCalculation');
+var outputController  = require('./outputController');
 var randomCurve = require('../lib/randomCurve');
 var async = require('async');
 
@@ -51,13 +52,15 @@ exports.createRandom = (req, res) => {
                     'coefficient': randCurve.coefficient
                 },(err, d) => {
                     if(err) res.status(500).json({ 'error': err });
-                    var corr = outputCalculation(c.data_objects, d.data_objects);
-                    var delta = d.lag;
-                    var data = {'data1':c.data_objects,'data2':d.data_objects};
-                    Output.create({'input_id': input._id, 'pcorr': corr, 'delta': delta, 'data':data}, (error, output) => {
-                        if(error) res.status(500).json({'error': error});
-                    });
-                })
+                    var outputItems = {
+                        'd1': c.data_objects,
+                        'd2': d.data_objects,
+                        'lag': Math.floor(d.lag),
+                        'coefficient': d.coefficient,
+                        'input_id': input._id
+                    };
+                    outputController.create(req, res, outputItems);
+                });
             });
             next(err, input);
         }); 

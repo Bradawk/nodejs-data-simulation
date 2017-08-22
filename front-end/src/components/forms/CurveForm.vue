@@ -159,7 +159,7 @@ export default {
         this.$http.post(process.env.API_URL+'/curve',{'curve':this.curve,'input_id':this.$route.params.id,'lag': this.lag, 'coefficient': this.coefficient})
             .then(response => {
                 this.curves.push(response.data);
-                this.$router.push('/input/'+this.$route.params.id);
+                this.$router.go('/input/'+this.$route.params.id);
             })
             .catch(function (error) {
                 console.log(error);

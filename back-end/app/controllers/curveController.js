@@ -63,7 +63,15 @@ exports.create = (req, res) => {
             'curve': req.body.curve
         },(err, d) => {
             if(err) console.log(err);
-            outputController.create(req, res);
+            var outputItems = {
+                'd1': data_1,
+                'd2': data_2,
+                'lag': Math.floor(d.lag),
+                'coefficient': d.coefficient,
+                'input_id': d.input_id
+            };
+            outputController.create(req, res, outputItems);
+            res.json({'d1':curve,'d2':d});
         })
     }); 
 };
@@ -82,14 +90,18 @@ exports.update = (req, res) => {
     var handler = evalHandler(req.body.curve);
     var new_curve = '';
 
-    new_curve = handler.curve.replace(/x(?!p)/g, "x+("+req.body.lag+")");
+    new_curve = handler.curve.replace(/x(?!p)/g, "x+(-"+req.body.lag+")");
     new_curve = '('+new_curve+')*'+req.body.coefficient
 
     var data = getData(new_curve);
 
     Curve.findOneAndUpdate({'_id': req.body.id},{$set:{"expression":new_curve,"data_objects": data, "curve": req.body.curve,'coefficient':req.body.coefficient,'lag': req.body.lag}}, function(err, curve){
         if(err) throw err;
-        outputController.update(req,res);
+        var outputItems = {
+            'd2': data,
+            'lag': curve.lag
+        };
+        outputController.update(req,res, outputItems);
     });  
 }
 

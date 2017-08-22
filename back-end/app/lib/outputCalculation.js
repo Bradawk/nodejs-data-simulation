@@ -1,7 +1,6 @@
 var pcorrelation = require('./pcorrelation');
 
-function outputCalculation(d1, d2){
-
+function outputCalculation(d1, d2, lag){
     var x = d1
         y = d2;
     
@@ -10,9 +9,16 @@ function outputCalculation(d1, d2){
         y[i] = isFinite(y[i]) ? y[i] : 0.0;
     }
 
-    var corr = pcorrelation(x, y);
+    x = x.slice(0, x.length-lag);
+    y = y.slice(lag, y.length);
 
-    return corr;
+    var corr = pcorrelation(x, y);
+    var data = {
+        'corr': corr,
+        'd1': x,
+        'd2': y
+    }
+    return data;
 }
 
 module.exports = outputCalculation;

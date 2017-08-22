@@ -5,7 +5,8 @@ var express     = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser  = require('body-parser'),
     mongoose    = require('mongoose'),
-    db          = require('./app/models/db');
+    db          = require('./app/models/db'),
+    cors        = require('cors');
 
 // ROUTE REGISTERING
 var index = require('./routes/index');
@@ -18,14 +19,14 @@ var app = express();
 
 app.set('view engine', 'ejs');
 // CORS MIDDLEWARE
-var allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-}
+// var allowCrossDomain = function(req, res, next) {
+//     res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
+//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+//     res.header('Access-Control-Allow-Headers', 'Content-Type');
+//     next();
+// }
 
-app.use(allowCrossDomain);
+app.use(cors());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
