@@ -39,7 +39,8 @@ exports.createRandom = (req, res) => {
                 'types': randCurve.types,
                 'data_objects': data.data1.data,
                 'curve': randCurve.curve,
-                'input_id': input._id
+                'input_id': input._id,
+                'noise': randCurve.noise[0]
             }, (err, c) => {
                 if(err) res.status(500).json({ 'error': err });
                 Curve.create({
@@ -49,7 +50,8 @@ exports.createRandom = (req, res) => {
                     'data_objects': data.data2.data,
                     'curve': randCurve.curve,
                     'input_id': input._id,
-                    'coefficient': randCurve.coefficient
+                    'coefficient': randCurve.coefficient,
+                    'noise': randCurve.noise[1]
                 },(err, d) => {
                     if(err) res.status(500).json({ 'error': err });
                     var outputItems = {

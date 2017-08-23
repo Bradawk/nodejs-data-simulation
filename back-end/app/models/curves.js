@@ -8,8 +8,8 @@ var curveSchema = new Schema({
     data_objects: Array,
     input_id: String,
     types: Array,
-    curve: Array
-
+    curve: Array,
+    noise: Boolean
 });
 
 var Curve = mongoose.model('Curve', curveSchema);

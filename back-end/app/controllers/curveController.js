@@ -78,7 +78,7 @@ exports.create = (req, res) => {
 
 // ## DELETE
 exports.delete = (req, res) => {
-    Curve.remove({'input_id': req.params.id}, function(err, curve){
+    Curve.remove({'input_id': req.params.id},(err, curve) => {
         if(err) res.json(err);
         res.send({"message":"Curve deleted"});
     })
@@ -87,21 +87,26 @@ exports.delete = (req, res) => {
 // ## UPDATE
 exports.update = (req, res) => {
 
-    var handler = evalHandler(req.body.curve);
-    var new_curve = '';
+    Curve.findOne({'_id': req.body.id}, (err, curve) => {
+        var handler = evalHandler(req.body.curve);
+        var new_curve = '';
+        var state = 0;
+        new_curve = handler.curve.replace(/x(?!p)/g, "x+(-"+req.body.lag+")");
+        new_curve = '('+new_curve+')*'+req.body.coefficient;
+        if(curve.noise == true){
+            state = 1;
+        }
+        console.log(state)
+        var data = getData(new_curve, state);
 
-    new_curve = handler.curve.replace(/x(?!p)/g, "x+(-"+req.body.lag+")");
-    new_curve = '('+new_curve+')*'+req.body.coefficient
-
-    var data = getData(new_curve);
-
-    Curve.findOneAndUpdate({'_id': req.body.id},{$set:{"expression":new_curve,"data_objects": data, "curve": req.body.curve,'coefficient':req.body.coefficient,'lag': req.body.lag}}, function(err, curve){
-        if(err) throw err;
-        var outputItems = {
-            'd2': data,
-            'lag': curve.lag
-        };
-        outputController.update(req,res, outputItems);
+        Curve.findOneAndUpdate({'_id': req.body.id},{$set:{"expression":new_curve,"data_objects": data.data, "curve": req.body.curve,'coefficient':req.body.coefficient,'lag': req.body.lag}}, function(err){
+            if(err) throw err;
+            var outputItems = {
+                'd2': data.data,
+                'lag': curve.lag
+            };
+            outputController.update(req,res, outputItems);
+        });
     });  
 }
 
@@ -118,7 +123,8 @@ exports.createRandom = (req, res) => {
         'types': randCurve.types,
         'data_objects': data.data1.data,
         'curve': randCurve.curve,
-        'input_id': req.body.input_id
+        'input_id': req.body.input_id,
+        'noise': randCurve.data.data2.noise
     }, (err, c) => {
         if(err) throw err;
         Curve.create({
@@ -128,7 +134,8 @@ exports.createRandom = (req, res) => {
             'data_objects': data.data2.data,
             'curve': randCurve.curve,
             'input_id': req.body.input_id,
-            'coefficient': randCurve.coefficient
+            'coefficient': randCurve.coefficient,
+            'noise': randCurve.data.data2.noise
         },(err, d) => {
             if(err) throw err;
             var item = {

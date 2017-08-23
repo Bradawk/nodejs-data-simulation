@@ -23,6 +23,7 @@ function randomCurve(){
 
     var data_1 = getData(first_curve, Math.round(Math.random()));
     var data_2 = getData(delta_curve, Math.round(Math.random()));
+    var noise = [data_1.noise, data_2.noise];
 
     var randCurve = {
         'curve': curve,
@@ -31,7 +32,8 @@ function randomCurve(){
         'delta_curve': delta_curve,
         'first_curve': first_curve,
         'lag': lag,
-        'coefficient': coefficient
+        'coefficient': coefficient,
+        'noise': noise
     };
 
     return randCurve;
