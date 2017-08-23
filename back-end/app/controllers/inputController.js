@@ -37,7 +37,7 @@ exports.createRandom = (req, res) => {
             Curve.create({
                 'expression': randCurve.first_curve,
                 'types': randCurve.types,
-                'data_objects': data.data1,
+                'data_objects': data.data1.data,
                 'curve': randCurve.curve,
                 'input_id': input._id
             }, (err, c) => {
@@ -46,7 +46,7 @@ exports.createRandom = (req, res) => {
                     'expression': randCurve.delta_curve,
                     'types': randCurve.types,
                     'lag': randCurve.lag,
-                    'data_objects': data.data2,
+                    'data_objects': data.data2.data,
                     'curve': randCurve.curve,
                     'input_id': input._id,
                     'coefficient': randCurve.coefficient

@@ -111,11 +111,12 @@ exports.update = (req, res) => {
 exports.createRandom = (req, res) => {
 
     var randCurve = randomCurve();  
+    var data = randCurve.data
     // TO DO : REFACTO 
     Curve.create({
         'expression': randCurve.first_curve,
         'types': randCurve.types,
-        'data_objects': randCurve.data.data1,
+        'data_objects': data.data1.data,
         'curve': randCurve.curve,
         'input_id': req.body.input_id
     }, (err, c) => {
@@ -124,14 +125,22 @@ exports.createRandom = (req, res) => {
             'expression': randCurve.delta_curve,
             'types': randCurve.types,
             'lag': randCurve.lag,
-            'data_objects': randCurve.data.data2,
+            'data_objects': data.data2.data,
             'curve': randCurve.curve,
             'input_id': req.body.input_id,
             'coefficient': randCurve.coefficient
         },(err, d) => {
             if(err) throw err;
+            var item = {
+                'input_id': req.body.input_id,
+                'lag': randCurve.lag,
+                'coefficient': randCurve.coefficient,
+                'd1':c.data_objects,
+                'd2':d.data_objects
+            }
             try {
-                outputController.create(req, res);
+                outputController.create(req, res, item);
+                res.json({"curve 1 :": c, "curve 2 :": d});
             } catch (error) {
                 console.log(error);
             }

@@ -1,37 +1,20 @@
 var r = require('./marsaglia-polar');
 
-function noiseGenerator(state,d1,d2){
+function noiseGenerator(state,data){
     var randomNumbers = [];
-    for(var i = 0; i < d1.length; i++){
+    
+    for(var i = 0; i < data.length; i++){
         randomNumbers.push((r.normalRandomInRange(-5,5))*10);
     }
 
-    switch(state){
-        case 1:
-            d1 = d1.map(function (num, idx) {
-                return num + randomNumbers[idx];
-            });
-        break;
-        case 2:
-            d2 = d2.map(function (num, idx) {
-                return num + randomNumbers[idx];
-            });
-        break;
-        case 3:
-            d1 = d1.map(function (num, idx) {
-                return num + randomNumbers[idx];
-            });
-            d2 = d2.map(function (num, idx) {
-                return num + randomNumbers[idx];
-            });
-        break;
-        default:
-            return
+    if(state == 1){
+        data = data.map(function (num, idx) {
+            return num + randomNumbers[idx];
+        });
     }
-
+    
     var result = {
-        "d1": d1,
-        "d2": d2
+        "data": data
     }
 
     return result;
