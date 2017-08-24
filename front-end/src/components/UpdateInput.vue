@@ -26,6 +26,16 @@ export default {
   components: {
       'curve-update-form': CurveUpdateForm
   },
+  beforeCreate(){
+    this.$http.get(process.env.API_URL+'/curve/'+this.$route.params.id)
+      .then(response =>{
+        console.log(response)
+      })
+      .catch((error) =>{
+        this.$router.push('/')
+        console.log(error);
+      })
+  }
 }
 </script>
 

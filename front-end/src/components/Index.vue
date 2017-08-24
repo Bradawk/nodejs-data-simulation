@@ -6,33 +6,38 @@
             <span> {{count}} </span><br>
           </div>
         </div>
-        <loader v-if="isloaded == true"></loader>
-        <div v-else class="row main-content">
-              <div class="col s12">
-                    <form v-on:submit.prevent="addInput">     
-                      <button class="btn left waves-effect"><i class="material-icons">add</i></button>
-                    </form>
-                    <form class="col s6" v-on:submit.prevent="randomizer">
-                      <input class="left col s3" v-model="iNum" type="number" step="1" min="1" placeholder="Number of inputs" required />
-                      <input class="btn left" type="submit" value="Create" />
-                    </form>
-                    <div class="Nfloat"></div>
-                    <div v-if="count">
-                      <transition-group name="slide-fade" tag="p">
-                        <div v-for="i in inputs" v-bind:key="i" class="list-item input-div jumbo col s3">
-                        <div style="background" class="jumbo-head">
-                            <span class="right">
-                                <form v-on:submit.prevent="deleteInput(i._id)"> 
-                                    <input type="submit" value="X" />
-                                </form>
-                            </span>
-                            <div class="Nfloat"></div>
-                        </div>
-                        <inputblock :id="i._id"></inputblock>
-                        </div>
-                      </transition-group>
-                    </div>    
-              </div>
+        <div v-if="error">
+          <img src="/static/img/error.png" />
+        </div>
+        <div v-else>
+          <loader v-if="isloaded == true"></loader>
+          <div v-else class="row main-content">
+                <div class="col s12">
+                      <form v-on:submit.prevent="addInput">     
+                        <button class="btn left waves-effect"><i class="material-icons">add</i></button>
+                      </form>
+                      <form class="col s6" v-on:submit.prevent="randomizer">
+                        <input class="left col s3" v-model="iNum" type="number" step="1" min="1" placeholder="Number of inputs" required />
+                        <input class="btn left" type="submit" value="Create" />
+                      </form>
+                      <div class="Nfloat"></div>
+                      <div v-if="count">
+                        <transition-group name="slide-fade" tag="p">
+                          <div v-for="i in inputs" v-bind:key="i" class="list-item input-div jumbo col s3">
+                          <div style="background" class="jumbo-head">
+                              <span class="right">
+                                  <form v-on:submit.prevent="deleteInput(i._id)"> 
+                                      <input type="submit" value="X" />
+                                  </form>
+                              </span>
+                              <div class="Nfloat"></div>
+                          </div>
+                          <inputblock :id="i._id"></inputblock>
+                          </div>
+                        </transition-group>
+                      </div>    
+                </div>
+          </div>
         </div>
   </div>
 </template>
@@ -49,7 +54,7 @@ export default {
   data () {
     return {
       inputs: [],
-      errors: [],
+      error: '',
       count: '',
       isloaded: '',
       iNum: ''
@@ -64,7 +69,10 @@ export default {
         this.inputs = inputResponse.data;
         this.count = this.inputs.length;
         this.isloaded = false;
-    }));
+    }))
+    .catch((error)=> {
+        this.error = error;
+    });
   },
 
   methods: {
@@ -74,6 +82,9 @@ export default {
             this.inputs.push(response.data);
             this.count = this.inputs.length;
             Materialize.toast('Input added successfully !', 2000);
+          })
+          .catch((error) =>{
+            Materialize.toast(error, '2000');
           })
       },
       deleteInput(id){
@@ -86,9 +97,9 @@ export default {
             .then(response => {
                 this.curvesCount = response.data.length;
             })
-            .catch(function (error) {
-                console.log(error);
-            });
+            .catch((error) =>{
+              Materialize.toast(error, '2000');
+            })
             Materialize.toast('Input, Output and associated curves deleted','2000');
           })
       },
@@ -105,7 +116,7 @@ export default {
               this.$router.go('/');
             })
           .catch(function(error){
-            console.log(error);
+            Materialize.toast(error, '2000');
           });
         }
       }

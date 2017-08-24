@@ -8,7 +8,7 @@ mongoose.connect('mongodb://'+config.db_user_name+':'+config.db_user_password+'@
 var db = mongoose.connection;
 
 db.on('error', function(err) {
-  console.error('✘ CANNOT CONNECT TO MongoDB DATABASE !'.red, dbname.blue, err);
+  console.error('✘ CANNOT CONNECT TO MongoDB DATABASE !'.red, config.db_name.blue, err);
 });
 db.on('disconnected', function() {
   console.log('✘ DISCONNECTED from MongoDB DATABASE !'.red);

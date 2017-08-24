@@ -12,17 +12,16 @@ var randomCurve = require('../lib/randomCurve')
 
 var math = require('mathjs');
 
-// ### FIND VOIR STREAM
 exports.find = (req, res) => {
     Curve.findOne({'_id': req.params.id}, function(err, curve){
-        if(err) res.json(err);
+        if(err) res.status(400).json({"message":"No curve with the given ID.","error": err});;
         res.json(curve);
     });
 };
 
 exports.findAll = (req, res) => {
     Curve.find({}, function(err, curves){
-        if(err) res.json(err);
+        if(err) res.status(500).json({"message":"Something went wrong.","error": err});;
         res.json(curves);
     });
 };
@@ -49,29 +48,31 @@ exports.create = (req, res) => {
         'expression': handler.curve,
         'input_id': req.body.input_id,
         'types': handler.types,
-        'data_objects': data_1,
-        'curve': req.body.curve
+        'data_objects': data_1.data,
+        'curve': req.body.curve,
+        'noise': false
     }, (err, curve) => {
-        if(err) res.json(err);
+        if(err) res.status(400).json({"message":"Something went wrong during the creation of the first curve.","error": err});
         Curve.create({
             'expression': delta_curve,
             'input_id': req.body.input_id,
             'types': handler.types,
             'lag': req.body.lag,
             'coefficient': req.body.coefficient,
-            'data_objects': data_2,
-            'curve': req.body.curve
+            'data_objects': data_2.data,
+            'curve': req.body.curve,
+            'noise':false
         },(err, d) => {
-            if(err) console.log(err);
+            if(err) res.status(400).json({"message":"Something went wrong during the creation of the second curve.","error": err});
             var outputItems = {
-                'd1': data_1,
-                'd2': data_2,
+                'd1': curve.data_objects,
+                'd2': d.data_objects,
                 'lag': Math.floor(d.lag),
                 'coefficient': d.coefficient,
                 'input_id': d.input_id
             };
             outputController.create(req, res, outputItems);
-            res.json({'d1':curve,'d2':d});
+            res.json({"message":"Input, curves and output created with success."});
         })
     }); 
 };
@@ -79,15 +80,15 @@ exports.create = (req, res) => {
 // ## DELETE
 exports.delete = (req, res) => {
     Curve.remove({'input_id': req.params.id},(err, curve) => {
-        if(err) res.json(err);
+        if(err) res.json({"message":"Something went wrong during the deletion.","error": err});
         res.send({"message":"Curve deleted"});
-    })
+    });
 }
 
 // ## UPDATE
 exports.update = (req, res) => {
-
     Curve.findOne({'_id': req.body.id}, (err, curve) => {
+        if(err) res.status(400).json({"message":"No curve with the given ID.","error": err})
         var handler = evalHandler(req.body.curve);
         var new_curve = '';
         var state = 0;
@@ -100,7 +101,7 @@ exports.update = (req, res) => {
         var data = getData(new_curve, state);
 
         Curve.findOneAndUpdate({'_id': req.body.id},{$set:{"expression":new_curve,"data_objects": data.data, "curve": req.body.curve,'coefficient':req.body.coefficient,'lag': req.body.lag}}, function(err){
-            if(err) throw err;
+            if(err) res.status(400).json({"message":"No curve with the given ID.","error": err});
             var outputItems = {
                 'd2': data.data,
                 'lag': curve.lag
@@ -126,7 +127,7 @@ exports.createRandom = (req, res) => {
         'input_id': req.body.input_id,
         'noise': randCurve.data.data2.noise
     }, (err, c) => {
-        if(err) throw err;
+        if(err) res.status(400).json({"message":"Something went wrong during the creation of the first curve.","error": err});
         Curve.create({
             'expression': randCurve.delta_curve,
             'types': randCurve.types,
@@ -137,7 +138,7 @@ exports.createRandom = (req, res) => {
             'coefficient': randCurve.coefficient,
             'noise': randCurve.data.data2.noise
         },(err, d) => {
-            if(err) throw err;
+            if(err) res.status(400).json({"message":"Something went wrong during the creation of the second curve.","error": err});
             var item = {
                 'input_id': req.body.input_id,
                 'lag': randCurve.lag,

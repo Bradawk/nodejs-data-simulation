@@ -20,7 +20,7 @@ function evalHandler(curve){
             expressions.push(e.params.poly);
 
         }else if(e.value == "noise"){
-            expressions.push('Math.random()*('+e.params.max+'-'+e.params.min+')-'+e.params.min);
+            expressions.push('Math.random()*('+e.params.max+'-'+e.params.min+')+'+e.params.min);
             
         }else{
             expressions.push('');

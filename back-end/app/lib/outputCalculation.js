@@ -9,8 +9,8 @@ function outputCalculation(d1, d2, lag){
         y[i] = isFinite(y[i]) ? y[i] : 0.0;
     }
 
-    x = x.slice(0, x.length-lag);
-    y = y.slice(lag, y.length);
+    x = x.slice(0, x.length-Math.floor(lag));
+    y = y.slice(Math.floor(lag), y.length);
 
     var corr = pcorrelation(x, y);
     var data = {

@@ -11,4 +11,9 @@ router.route('/delete/:id')
 router.route('/random')
   .post(inputController.createRandom);
 
+router.route('/:id')
+  .get(inputController.findOne);
+
+
+
 module.exports = router;

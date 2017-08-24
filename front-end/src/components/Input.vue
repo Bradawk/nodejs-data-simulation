@@ -6,15 +6,12 @@
                 <span>{{$route.params.id}} </span><br>
             </div>
         </div>
-        <div v-if="curves.length != 0">
+        <div>
             <loader v-if="isloaded == true"></loader>
             <div v-else class="container">
                 <curve></curve>
                 <output-block></output-block>
             </div>
-        </div>
-        <div class="container jumbo" v-else>
-            <h1> No inputs with that ID </h1>
         </div>
     </div>
 </template>
@@ -44,6 +41,10 @@ export default {
         this.isloaded = true;
         this.$http.get(process.env.API_URL+'/input/curves/'+this.$route.params.id)
         .then(response => {
+            if(response.data.length == 0){
+                Materialize.toast('No input with the given ID.','2000');
+                this.$router.push('/');
+            }
             this.isloaded = false;
             this.curves = response.data;
             console.log(this.curves)

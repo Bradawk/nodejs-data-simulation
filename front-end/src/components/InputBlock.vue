@@ -26,6 +26,7 @@ export default {
   },
   mounted(){
     this.getCurves(this.id);
+    this.$emit('curveCount');
   },
   methods: {
       getCurves(id){

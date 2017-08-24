@@ -104,6 +104,9 @@
                      <div v-if="i.value == 'polynomial'">
                         <p> {{"Polynomial expression : "+i.params.poly}} </p>
                      </div>
+                     <div v-if="i.value == 'noise'">
+                        <p> {{"Minimum : "+i.params.min}} | {{"Maximum : "+i.params.max}}  </p>
+                     </div>
                   </div>
                </transition-group>
                <span> {{"Lag : "+lag}} </span><br>
@@ -147,12 +150,12 @@ export default {
   },
   created(){
     this.isloaded = false;
-    this.curve.push({value:'gaussian', params:{'mu':'', 'sigma':'', 'delta':'','coef':''}});
+    this.curve.push({value:'gaussian', params:{'mu':'', 'sigma':'', 'delta':'','coef':'','min':'','max':'','lambda':''}});
   },
 
   methods: {
     addType(){
-            this.curve.push({value:'gaussian', params:{'mu':'', 'sigma':'', 'lambda':'','delta':'','coef':'','poly':''}});
+            this.curve.push({value:'gaussian', params:{'mu':'', 'sigma':'', 'lambda':'','delta':'','coef':'','poly':'','min':'','max':''}});
         },
     addCurve(){
         this.isloaded = true;

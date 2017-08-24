@@ -8,8 +8,15 @@ var async = require('async');
 
 exports.index = (req, res) => {
     Input.find({}).lean().exec((err, inputs) => {
-        if(err) res.status(500).json({ 'error': err });
+        if(err) res.status(500).json({ 'message':'Something went wrong.', 'error': err });
         res.json(inputs);
+    });
+};
+
+exports.findOne = (req, res) => {
+    Input.findOne({'_id': req.params.id},(err, input) => {
+        if(err) res.status(400).json({ 'message':'No input with the given ID.', 'error': err });
+        res.json(input);
     });
 };
 
@@ -18,7 +25,7 @@ exports.create = (req, res) => {
         'created_at' : Date.now(),
         'updated_at': Date.now()
     }, function(err, input){
-        if(err) res.send('Error');
+        if(err) res.status(400).json({ 'message':'Something went wrong during the creation of the input.', 'error': err });
         res.json(input);
     });  
 };
@@ -29,7 +36,7 @@ exports.createRandom = (req, res) => {
             'created_at' : Date.now(),
             'updated_at': Date.now()
         }, function(err, input){
-            if(err) res.status(500).json({ 'error': err });
+            if(err) res.status(400).json({ 'message': 'Something went wrong during the creation of the input','error': err });
             var randCurve = randomCurve();
             var data = randCurve.data;
             req.body.input_id = input._id;
@@ -42,7 +49,7 @@ exports.createRandom = (req, res) => {
                 'input_id': input._id,
                 'noise': randCurve.noise[0]
             }, (err, c) => {
-                if(err) res.status(500).json({ 'error': err });
+                if(err) res.status(400).json({"message":"Something went wrong during the creation of the first curve.","error": err});
                 Curve.create({
                     'expression': randCurve.delta_curve,
                     'types': randCurve.types,
@@ -53,7 +60,7 @@ exports.createRandom = (req, res) => {
                     'coefficient': randCurve.coefficient,
                     'noise': randCurve.noise[1]
                 },(err, d) => {
-                    if(err) res.status(500).json({ 'error': err });
+                    if(err) res.status(400).json({"message":"Something went wrong during the creation of the second curve.","error": err});
                     var outputItems = {
                         'd1': c.data_objects,
                         'd2': d.data_objects,
@@ -67,6 +74,7 @@ exports.createRandom = (req, res) => {
             next(err, input);
         }); 
     },function(err, inputs) {
+        if(err) res.status(400).json({"message":"Something went wrong during the random creation.","error": err});
         res.json(inputs);
     });
 }
@@ -74,11 +82,11 @@ exports.createRandom = (req, res) => {
 
 exports.delete = (req, res) => {
     Output.remove({'input_id': req.params.id}, function(err, output){
-        if(err) throw err;
+        if(err) res.status(400).json({"message":"Something went wrong during the deletion of the output.","error": err});
         Curve.remove({'input_id': req.params.id}, function(err, curve){
-        if(err) throw err;
+        if(err) res.status(400).json({"message":"Something went wrong during the deletion of the curves.","error": err});
             Input.remove({'_id': req.params.id}, function (err, input){
-                if(err) throw err;
+                if(err) res.status(400).json({"message":"Something went wrong during the deletion of the input.","error": err});
                 res.json(input);
             })
         })
