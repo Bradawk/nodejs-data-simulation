@@ -70,6 +70,9 @@ export default {
       .then(this.$http.spread((inputResponse) => {
         this.inputs = inputResponse.data;
         this.count = this.inputs.length;
+        if(this.count == 0){
+          this.isloaded = false;
+        }
     }))
     .catch((error)=> {
         this.error = error;
@@ -116,7 +119,6 @@ export default {
           this.$http.post(process.env.API_URL+'/input/random',{'iNum':this.iNum})
           .then(response => {
               this.isloaded = false;
-              console.log(response);
               this.$router.go('/');
             })
           .catch(function(error){

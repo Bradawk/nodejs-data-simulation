@@ -4,21 +4,21 @@
     <div class="col s12 jumbo">
         <div class="row">
             <div>
-                <div class="col s6" v-for="c in curves">
-                    <span> ID : {{c._id}} </span><br>
-                    <span> Types : {{c.types}} </span><br>
-                    <span v-if="c.lag"> Delta : {{c.lag}} </span><br>
-                    <span v-if="c.coefficient"> Coefficient : {{c.coefficient}} </span><br>
-                    <div>
-                        <router-link v-if="c.lag" class="btn right" :to="{ name: 'UpdateInput', params: { id: c._id }}">Update curve<i class="material-icons left">edit</i></router-link><br>
-                        <div class="Nfloat"></div>
-                    </div>
-                </div>   
                 <div class="chart">
                     <div>
                         <function-plot></function-plot>
                     </div>
                 </div>  
+                <div class="col s6" v-for="c in curves">
+                    <div style="margin-bottom: 5%;">
+                        <span> ID : {{c._id}} </span><br>
+                    </div>
+                    <div class="Nfloat"></div>
+                    <div>
+                        <router-link v-if="c.lag" class="btn btn-floatin" :to="{ name: 'UpdateInput', params: { id: c._id }}">Update curve<i class="material-icons left">edit</i></router-link><br>
+                    </div>
+                </div>   
+                
             </div>
         </div>
     </div>
@@ -29,7 +29,6 @@
 
 <script>
 import Chart from './Chart'
-
 export default {
     
   name: 'curve',
@@ -52,3 +51,9 @@ export default {
   },
 }
 </script>
+<style scoped>
+    div{
+        text-align: center;
+    }
+
+</style>

@@ -20,7 +20,7 @@ lib-cov
 coverage
 
 # Conf Variables
-back-end/conf/
+back-end/conf/config.js
 
 # nyc test coverage
 .nyc_output

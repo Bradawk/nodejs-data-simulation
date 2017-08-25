@@ -6,8 +6,8 @@
                 <div>
                     <h5> Output </h5>
                     <div>  
-                        <span>Pearson Correlation : {{output.pcorr}}</span><br>
-                        <span>Delta : {{output.delta}}</span><br>
+                        <span style="color: #6ED3C9">Pearson Correlation : </span> <span> {{output.pcorr}}</span><br>
+                        <span style="color: #6ED3C9">Delta : </span><span>{{output.delta}}</span><br>
                     </div>
                 </div>
             </div>
@@ -42,4 +42,5 @@ export default {
 .row div span{
     text-align: left;
 }
+
 </style>

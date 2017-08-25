@@ -19,3 +19,20 @@
   coeff : [1000-500000]  
   sigma : [20-500]  
   mu : [0-2880]
+
+
+### CONFIGURATION FILE
+
+Create back-end/app/conf/config.js
+Copy - Paste :
+<pre>
+  var config = {};
+
+  config.db_name =  '';
+  config.db_user_name = '';
+  config.db_user_password = '';
+  config.host = '';
+
+  module.exports = config;
+
+</pre>
