@@ -7,7 +7,9 @@
             </div>
         </div>
         <div>
-            <loader v-if="isloaded == true"></loader>
+            <div v-if="isloaded == true" class="black-screen">
+                <loader></loader>
+            </div>
             <div v-else class="container">
                 <curve></curve>
                 <output-block></output-block>

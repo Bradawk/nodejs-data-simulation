@@ -228,3 +228,16 @@ select{
 .btn-floating{
 	margin-top: 5%;
 }
+
+/* OVERLAY */ 
+
+.black-screen{
+    position:fixed;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    z-index:9999;
+    opacity: 0.5;
+    background: black;
+}

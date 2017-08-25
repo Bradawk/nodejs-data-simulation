@@ -1,6 +1,8 @@
 <template>
   <div>
-    <loader v-if="isloaded == true"></loader>
+      <div v-if="isloaded == true" class="black-screen">
+          <loader></loader>
+      </div>
       <div v-else class="container">
             <div>
               <h2> Update your curve </h2>

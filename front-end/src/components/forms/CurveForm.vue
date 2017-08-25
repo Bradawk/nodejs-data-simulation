@@ -1,6 +1,8 @@
 <template>
     <div>
-   <loader v-if="isloaded == true"></loader>
+   <div v-if="isloaded == true" class="black-screen">
+        <loader></loader>
+    </div>
    <div v-else class="col s12 jumbo">
       <div class="row">
          <div>

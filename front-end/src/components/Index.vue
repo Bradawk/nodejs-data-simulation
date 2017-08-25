@@ -1,5 +1,8 @@
 <template>
   <div>
+        <div v-if="isloaded == true" class="black-screen">
+          <loader></loader>
+        </div>
         <div class="row header-resume">
           <div class="col s2">
             <small> Total of inputs </small><br>
@@ -10,8 +13,7 @@
           <img src="/static/img/error.png" />
         </div>
         <div v-else>
-          <loader v-if="isloaded == true"></loader>
-          <div v-else class="row main-content">
+          <div class="row main-content">
                 <div class="col s12">
                       <form v-on:submit.prevent="addInput">     
                         <button class="btn left waves-effect"><i class="material-icons">add</i></button>
@@ -68,7 +70,6 @@ export default {
       .then(this.$http.spread((inputResponse) => {
         this.inputs = inputResponse.data;
         this.count = this.inputs.length;
-        this.isloaded = false;
     }))
     .catch((error)=> {
         this.error = error;

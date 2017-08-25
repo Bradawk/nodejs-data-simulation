@@ -26,7 +26,7 @@ export default {
       isloaded: ''
     }
   },
-  mounted(){
+  beforeMount(){
     this.getCurves(this.id);
   },
   methods: {
@@ -35,11 +35,11 @@ export default {
         this.$http.get(process.env.API_URL+'/input/curves/'+id)
         .then(response => {
             this.curve = response.data;
-            this.$emit('curveCount')
         })
         .catch(function (error) {
             console.log(error);
         });
+        this.$emit('curveCount');
       }
   }
 }

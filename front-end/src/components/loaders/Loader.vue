@@ -32,7 +32,7 @@ h1:before {
     overflow: hidden;
     max-width: 7em;
     white-space: nowrap;
-    color: #F6AF95;
+    color: #black;
     animation: loading 2s infinite;
 }
 @keyframes loading {
