@@ -32,7 +32,7 @@
                               </span>
                               <div class="Nfloat"></div>
                           </div>
-                          <inputblock :id="i._id"></inputblock>
+                          <inputblock :id="i._id" v-on:curveCount="loaded"></inputblock>
                           </div>
                         </transition-group>
                       </div>    
@@ -76,6 +76,9 @@ export default {
   },
 
   methods: {
+      loaded(){
+        this.isloaded = false;
+      },
       addInput(){
           this.$http.post(process.env.API_URL)
           .then(response => {
