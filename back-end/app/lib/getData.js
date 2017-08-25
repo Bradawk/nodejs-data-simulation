@@ -1,6 +1,12 @@
 var math = require('mathjs');
 var noiseGenerator = require('./noiseGenerator');
 
+/**
+ * Return an Array of data objects according to a given mathematical expression.
+ * 
+ * @param {String} math_exp 
+ * @param {Integer} state 
+ */
 function getData(math_exp, state){
     
     if (typeof state === 'undefined') { state = 0; }

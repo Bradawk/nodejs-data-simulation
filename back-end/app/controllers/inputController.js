@@ -6,6 +6,11 @@ var outputController  = require('./outputController');
 var randomCurve = require('../lib/randomCurve');
 var async = require('async');
 
+/**
+ * GET REQUEST '/' retrieves all inputs.
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.index = (req, res) => {
     Input.find({}).lean().exec((err, inputs) => {
         if(err) res.status(500).json({ 'message':'Something went wrong.', 'error': err });
@@ -13,6 +18,11 @@ exports.index = (req, res) => {
     });
 };
 
+/**
+ * GET REQUEST '/input/id' retrieves one inputs.
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.findOne = (req, res) => {
     Input.findOne({'_id': req.params.id},(err, input) => {
         if(err) res.status(400).json({ 'message':'No input with the given ID.', 'error': err });
@@ -20,6 +30,11 @@ exports.findOne = (req, res) => {
     });
 };
 
+/**
+ * POST REQUEST '/' creates an input.
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.create = (req, res) => {
     Input.create({
         'created_at' : Date.now(),
@@ -30,6 +45,11 @@ exports.create = (req, res) => {
     });  
 };
 
+/**
+ * POST REQUEST '/input' creates a defined number of input.
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.createRandom = (req, res) => {
     async.times(req.body.iNum, function(n, next){
         Input.create({
@@ -79,7 +99,11 @@ exports.createRandom = (req, res) => {
     });
 }
 
-
+/**
+ * DELETE REQUEST '/delete/:id' deletes an input.
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.delete = (req, res) => {
     Output.remove({'input_id': req.params.id}, function(err, output){
         if(err) res.status(400).json({"message":"Something went wrong during the deletion of the output.","error": err});
@@ -93,6 +117,11 @@ exports.delete = (req, res) => {
     });
 }
 
+/**
+ * GET REQUEST '/curves/:id' retrieves curves from an input.
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.getCurves = (req, res) => {
     Curve.find({'input_id': req.params.id}, function(err, curves){
         if(err){

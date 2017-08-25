@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="container">
+    <div>
         <div class="col s12 jumbo">
             <div class="row">
                 <div>

@@ -1,6 +1,10 @@
 
-/* CONDITION + ENTIRE EVAL */
 
+/**
+ * Build a mathematical expression according to given curve types.
+ * 
+ * @param {Array} curve 
+ */
 function evalHandler(curve){
 
     var expressions = [],

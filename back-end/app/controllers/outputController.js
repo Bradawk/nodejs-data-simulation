@@ -4,6 +4,11 @@ var Curve = require('../models/curves.js');
 var pcorrelation = require('../lib/pcorrelation');
 var outputCalculation = require('../lib/outputCalculation');
 
+/**
+ * GET REQUEST '/output/:id' retrieves an output.
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.findOne = (req, res) => {
     Output.findOne({'_id': req.params.id}, function(err, output){
         if(err) res.status(400).json({"message":"No output with the given ID.","error": err});
@@ -11,6 +16,11 @@ exports.findOne = (req, res) => {
     });
 };
 
+/**
+ * GET REQUEST '/output' retrieves all outputs.
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.find = (req, res) => {
     Output.find({}, function(err, outputs){
         if(err){
@@ -23,6 +33,11 @@ exports.find = (req, res) => {
     });
 };
 
+/**
+ * GET REQUEST '/output/input/:id' retrieves the output of an input.
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.findByInput = (req, res) => {
     Output.findOne({'input_id': req.params.id}, function(err, output){
         if(err) res.status(400).json({"message":"No output for that input.","error": err});
@@ -30,6 +45,11 @@ exports.findByInput = (req, res) => {
     });
 };
 
+/**
+ * POST REQUEST '/output' creates an output.
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.create = (req, res, item) => {
     Curve.find({'input_id': item.input_id}, (err, curves) => {
         if(err) res.status(400).json({"message":"No curve in that input.","error": err});
@@ -42,6 +62,11 @@ exports.create = (req, res, item) => {
     })
 }
 
+/**
+ * GET REQUEST '/output/:id' updates an output.
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.update = (req, res, item) => {
     Curve.find({'input_id': req.body.input_id}, (err, curves) => {
         if(err) res.status(400).json({"message":"No curves in that input.","error": err});

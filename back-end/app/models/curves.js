@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+/**
+ * Curve model schema.
+ */
 var curveSchema = new Schema({
     expression: String,
     lag: Number,

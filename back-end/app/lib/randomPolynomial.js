@@ -1,3 +1,8 @@
+
+/**
+ * Build a string of a random polynomial expression.
+ * @param {Number} degree 
+ */
 function randomPolynomial(degree){
     var poly = '';
     for(var i = degree; i > 0; i--){

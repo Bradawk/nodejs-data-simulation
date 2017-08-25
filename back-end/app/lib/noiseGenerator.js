@@ -1,5 +1,10 @@
 var r = require('./marsaglia-polar');
 
+/**
+ * Add noise to a data.
+ * @param {Integer} state 
+ * @param {Array} data 
+ */
 function noiseGenerator(state,data){
     var randomNumbers = [];
 

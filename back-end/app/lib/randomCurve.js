@@ -2,6 +2,9 @@ var evalHandler = require('./evalHandler');
 var getData = require('./getData');
 var randomExclude = require('./randomExclude');
 
+/**
+ * Build a random curve.
+ */
 function randomCurve(){
     var curve = [];
     var lag = Math.random() * (1400 - 1) + 1;

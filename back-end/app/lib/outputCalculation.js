@@ -1,5 +1,11 @@
 var pcorrelation = require('./pcorrelation');
 
+/**
+ * Compute the output of an input returning two datasets and a correlation coefficient.
+ * @param {Array} d1 
+ * @param {Array} d2 
+ * @param {Number} lag 
+ */
 function outputCalculation(d1, d2, lag){
     var x = d1
         y = d2;

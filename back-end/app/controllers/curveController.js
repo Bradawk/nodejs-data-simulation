@@ -3,8 +3,6 @@ var Output = require('../models/outputs.js');
 var isEmptyObject = require('../lib/empty');
 var evalHandler = require('../lib/evalHandler');
 var getData = require('../lib/getData');
-var carrier = require('../lib/getCarrier');
-var poly = require('../lib/randomPolynomial');
 var outputCalculation = require('../lib/outputCalculation');
 var outputController = require('./outputController');
 var randomCurve = require('../lib/randomCurve')
@@ -12,6 +10,11 @@ var randomCurve = require('../lib/randomCurve')
 
 var math = require('mathjs');
 
+/**
+ * GET REQUEST '/curve/:id' retrieve on input.
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.find = (req, res) => {
     Curve.findOne({'_id': req.params.id}, function(err, curve){
         if(err) res.status(400).json({"message":"No curve with the given ID.","error": err});;
@@ -19,6 +22,11 @@ exports.find = (req, res) => {
     });
 };
 
+/**
+ * GET REQUEST '/curve' retrieve all curves.
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.findAll = (req, res) => {
     Curve.find({}, function(err, curves){
         if(err) res.status(500).json({"message":"Something went wrong.","error": err});;
@@ -26,7 +34,11 @@ exports.findAll = (req, res) => {
     });
 };
 
-// ### CREATE
+/**
+ * POST REQUEST '/curve' create input curves and associated output.
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.create = (req, res) => {
     Curve.findOne({'input_id': req.body.input_id},(err, curve) => {
         if(curve){
@@ -83,7 +95,11 @@ exports.create = (req, res) => {
     
 };
 
-// ## DELETE
+/**
+ * DELETE REQUEST '/curve/:id' delete a curve.
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.delete = (req, res) => {
     Curve.remove({'input_id': req.params.id},(err, curve) => {
         if(err) res.json({"message":"Something went wrong during the deletion.","error": err});
@@ -91,7 +107,11 @@ exports.delete = (req, res) => {
     });
 }
 
-// ## UPDATE
+/**
+ * PUT REQUEST '/curve/:id' update a curve.
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.update = (req, res) => {
     Curve.findOne({'_id': req.body.id}, (err, curve) => {
         if(err) res.status(400).json({"message":"No curve with the given ID.","error": err})
@@ -118,8 +138,11 @@ exports.update = (req, res) => {
 }
 
 
-// ## RANDOMIZER
-
+/**
+ * POST REQUEST '/random' create random curves.
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.createRandom = (req, res) => {
     Curve.findOne({'input_id': req.body.input_id},(err, curve) => {
         if(curve){
@@ -127,7 +150,6 @@ exports.createRandom = (req, res) => {
         }else{
             var randCurve = randomCurve();  
             var data = randCurve.data
-            // TO DO : REFACTO 
             Curve.create({
                 'expression': randCurve.first_curve,
                 'types': randCurve.types,
@@ -162,7 +184,7 @@ exports.createRandom = (req, res) => {
                         console.log(error);
                     }
                 })
-    });
+            });
         }
     });
 }
