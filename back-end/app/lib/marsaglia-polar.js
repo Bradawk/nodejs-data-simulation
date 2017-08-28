@@ -1,5 +1,8 @@
 var spareRandom = null;
 
+/**
+ * Return a random value fitting a normal distribution
+ */
 function normalRandom()
 {
 	var val, u, v, s, mul;
@@ -28,6 +31,11 @@ function normalRandom()
 	return val / 14;	// 7 standard deviations on either side
 }
 
+/**
+ * Return a random value between min and max fitting a normal distribution
+ * @param {Float} min
+ * @param {Float} min
+ */
 exports.normalRandomInRange = function(min, max)
 {
 	var val;
