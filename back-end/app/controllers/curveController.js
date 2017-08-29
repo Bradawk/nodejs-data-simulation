@@ -112,7 +112,7 @@ exports.delete = (req, res) => {
  * @param {Object} req
  * @param {Object} res
  */
-exports.update = (req, res) => {
+exports.update = (req, res, next) => {
     Curve.findOne({'_id': req.body.id}, (err, curve) => {
         if(err) res.status(400).json({"message":"No curve with the given ID.","error": err})
         var handler = evalHandler(req.body.curve);
@@ -132,7 +132,8 @@ exports.update = (req, res) => {
                 'd2': data.data,
                 'lag': curve.lag
             };
-            outputController.update(req,res, outputItems);
+            outputController.update(req,res, outputItems, next);
+            res.json({"message":"Curve Updated with success", 'curve': curve});
         });
     });  
 }

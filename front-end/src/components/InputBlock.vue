@@ -7,9 +7,6 @@
       <div v-else class="input-link">
         <router-link :to="{ name: 'AddInput', params: { id: id }}">Add Curves<i class="material-icons left">add</i></router-link><br>
       </div>
-      <div class="input-details">
-          <span> Number of curves : {{curve.length}}</span><br>
-      </div>
     </div>
 </div>
 </template>

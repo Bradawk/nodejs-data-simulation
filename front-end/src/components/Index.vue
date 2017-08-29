@@ -86,12 +86,12 @@ export default {
       addInput(){
           this.$http.post(process.env.API_URL)
           .then(response => {
-            this.inputs.push(response.data);
+            this.inputs.push(response.data.input);
             this.count = this.inputs.length;
-            Materialize.toast('Input added successfully !', 2000);
+            Materialize.toast(response.data.message, '3000');
           })
           .catch((error) =>{
-            Materialize.toast(error, '2000');
+            Materialize.toast(error, '3000');
           })
       },
       deleteInput(id){
@@ -100,15 +100,11 @@ export default {
             var index = this.inputs.findIndex(input => input._id === id);
             this.inputs.splice(index, 1);
             this.count = this.inputs.length;
-            this.$http.get(process.env.API_URL+"/curve")
-            .then(response => {
-                this.curvesCount = response.data.length;
+            Materialize.toast(response.data.message,'3000');
             })
             .catch((error) =>{
               Materialize.toast(error, '2000');
-            })
-            Materialize.toast('Input, Output and associated curves deleted','2000');
-          })
+            });
       },
       randomizer(e){
         if(this.iNum > 1000){
