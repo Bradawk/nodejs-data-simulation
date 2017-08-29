@@ -82,8 +82,14 @@ exports.createRandom = (req, res) => {
                     if(err) res.status(400).json({"message":"Something went wrong during the creation of the second curve.","error": err});
                     var output = outputCalculation(c.data_objects, d.data_objects, d.lag);
                     var data = {'data1':output.d1,'data2':output.d2}
-                    Output.create({'input_id': input._id, 'pcorr': output.corr, 'delta': Math.floor(d.lag), 'data':data}, (err, output) => {
+                    Output.create({
+                        'input_id': input._id,
+                        'pcorr': output.corr,
+                        'delta': Math.floor(d.lag),
+                        'data':data
+                    }, (err, output) => {
                         if(err) res.status(400).json({"message":"Something went wrong during the output creation.","error": err});
+                        res.end()
                     });
                 });
             });
@@ -97,7 +103,7 @@ exports.createRandom = (req, res) => {
         });
     }, function(err, inputs){
         if(err) res.status(400).json({"message":"Something went wrong during the random creation.","error": err});
-        res.json(inputs);
+        res.end();
     });
 }
 
