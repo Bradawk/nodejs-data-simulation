@@ -23,7 +23,7 @@ export default {
       isloaded: ''
     }
   },
-  beforeMount(){
+  mounted(){
     this.getCurves(this.id);
   },
   methods: {

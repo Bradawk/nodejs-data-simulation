@@ -67,14 +67,14 @@ exports.create = (req, res, item) => {
  * @param {Object} req
  * @param {Object} res
  */
-exports.update = (req, res, item) => {
+exports.update = (req, res, item, next) => {
     Curve.find({'input_id': req.body.input_id}, (err, curves) => {
         if(err) res.status(400).json({"message":"No curves in that input.","error": err});
         var output = outputCalculation(curves[0].data_objects, item.d2, item.lag);
         var data = {'data1':output.d1,'data2':output.d2};
         Output.findOneAndUpdate({'input_id': req.body.input_id},{$set:{'pcorr': output.corr, 'delta': Math.floor(item.lag), 'data':data}}, (err, output) => {
             if(err) res.status(400).json({"message":"Something went wrong during output update.","error": err});
-            res.json(output);
+            next(null);
         });
     })
 }

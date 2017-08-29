@@ -19,16 +19,13 @@ export default {
   components: {
     'curveform': CurveForm,
   },
-  beforeCreate(){
+  mounted(){
     this.$http.get(process.env.API_URL+'/input/'+this.$route.params.id)
       .then(response =>{
-        if(response.data == null){
-          Materialize.toast('The input you\'re looking for doesn\'t exist...','2000');
-          this.$router.push('/');
-        }
+        console.log(response);
       })
       .catch((error) =>{
-        Materialize.toast(error, '2000');
+        Materialize.toast('The input you\'re looking for doesn\'t exist...','2000');
         this.$router.push('/')
       })
   }

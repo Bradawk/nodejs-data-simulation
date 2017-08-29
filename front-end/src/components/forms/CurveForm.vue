@@ -132,7 +132,6 @@ export default {
   data () {
     return {
         curve: [],
-        curves: [],
         lag: '',
         coefficient: '',
         isloaded: ''
@@ -163,8 +162,7 @@ export default {
         this.isloaded = true;
         this.$http.post(process.env.API_URL+'/curve',{'curve':this.curve,'input_id':this.$route.params.id,'lag': this.lag, 'coefficient': this.coefficient})
             .then(response => {
-                this.curves.push(response.data);
-                this.$router.go('/input/'+this.$route.params.id);
+                this.$router.push('/input/'+this.$route.params.id);
             })
             .catch(function (error) {
                 console.log(error);
@@ -175,7 +173,7 @@ export default {
         this.$http.post(process.env.API_URL+'/curve/random',{'input_id':this.$route.params.id})
         .then(response => {
             this.isloaded = false;
-            this.$router.go('/');
+            this.$router.push('/input/'+this.$route.params.id);
         })
         .catch(function (error) {
             console.log(error);
