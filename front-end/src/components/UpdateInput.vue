@@ -26,7 +26,7 @@ export default {
   components: {
       'curve-update-form': CurveUpdateForm
   },
-  beforeCreate(){
+  mounted(){
     this.$http.get(process.env.API_URL+'/curve/'+this.$route.params.id)
       .then(response =>{
         console.log(response)

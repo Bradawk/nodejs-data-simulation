@@ -42,7 +42,7 @@ function cov(array1, array2){
  */
 function pcorrelation(array1, array2){
     var covariance = cov(array1, array2);
-    var corrCoef = covariance/(math.std(array1)*math.std(array2));
+    var corrCoef = Math.round(   (covariance/(math.std(array1)*math.std(array2))) * 1000   ) / 1000;
 
     return corrCoef;
 }

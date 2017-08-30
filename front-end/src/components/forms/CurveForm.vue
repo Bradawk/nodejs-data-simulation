@@ -163,6 +163,7 @@ export default {
         this.$http.post(process.env.API_URL+'/curve',{'curve':this.curve,'input_id':this.$route.params.id,'lag': this.lag, 'coefficient': this.coefficient})
             .then(response => {
                 this.$router.push('/input/'+this.$route.params.id);
+                Materialize.toast(response.data.message, 2000);
             })
             .catch(function (error) {
                 console.log(error);
