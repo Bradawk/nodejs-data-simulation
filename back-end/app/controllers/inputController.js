@@ -12,9 +12,31 @@ var async = require('async');
  * @param {Object} res
  */
 exports.index = (req, res) => {
-    Input.find({}).lean().exec((err, inputs) => {
-        if(err) res.status(500).json({ 'message':'Something went wrong.', 'error': err });
-        res.json(inputs);
+    const limit = 12;
+    var prev = 'http://localhost:3000?page='+(parseInt(req.query.page)-1);
+    if(!req.query.page){
+        prev = null;
+        req.query.page = 1;
+    }else if(req.query.page == 1){
+        prev = null;
+    }
+    Input.find({}, function(err, inputs){
+        Input
+            .find({})
+            .skip((req.query.page - 1) * limit)
+            .limit(limit)
+            .lean()
+            .exec((err, paginatedInput) => {
+            if(err) res.status(500).json({ 'message':'Something went wrong.', 'error': err });
+            res.json({
+                'total': inputs.length,
+                'current_page': req.query.page,
+                'last_page': Math.round(parseInt(inputs.length / limit) + 1),
+                'next_page_url': 'http://localhost:3000?page='+ (parseInt(req.query.page)+1),
+                'prev_page_url': prev,
+                'data': paginatedInput
+            });
+        });
     });
 };
 
@@ -103,7 +125,7 @@ exports.createRandom = (req, res) => {
         });
     }, function(err, inputs){
         if(err) res.status(400).json({"message":"Something went wrong during the random creation.","error": err});
-        res.end();
+        res.send('OK');
     });
 }
 

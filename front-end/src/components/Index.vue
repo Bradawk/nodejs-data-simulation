@@ -23,6 +23,7 @@
                         <input class="btn left" type="submit" value="Create" />
                       </form>
                       <div class="Nfloat"></div>
+                      <v-paginator :resource_url="resource_url" @update="updateResource"></v-paginator>
                       <div v-if="count">
                         <transition-group name="slide-fade" tag="p">
                           <div v-for="i in inputs" v-bind:key="i" class="list-item input-div jumbo col s3">
@@ -37,21 +38,23 @@
                           <inputblock :id="i._id" v-on:curveCount="loaded"></inputblock>
                           </div>
                         </transition-group>
-                      </div>    
+                      </div>
                 </div>
-          </div>
+            </div>
         </div>
   </div>
 </template>
 <script>
 import InputBlock from './InputBlock'
 import Loader from './loaders/Loader'
+import VuePaginator from 'vuejs-paginator'
 
 export default {
   name: 'index',
   components:{
     'inputblock': InputBlock,
-    'loader': Loader
+    'loader': Loader,
+    'VPaginator': VuePaginator
   },
   data () {
     return {
@@ -59,21 +62,20 @@ export default {
       error: '',
       count: '',
       isloaded: '',
-      iNum: ''
+      iNum: '',
+      resource_url: process.env.API_URL,
     }
   },
   mounted(){
     this.isloaded = true;
-    this.$http.all([
-      this.$http.get(process.env.API_URL),
-    ])
-      .then(this.$http.spread((inputResponse) => {
-        this.inputs = inputResponse.data;
-        this.count = this.inputs.length;
+    this.$http.get(process.env.API_URL)
+      .then( response => {
+        this.inputs = response.data.data;
+        this.count = response.data.total;
         if(this.count == 0){
           this.isloaded = false;
         }
-    }))
+    })
     .catch((error)=> {
         this.error = error;
     });
@@ -83,11 +85,14 @@ export default {
       loaded(){
         this.isloaded = false;
       },
+      updateResource(data){
+          this.inputs = data;
+      },
       addInput(){
           this.$http.post(process.env.API_URL)
           .then(response => {
             this.inputs.push(response.data.input);
-            this.count = this.inputs.length;
+            this.count += 1;
             Materialize.toast(response.data.message, '3000');
           })
           .catch((error) =>{
@@ -99,7 +104,7 @@ export default {
           .then(response => {
             var index = this.inputs.findIndex(input => input._id === id);
             this.inputs.splice(index, 1);
-            this.count = this.inputs.length;
+            this.count -= 1;
             Materialize.toast(response.data.message,'3000');
             })
             .catch((error) =>{
