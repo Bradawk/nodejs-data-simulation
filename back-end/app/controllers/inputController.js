@@ -20,6 +20,7 @@ exports.index = (req, res) => {
     }else if(req.query.page == 1){
         prev = null;
     }
+    var next = 'http://localhost:3000?page='+(parseInt(req.query.page)+1);
     Input.find({}, function(err, inputs){
         Input
             .find({})
@@ -28,11 +29,14 @@ exports.index = (req, res) => {
             .lean()
             .exec((err, paginatedInput) => {
             if(err) res.status(500).json({ 'message':'Something went wrong.', 'error': err });
+            if(req.query.page == Math.round(parseInt(inputs.length / limit) + 1)){
+                next = null;
+            }
             res.json({
                 'total': inputs.length,
                 'current_page': req.query.page,
                 'last_page': Math.round(parseInt(inputs.length / limit) + 1),
-                'next_page_url': 'http://localhost:3000?page='+ (parseInt(req.query.page)+1),
+                'next_page_url': next,
                 'prev_page_url': prev,
                 'data': paginatedInput
             });
@@ -78,7 +82,7 @@ exports.createRandom = (req, res) => {
             'created_at' : Date.now(),
             'updated_at': Date.now()
         }, (err, input) => {
-            if(err) res.status(400).json({ 'message': 'Something went wrong during the creation of the input','error': err });
+            if(err) console.log(err);
             var randCurve = randomCurve();
             var data = randCurve.data;
             req.body.input_id = input._id;
@@ -90,7 +94,7 @@ exports.createRandom = (req, res) => {
                 'input_id': input._id,
                 'noise': randCurve.noise[0]
             }, (err, c) => {
-                if(err) res.status(400).json({"message":"Something went wrong during the creation of the first curve.","error": err});
+                if(err) console.log(err);
                 Curve.create({
                     'expression': randCurve.delta_curve,
                     'types': randCurve.types,
@@ -101,7 +105,7 @@ exports.createRandom = (req, res) => {
                     'coefficient': randCurve.coefficient,
                     'noise': randCurve.noise[1]
                 },(err, d)=>{
-                    if(err) res.status(400).json({"message":"Something went wrong during the creation of the second curve.","error": err});
+                    if(err) console.log(err);
                     var output = outputCalculation(c.data_objects, d.data_objects, d.lag);
                     var data = {'data1':output.d1,'data2':output.d2}
                     Output.create({
@@ -110,13 +114,12 @@ exports.createRandom = (req, res) => {
                         'delta': Math.floor(d.lag),
                         'data':data
                     }, (err, output) => {
-                        if(err) res.status(400).json({"message":"Something went wrong during the output creation.","error": err});
-                        res.end()
+                        if(err) console.log(err);
+                        cb(null)
                     });
                 });
             });
         })
-        cb();
     }
 
     async.times(req.body.iNum, function(n, next){
@@ -125,7 +128,7 @@ exports.createRandom = (req, res) => {
         });
     }, function(err, inputs){
         if(err) res.status(400).json({"message":"Something went wrong during the random creation.","error": err});
-        res.send('OK');
+        res.send();
     });
 }
 
