@@ -1,25 +1,22 @@
 <!-- ## INPUT BLOCK VUE ## -->
 <template>
 <div>
-    <div class="col s12 jumbo">
-        <div class="row">
+    <div class="row">
+        <div v-for="c in curves" class="col s6 jumbo">
             <div>
-                <div class="chart">
-                    <div>
-                        <function-plot></function-plot>
-                    </div>
-                </div>  
-                <div class="col s6" v-for="c in curves">
-                    <div style="margin-bottom: 5%;">
-                        <span> ID : {{c._id}} </span><br>
-                    </div>
-                    <div class="Nfloat"></div>
-                    <div>
-                        <router-link v-if="c.lag" class="btn btn-floatin" :to="{ name: 'UpdateInput', params: { id: c._id }}">Update curve<i class="material-icons left">edit</i></router-link><br>
-                    </div>
-                </div>   
-                
-            </div>
+                <div>
+                    <function-plot :id="c._id"></function-plot>
+                </div>
+                <div>
+                    <span> ID : {{c._id}} </span><br>
+                </div>
+                <div class="Nfloat"></div>
+                <div v-if="c.lag">
+                    <span> Lag : {{c.lag}} </span><br>
+                    <span> Coefficient : {{c.coefficient}} </span><br>
+                    <router-link v-if="c.lag" class="btn btn-floatin" :to="{ name: 'UpdateInput', params: { id: c._id }}">Update curve<i class="material-icons left">edit</i></router-link><br>
+                </div>
+            </div>   
         </div>
     </div>
 </div>
@@ -54,6 +51,22 @@ export default {
 <style scoped>
     div{
         text-align: center;
+    }
+
+    .col.s6:first-child{
+        margin-right: 2%;
+    }
+
+    .col.s6{
+        width: 49%;
+    }
+
+    .jumbo{
+        min-height: 600px; 
+    }
+
+    .btn{
+        margin-top: 3%;
     }
 
 </style>

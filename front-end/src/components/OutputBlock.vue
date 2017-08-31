@@ -1,8 +1,8 @@
 <template>
 <div>
     <div>
-        <div class="col s12 jumbo">
-            <div class="row">
+        <div class="row jumbo">
+            <div class="col s12">
                 <div>
                     <h5> Output </h5>
                     <div>  
@@ -39,8 +39,11 @@ export default {
 </script>
 
 <style scoped>
+
+
 .row div span{
     text-align: left;
 }
+
 
 </style>

@@ -15,7 +15,6 @@
                         <option value="gaussian"> Gaussian </option>
                         <option value="sigmoid"> Sigmoid </option>
                         <option value="polynomial"> Polynomial </option>
-                        <option value="noise"> Random </option>
                      </select>
                   </div>
                   <div class="options" v-for="(c, index) in curve">
@@ -38,16 +37,6 @@
                         <div class="col s6">
                            <label> Const {{index}} </label>
                            <input v-model="c.params.const" type="number" placeholder="Const" step="0.01" required />
-                        </div>
-                     </div>
-                     <div class="col s12" v-if="c.value == 'noise'">
-                        <div class="col s6">
-                           <label> Min </label>
-                           <input v-model="c.params.min" type="number" placeholder="Minimum" step="0.01" required />
-                        </div>
-                        <div class="col s6">
-                           <label> Max </label>
-                           <input v-model="c.params.max" type="number" placeholder="Maximum" step="0.01" required />
                         </div>
                      </div>
                      <div class="col s12" v-if="c.value == 'polynomial'">
@@ -105,9 +94,6 @@
                      </div>
                      <div v-if="i.value == 'polynomial'">
                         <p> {{"Polynomial expression : "+i.params.poly}} </p>
-                     </div>
-                     <div v-if="i.value == 'noise'">
-                        <p> {{"Minimum : "+i.params.min}} | {{"Maximum : "+i.params.max}}  </p>
                      </div>
                   </div>
                </transition-group>

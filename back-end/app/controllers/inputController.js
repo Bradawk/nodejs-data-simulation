@@ -45,7 +45,7 @@ exports.index = (req, res) => {
 };
 
 /**
- * GET REQUEST '/input/id' retrieves one inputs.
+ * GET REQUEST '/input/id' retrieves one input.
  * @param {Object} req
  * @param {Object} res
  */
@@ -72,7 +72,8 @@ exports.create = (req, res) => {
 };
 
 /**
- * POST REQUEST '/input' creates a defined number of input.
+ * POST REQUEST '/input' creates an entire random input.
+ * Request can be launched several times by the user.
  * @param {Object} req
  * @param {Object} res
  */

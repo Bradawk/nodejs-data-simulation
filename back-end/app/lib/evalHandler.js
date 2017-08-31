@@ -26,8 +26,8 @@ function evalHandler(curve){
         }else if(e.value == "noise"){
             expressions.push('Math.random()*('+e.params.max+'-'+e.params.min+')+'+e.params.min);
 
-        }else if(e.value == "noise"){
-            expressions.push('Math.random()*('+e.params.max+'-'+e.params.min+')+'+e.params.min);
+        // }else if(e.value == "noise"){
+        //     expressions.push('Math.random()*('+e.params.max+'-'+e.params.min+')+'+e.params.min);
             
         }else{
             expressions.push('');

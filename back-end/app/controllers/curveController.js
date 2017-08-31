@@ -1,14 +1,9 @@
 var Curve = require('../models/curves.js');
-var Output = require('../models/outputs.js');
 var isEmptyObject = require('../lib/empty');
 var evalHandler = require('../lib/evalHandler');
 var getData = require('../lib/getData');
-var outputCalculation = require('../lib/outputCalculation');
 var outputController = require('./outputController');
 var randomCurve = require('../lib/randomCurve')
-
-
-var math = require('mathjs');
 
 /**
  * GET REQUEST '/curve/:id' retrieve on input.
