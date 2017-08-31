@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 
 var config = require('../../conf/config');
 
-mongoose.connect('mongodb://localhost:27017/'+config.db_name);
+mongoose.connect('mongodb://localhost:27017/datasetdb');
 
 var db = mongoose.connection;
 

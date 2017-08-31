@@ -112,19 +112,25 @@ export default {
             });
       },
       randomizer(e){
-        if(this.iNum > 1000){
+        if(this.iNum > 5000){
           e.preventDefault();
-          Materialize.toast('Number of random inputs to generate is to high',2000);
+          Materialize.toast('Number of random inputs to generate is to high (max = 5000) !',2000);
         }else{
           this.isloaded = true;
-          this.$http.post(process.env.API_URL+'/input/random',{'iNum':this.iNum})
-          .then(response => {
-              this.isloaded = false;
-              this.$router.go('/');
-            })
-          .catch(function(error){
-            Materialize.toast(error, '2000');
-          });
+          for(var i = 1; i <= this.iNum; i++){
+            var countReq = 0;
+            this.$http.post(process.env.API_URL+'/input/random',{'iNum':this.iNum})
+            .then(response => {
+                countReq += 1;
+                if(countReq == this.iNum){
+                  this.isloaded = false;
+                  this.$router.go('/');
+                }
+              })
+            .catch(function(error){
+              Materialize.toast(error, '2000');
+            });
+          }
         }
       }
     }

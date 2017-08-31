@@ -77,59 +77,49 @@ exports.create = (req, res) => {
  * @param {Object} res
  */
 exports.createRandom = (req, res) => {
-    var inputCreation = (n, cb) => {
-        Input.create({
-            'created_at' : Date.now(),
-            'updated_at': Date.now()
-        }, (err, input) => {
+
+    Input.create({
+        'created_at' : Date.now(),
+        'updated_at': Date.now()
+    }, (err, input) => {
+        if(err) console.log(err);
+        var randCurve = randomCurve();
+        var data = randCurve.data;
+        req.body.input_id = input._id;
+        Curve.create({
+            'expression': randCurve.first_curve,
+            'types': randCurve.types,
+            'data_objects': data.data1.data,
+            'curve': randCurve.curve,
+            'input_id': input._id,
+            'noise': randCurve.noise[0]
+        }, (err, c) => {
             if(err) console.log(err);
-            var randCurve = randomCurve();
-            var data = randCurve.data;
-            req.body.input_id = input._id;
             Curve.create({
-                'expression': randCurve.first_curve,
+                'expression': randCurve.delta_curve,
                 'types': randCurve.types,
-                'data_objects': data.data1.data,
+                'lag': randCurve.lag,
+                'data_objects': data.data2.data,
                 'curve': randCurve.curve,
                 'input_id': input._id,
-                'noise': randCurve.noise[0]
-            }, (err, c) => {
+                'coefficient': randCurve.coefficient,
+                'noise': randCurve.noise[1]
+            },(err, d)=>{
                 if(err) console.log(err);
-                Curve.create({
-                    'expression': randCurve.delta_curve,
-                    'types': randCurve.types,
-                    'lag': randCurve.lag,
-                    'data_objects': data.data2.data,
-                    'curve': randCurve.curve,
+                var output = outputCalculation(c.data_objects, d.data_objects, d.lag);
+                var data = {'data1':output.d1,'data2':output.d2}
+                Output.create({
                     'input_id': input._id,
-                    'coefficient': randCurve.coefficient,
-                    'noise': randCurve.noise[1]
-                },(err, d)=>{
+                    'pcorr': output.corr,
+                    'delta': Math.floor(d.lag),
+                    'data':data
+                }, (err, output) => {
                     if(err) console.log(err);
-                    var output = outputCalculation(c.data_objects, d.data_objects, d.lag);
-                    var data = {'data1':output.d1,'data2':output.d2}
-                    Output.create({
-                        'input_id': input._id,
-                        'pcorr': output.corr,
-                        'delta': Math.floor(d.lag),
-                        'data':data
-                    }, (err, output) => {
-                        if(err) console.log(err);
-                        cb(null, this.input)
-                    });
+                    res.json(input)
                 });
             });
-        })
-    }
-
-    async.times(req.body.iNum, function(n, next){
-        inputCreation(n, function(err, input){
-            next(err, input);
         });
-    }, function(err, inputs){
-        if(err) res.status(400).json({"message":"Something went wrong during the random creation.","error": err});
-        res.send();
-    });
+    })
 }
 
 /**
