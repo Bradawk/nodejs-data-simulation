@@ -18,12 +18,12 @@
                       <form v-on:submit.prevent="addInput">     
                         <button class="btn left waves-effect"><i class="material-icons">add</i></button>
                       </form>
-                      <form class="col s6" v-on:submit.prevent="randomizer">
+                      <form class="col s6 randomize" v-on:submit.prevent="randomizer">
                         <input class="left col s3" v-model="iNum" type="number" step="1" min="1" placeholder="Number of inputs" required />
-                        <input class="btn left" type="submit" value="Create" />
+                        <input class="btn left" type="submit" value="Create Random" />
                       </form>
+                      <v-paginator class="paginator" :resource_url="resource_url" @update="updateResource"></v-paginator>
                       <div class="Nfloat"></div>
-                      <v-paginator :resource_url="resource_url" @update="updateResource"></v-paginator>
                       <div v-if="count">
                         <transition-group name="slide-fade" tag="p">
                           <div v-for="i in inputs" v-bind:key="i" class="list-item input-div jumbo col s3">
@@ -151,5 +151,15 @@ export default {
   transform: translateX(10px);
   opacity: 0;
 } 
+
+.paginator{
+  width: 79%;
+  text-align: right;
+}
+
+.randomize{
+  width: 30% !important;
+}
+
 
 </style>
