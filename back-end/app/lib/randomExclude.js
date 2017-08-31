@@ -7,8 +7,12 @@
  * @param {Number} max_excluded 
  */
 function randomExclude(min, max, min_excluded, max_excluded){
-    var n = Math.random() * (max-min) + min;
-    if (n >= -min_excluded && n <= max_excluded) n+=0.1;
+    var n = Math.round((Math.random() * (max-min) + min) * 100) / 100;
+		if(n >= min_excluded && n <= 0){
+    	n -=  0.2;
+    }else if(n <= max_excluded && n >= 0){
+    	n += 0.2;
+    }
     return n;
 }
 

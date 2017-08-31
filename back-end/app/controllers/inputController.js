@@ -115,7 +115,7 @@ exports.createRandom = (req, res) => {
                         'data':data
                     }, (err, output) => {
                         if(err) console.log(err);
-                        cb(null)
+                        cb(null, this.input)
                     });
                 });
             });
