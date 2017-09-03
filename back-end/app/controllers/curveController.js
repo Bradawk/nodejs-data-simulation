@@ -41,50 +41,53 @@ exports.create = (req, res) => {
         }else{
             var delta_curve = '';
             var handler = evalHandler(req.body.curve);
-
-            delta_curve = handler.curve.replace(/x(?!p)/g, "x+(-"+req.body.lag+")");
-            delta_curve = '('+delta_curve+')*'+req.body.coefficient;
+            try {
+                delta_curve = handler.curve.replace(/x(?!p)/g, "x+(-"+req.body.lag+")");
+                delta_curve = '('+delta_curve+')*'+req.body.coefficient;
             
-            var data_1 = getData(handler.curve);
-            var data_2 = getData(delta_curve);
-
-            for(var propName in req.body.curve[0].params){
-                if(req.body.curve[0].params[propName] == null || req.body.curve[0].params[propName] == undefined || req.body.curve[0].params[propName] == ''){
-                    delete req.body.curve[0].params[propName]
+                var data_1 = getData(handler.curve);
+                var data_2 = getData(delta_curve);
+    
+                for(var propName in req.body.curve[0].params){
+                    if(req.body.curve[0].params[propName] == null || req.body.curve[0].params[propName] == undefined || req.body.curve[0].params[propName] == ''){
+                        delete req.body.curve[0].params[propName]
+                    }
                 }
-            }
-
-            Curve.create({
-                'expression': handler.curve,
-                'input_id': req.body.input_id,
-                'types': handler.types,
-                'data_objects': data_1.data,
-                'curve': req.body.curve,
-                'noise': false
-            }, (err, curve) => {
-                if(err) res.status(400).json({"message":"Something went wrong during the creation of the first curve.","error": err});
+    
                 Curve.create({
-                    'expression': delta_curve,
+                    'expression': handler.curve,
                     'input_id': req.body.input_id,
                     'types': handler.types,
-                    'lag': req.body.lag,
-                    'coefficient': req.body.coefficient,
-                    'data_objects': data_2.data,
+                    'data_objects': data_1.data,
                     'curve': req.body.curve,
-                    'noise':false
-                },(err, d) => {
-                    if(err) res.status(400).json({"message":"Something went wrong during the creation of the second curve.","error": err});
-                    var outputItems = {
-                        'd1': curve.data_objects,
-                        'd2': d.data_objects,
-                        'lag': Math.floor(d.lag),
-                        'coefficient': d.coefficient,
-                        'input_id': d.input_id
-                    };
-                    outputController.create(req, res, outputItems);
-                    res.json({"message":"Input, curves and output created with success."});
-                })
-            }); 
+                    'noise': false
+                }, (err, curve) => {
+                    if(err) res.status(400).json({"message":"Something went wrong during the creation of the first curve.","error": err});
+                    Curve.create({
+                        'expression': delta_curve,
+                        'input_id': req.body.input_id,
+                        'types': handler.types,
+                        'lag': req.body.lag,
+                        'coefficient': req.body.coefficient,
+                        'data_objects': data_2.data,
+                        'curve': req.body.curve,
+                        'noise':false
+                    },(err, d) => {
+                        if(err) res.status(400).json({"message":"Something went wrong during the creation of the second curve.","error": err});
+                        var outputItems = {
+                            'd1': curve.data_objects,
+                            'd2': d.data_objects,
+                            'lag': Math.floor(d.lag),
+                            'coefficient': d.coefficient,
+                            'input_id': d.input_id
+                        };
+                        outputController.create(req, res, outputItems);
+                        res.json({"message":"Input, curves and output created with success."});
+                    })
+                }); 
+            } catch (error) {
+                res.json({"message":"Math expression is not valid"});
+            }
         }
     });
     
