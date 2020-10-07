@@ -5,6 +5,7 @@ import Input from '@/components/Input'
 import AddInput from '@/components/AddInput'
 import UpdateInput from '@/components/UpdateInput'
 import NotFound from '@/components/errors/NotFound'
+import Hello from '@/components/Hello'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ export default new Router({
       path: '*',
       name: 'NotFound',
       component: NotFound
+    },
+    {
+      path: '/hello',
+      name: 'Hello',
+      component: Hello
     }
   ]
 })
