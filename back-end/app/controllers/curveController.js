@@ -44,16 +44,16 @@ exports.create = (req, res) => {
             try {
                 delta_curve = handler.curve.replace(/x(?!p)/g, "x+(-"+req.body.lag+")");
                 delta_curve = '('+delta_curve+')*'+req.body.coefficient;
-            
+
                 var data_1 = getData(handler.curve);
                 var data_2 = getData(delta_curve);
-    
+
                 for(var propName in req.body.curve[0].params){
                     if(req.body.curve[0].params[propName] == null || req.body.curve[0].params[propName] == undefined || req.body.curve[0].params[propName] == ''){
                         delete req.body.curve[0].params[propName]
                     }
                 }
-    
+
                 Curve.create({
                     'expression': handler.curve,
                     'input_id': req.body.input_id,
@@ -84,13 +84,13 @@ exports.create = (req, res) => {
                         outputController.create(req, res, outputItems);
                         res.json({"message":"Input, curves and output created with success."});
                     })
-                }); 
+                });
             } catch (error) {
                 res.json({"message":"Math expression is not valid"});
             }
         }
     });
-    
+
 };
 
 /**
@@ -133,7 +133,7 @@ exports.update = (req, res, next) => {
             outputController.update(req,res, outputItems, next);
             res.json({"message":"Curve Updated with success", 'curve': curve});
         });
-    });  
+    });
 }
 
 
@@ -147,7 +147,7 @@ exports.createRandom = (req, res) => {
         if(curve){
             res.status(400).json({"message": "Curves already exist in that input.", "error": err})
         }else{
-            var randCurve = randomCurve();  
+            var randCurve = randomCurve();
             var data = randCurve.data
             Curve.create({
                 'expression': randCurve.first_curve,
