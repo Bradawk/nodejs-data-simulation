@@ -8,7 +8,7 @@ router.route('/')
 
 router.get('/hello', (req, res) => {
     res.json({
-        text: "Hello"
+        text: "Hello Brad"
     })
 });
 
