@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="73fe6cf9-f752-4838-a242-baa7f94a9cb9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/back-end/app/controllers/curveController.js" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/app/controllers/curveController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/routes/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/forms/CurveUpdateForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/forms/CurveUpdateForm.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +32,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1602101217842</updated>
-      <workItem from="1602101219820" duration="405000" />
+      <workItem from="1602101219820" duration="804000" />
     </task>
     <servers />
   </component>

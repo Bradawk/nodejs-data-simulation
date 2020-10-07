@@ -48,6 +48,7 @@
                   <div class="Nfloat"></div>
                 </div>
                 <input type="submit" class="btn" value="Update" />
+                <input type="submit" class="btn" value="Reset" />
               </form>
           </div>
         </div>
